@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,8 +21,14 @@ namespace ZenovaLauncher
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow() {
+        public MainWindow()
+        {
             InitializeComponent();
         }
+        private void NavView_ItemInvoked(object sender, HamburgerMenuItemInvokedEventArgs e)
+        {
+            
+        }
     }
+
 }

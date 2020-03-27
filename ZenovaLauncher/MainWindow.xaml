@@ -4,34 +4,78 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZenovaLauncher"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         Title="Zenova Launcher" 
         Height="600" Width="1000"
         MinHeight="600" MinWidth="1000"
-        xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0">
-            <ui:DropDownButton Content="DropDownButton">
-                <ui:DropDownButton.Flyout>
-                    <ui:MenuFlyout Placement="Top">
-                        <MenuItem Header="Send" />
-                        <MenuItem Header="Reply" />
-                        <MenuItem Header="Reply All" />
-                    </ui:MenuFlyout>
-                </ui:DropDownButton.Flyout>
-            </ui:DropDownButton>
-        </StackPanel>
+        <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Background="{DynamicResource NavigationViewDefaultPaneBackground}">
+            
+        </Grid>
 
-        <Grid Grid.Column="1">
+        <ui:HamburgerMenuEx
+            x:Name="NavView"
+            IsPaneOpen="True"
+            HamburgerVisibility="Collapsed"
+            ItemInvoked="NavView_ItemInvoked"
+            Grid.Column="0" Grid.Row="1" >
+            <mah:HamburgerMenu.ItemsSource>
+                <mah:HamburgerMenuItemCollection x:Name="NavViewItems">
+                    <mah:HamburgerMenuIconItem
+                        Label="News"
+                        Tag="NewsPage.xaml">
+                        <mah:HamburgerMenuIconItem.Icon>
+                            <ui:SymbolIcon Symbol="Home" />
+                        </mah:HamburgerMenuIconItem.Icon>
+                    </mah:HamburgerMenuIconItem>
+
+                    <mah:HamburgerMenuIconItem
+                        Label="Minecraft Bedrock"
+                        Tag="MainPage.xaml">
+                        <mah:HamburgerMenuIconItem.Icon>
+                            <ui:SymbolIcon Symbol="Keyboard" />
+                        </mah:HamburgerMenuIconItem.Icon>
+                    </mah:HamburgerMenuIconItem>
+
+                    <mah:HamburgerMenuIconItem
+                        Label="Help"
+                        Tag="HelpPage.xaml">
+                        <mah:HamburgerMenuIconItem.Icon>
+                            <ui:SymbolIcon Symbol="Library" />
+                        </mah:HamburgerMenuIconItem.Icon>
+                    </mah:HamburgerMenuIconItem>
+                </mah:HamburgerMenuItemCollection>
+            </mah:HamburgerMenu.ItemsSource>
+
+            <mah:HamburgerMenu.OptionsItemsSource>
+                <mah:HamburgerMenuItemCollection x:Name="NavViewOptions">
+                    <mah:HamburgerMenuIconItem
+                        Label="Settings"
+                        Tag="SettingsPage.xaml">
+                        <mah:HamburgerMenuIconItem.Icon>
+                            <ui:SymbolIcon Symbol="Setting" />
+                        </mah:HamburgerMenuIconItem.Icon>
+                    </mah:HamburgerMenuIconItem>
+                </mah:HamburgerMenuItemCollection>
+            </mah:HamburgerMenu.OptionsItemsSource>
+
+        </ui:HamburgerMenuEx>
+
+        <Grid Grid.Column="1" Grid.RowSpan="2">
             <Button 
-                Content="Launch Minecraft" 
-                FontSize="18"
+                Content="Launch"
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Bottom" 
                 Width="200"
