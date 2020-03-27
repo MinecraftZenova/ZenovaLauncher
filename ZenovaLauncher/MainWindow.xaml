@@ -8,22 +8,58 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         Title="Zenova Launcher" 
-        Height="600" Width="1000"
-        MinHeight="600" MinWidth="1000"
+        Height="593" Width="987"
+        MinHeight="593" MinWidth="987"
+        WindowStartupLocation="CenterScreen"
         ui:WindowHelper.UseModernWindowStyle="True">
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="AccountFlyoutPresenter" BasedOn="{StaticResource {x:Type ui:FlyoutPresenter}}" TargetType="{x:Type ui:FlyoutPresenter}">
+                <Setter Property="CornerRadius" Value="0,0,0,0" />
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="180" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
+            <RowDefinition Height="60" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Background="{DynamicResource NavigationViewDefaultPaneBackground}">
-            
+        <Grid 
+            Grid.Row="0" 
+            Grid.RowSpan="2" 
+            Grid.Column="0" 
+            Background="{DynamicResource NavigationViewDefaultPaneBackground}" />
+
+        <Grid Grid.Row="0" Grid.Column="0">
+            <ui:DropDownButton
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Background="Transparent"
+                CornerRadius="0,0,0,0">
+                <ui:DropDownButton.Content>
+                    <StackPanel>
+                        <TextBlock Text="Account" />
+                        <TextBlock FontSize="10" Text="fiddleandrew@hotmail.com" />
+                    </StackPanel>
+                </ui:DropDownButton.Content>
+                <ui:DropDownButton.Flyout>
+                    <ui:Flyout FlyoutPresenterStyle="{StaticResource AccountFlyoutPresenter}" Placement="Bottom">
+                        <StackPanel>
+                            <TextBlock Text="andrew.miller2@mavs.uta.edu" />
+                            <TextBlock Text="fiddleandrew@hotmail.com" />
+                            <TextBlock Text="micahlusk@gmail.com" />
+                        </StackPanel>
+                    </ui:Flyout>
+                </ui:DropDownButton.Flyout>
+            </ui:DropDownButton>
         </Grid>
+
 
         <ui:HamburgerMenuEx
             x:Name="NavView"
@@ -33,19 +69,20 @@
             Grid.Column="0" Grid.Row="1" >
             <mah:HamburgerMenu.ItemsSource>
                 <mah:HamburgerMenuItemCollection x:Name="NavViewItems">
-                    <mah:HamburgerMenuIconItem
-                        Label="News"
-                        Tag="NewsPage.xaml">
-                        <mah:HamburgerMenuIconItem.Icon>
-                            <ui:SymbolIcon Symbol="Home" />
-                        </mah:HamburgerMenuIconItem.Icon>
-                    </mah:HamburgerMenuIconItem>
 
                     <mah:HamburgerMenuIconItem
                         Label="Minecraft Bedrock"
                         Tag="MainPage.xaml">
                         <mah:HamburgerMenuIconItem.Icon>
-                            <ui:SymbolIcon Symbol="Keyboard" />
+                            <ui:SymbolIcon Symbol="Home" />
+                        </mah:HamburgerMenuIconItem.Icon>
+                    </mah:HamburgerMenuIconItem>
+                    
+                    <mah:HamburgerMenuIconItem
+                        Label="News"
+                        Tag="NewsPage.xaml">
+                        <mah:HamburgerMenuIconItem.Icon>
+                            <ui:SymbolIcon Symbol="PreviewLink" />
                         </mah:HamburgerMenuIconItem.Icon>
                     </mah:HamburgerMenuIconItem>
 
@@ -53,7 +90,7 @@
                         Label="Help"
                         Tag="HelpPage.xaml">
                         <mah:HamburgerMenuIconItem.Icon>
-                            <ui:SymbolIcon Symbol="Library" />
+                            <ui:SymbolIcon Symbol="Help" />
                         </mah:HamburgerMenuIconItem.Icon>
                     </mah:HamburgerMenuIconItem>
                 </mah:HamburgerMenuItemCollection>
@@ -70,18 +107,25 @@
                     </mah:HamburgerMenuIconItem>
                 </mah:HamburgerMenuItemCollection>
             </mah:HamburgerMenu.OptionsItemsSource>
-
         </ui:HamburgerMenuEx>
 
         <Grid Grid.Column="1" Grid.RowSpan="2">
-            <Button 
-                Content="Launch"
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Bottom" 
-                Width="200"
-                Height="50"
-                Margin="20"
-                Style="{DynamicResource AccentButtonStyle}" />
+            <ui:TransitionFrame x:Name="ContentFrame" Navigated="ContentFrame_Navigated">
+                <ui:TransitionFrame.DefaultNavigationInTransition>
+                    <ui:NavigationInTransition>
+                        <ui:NavigationInTransition.Forward>
+                            <ui:SuppressTransition />
+                        </ui:NavigationInTransition.Forward>
+                    </ui:NavigationInTransition>
+                </ui:TransitionFrame.DefaultNavigationInTransition>
+                <ui:TransitionFrame.DefaultNavigationOutTransition>
+                    <ui:NavigationOutTransition>
+                        <ui:NavigationOutTransition.Backward>
+                            <ui:SuppressTransition />
+                        </ui:NavigationOutTransition.Backward>
+                    </ui:NavigationOutTransition>
+                </ui:TransitionFrame.DefaultNavigationOutTransition>
+            </ui:TransitionFrame>
         </Grid>
     </Grid>
 </Window>
