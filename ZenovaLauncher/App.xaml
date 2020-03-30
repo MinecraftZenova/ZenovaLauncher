@@ -31,6 +31,7 @@
                 <ResourceDictionary Source="/ModernWpf.MahApps;component/Styles/Controls.xaml" />
                 <!-- Other merged dictionaries here -->
                 <ResourceDictionary Source="Styles/LauncherTabControl.xaml" />
+                <ResourceDictionary Source="Styles/ProfileBox.xaml" />
                 <ResourceDictionary Source="Controls/LauncherSideMenu.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->

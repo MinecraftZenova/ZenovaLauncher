@@ -20,10 +20,16 @@
             Style="{StaticResource LauncherTabControl}"
             MinHeight="400">
             <TabItem Header="General">
-                <TextBlock Text="General Settings" />
+                <Grid 
+                    Background="#FF303030">
+                    <TextBlock Text="General Settings" />
+                </Grid>
             </TabItem>
             <TabItem Header="About">
-                <TextBlock Text="About Launcher" />
+                <Grid 
+                    Background="#FF303030">
+                    <TextBlock Text="About Launcher" />
+                </Grid>
             </TabItem>
         </control:LauncherTabControl>
     </Grid>

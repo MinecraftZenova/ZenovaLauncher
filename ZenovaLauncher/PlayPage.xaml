@@ -6,17 +6,55 @@
       xmlns:local="clr-namespace:ZenovaLauncher"
       xmlns:ui="http://schemas.modernwpf.com/2019"
       mc:Ignorable="d" 
-      Background="Transparent">
+      Background="#FF303030">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
         <Button 
+            Grid.Column="1"
+            Grid.RowSpan="2"
+            Panel.ZIndex="2"
             Content="Launch Minecraft"
             HorizontalAlignment="Center" 
             VerticalAlignment="Bottom" 
             Width="200"
             Height="50"
-            Margin="20"
+            Margin="0,0,0,20"
             Style="{DynamicResource AccentButtonStyle}" />
+        <Grid Grid.Row="1" Grid.ColumnSpan="3"  Background="#FF262626" />
+        <Grid Grid.Row="1" Grid.Column="0">
+            <ComboBox
+                Style="{StaticResource ProfileBoxStyle}"
+                x:Name="ProfileCombo"
+                Margin="10,4,10,4"
+                MinWidth="200"
+                HorizontalContentAlignment="Left"
+                Background="Transparent"
+                BorderThickness="0"
+                SelectedIndex="0">
+                <ComboBoxItem>
+                    <ui:SimpleStackPanel Spacing="4">
+                        <TextBlock FontWeight="Bold" FontSize="14" Text="Latest release" />
+                        <TextBlock FontSize="10" Text="1.14.30.2" />
+                    </ui:SimpleStackPanel>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <ui:SimpleStackPanel Spacing="4">
+                        <TextBlock FontWeight="Bold" FontSize="14" Text="Profile2" />
+                        <TextBlock FontSize="10" Text="1.14.1.0" />
+                    </ui:SimpleStackPanel>
+                </ComboBoxItem>
+            </ComboBox>
+        </Grid>
+
     </Grid>
 </Page>
 

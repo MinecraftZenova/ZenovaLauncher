@@ -50,7 +50,7 @@
                                 RenderTransformOrigin="0.5,0.5"
                                 x:Name="SelectedPipe"
                                 Fill="{DynamicResource PivotHeaderItemSelectedPipeFill}"
-                                Height="3"
+                                Height="3.5"
                                 Width="18"
                                 VerticalAlignment="Bottom"
                                 HorizontalAlignment="Center"
@@ -197,7 +197,7 @@
                                 <ContentPresenter
                                     x:Name="PART_SelectedContentHost"
                                     ContentSource="SelectedContent"
-                                    Margin="{DynamicResource PivotItemMargin}"
+                                    Margin="0,0,0,0"
                                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             </Border>
                         </Grid>
