@@ -9,6 +9,6 @@
       Background="Transparent">
 
     <Grid>
-
+        <TextBlock Text="Help Page goes here." />
     </Grid>
 </Page>

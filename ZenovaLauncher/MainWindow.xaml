@@ -7,14 +7,16 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
+        Icon="zenova_icon.ico"
         Title="Zenova Launcher" 
         Height="593" Width="987"
         MinHeight="593" MinWidth="987"
         WindowStartupLocation="CenterScreen"
-        ui:WindowHelper.UseModernWindowStyle="True">
+        ui:WindowHelper.UseModernWindowStyle="True"
+        ui:TitleBar.IsIconVisible="True">
     <Window.Resources>
         <ResourceDictionary>
-            <Style x:Key="AccountFlyoutPresenter" BasedOn="{StaticResource {x:Type ui:FlyoutPresenter}}" TargetType="{x:Type ui:FlyoutPresenter}">
+            <Style x:Key="AccountFlyoutPresenter" BasedOn="{StaticResource {x:Type ui:MenuFlyoutPresenter}}" TargetType="{x:Type ui:MenuFlyoutPresenter}">
                 <Setter Property="CornerRadius" Value="0,0,0,0" />
             </Style>
         </ResourceDictionary>
@@ -49,13 +51,11 @@
                     </StackPanel>
                 </ui:DropDownButton.Content>
                 <ui:DropDownButton.Flyout>
-                    <ui:Flyout FlyoutPresenterStyle="{StaticResource AccountFlyoutPresenter}" Placement="Bottom">
-                        <StackPanel>
-                            <TextBlock Text="andrew.miller2@mavs.uta.edu" />
-                            <TextBlock Text="fiddleandrew@hotmail.com" />
-                            <TextBlock Text="micahlusk@gmail.com" />
-                        </StackPanel>
-                    </ui:Flyout>
+                    <ui:MenuFlyout MenuFlyoutPresenterStyle="{StaticResource AccountFlyoutPresenter}" Placement="BottomEdgeAlignedLeft">
+                        <MenuItem FontSize="12" Header="andrew.miller2@mavs.uta.edu" />
+                        <MenuItem FontSize="12" Header="fiddleandrew@hotmail.com" />
+                        <MenuItem FontSize="12" Header="micahlusk@gmail.com" />
+                    </ui:MenuFlyout>
                 </ui:DropDownButton.Flyout>
             </ui:DropDownButton>
         </Grid>
@@ -64,6 +64,9 @@
         <ui:HamburgerMenuEx
             x:Name="NavView"
             IsPaneOpen="True"
+            PaneMargin="0 0 0 0"
+            ItemContainerStyle="{StaticResource LauncherMenuItem}"
+            OptionsItemContainerStyle="{StaticResource LauncherMenuItem}"
             HamburgerVisibility="Collapsed"
             ItemInvoked="NavView_ItemInvoked"
             Grid.Column="0" Grid.Row="1" >
@@ -71,7 +74,7 @@
                 <mah:HamburgerMenuItemCollection x:Name="NavViewItems">
 
                     <mah:HamburgerMenuIconItem
-                        Label="Minecraft Bedrock"
+                        Label="Minecraft: Bedrock"
                         Tag="MainPage.xaml">
                         <mah:HamburgerMenuIconItem.Icon>
                             <ui:SymbolIcon Symbol="Home" />

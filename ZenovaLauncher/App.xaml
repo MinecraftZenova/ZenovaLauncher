@@ -14,7 +14,7 @@
                             <ResourceDictionary.MergedDictionaries>
                                 <ui:ColorPaletteResources
                                     TargetTheme="Dark"
-                                    Accent="#FF0A954E"
+                                    Accent="#FF008A44"
                                     AltHigh="#FF282828"
                                     AltMedium="#FF1E1E1E" />
                             </ResourceDictionary.MergedDictionaries>
@@ -30,6 +30,7 @@
                 <ui:XamlControlsResources />
                 <ResourceDictionary Source="/ModernWpf.MahApps;component/Styles/Controls.xaml" />
                 <!-- Other merged dictionaries here -->
+                <ResourceDictionary Source="Styles/LauncherTabControl.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
         </ResourceDictionary>

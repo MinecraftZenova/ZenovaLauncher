@@ -36,6 +36,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>zenova_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.4.2.0\lib\net462\ControlzEx.dll</HintPath>
@@ -80,6 +83,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ModsPage.xaml.cs">
+      <DependentUpon>ModsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PlayPage.xaml.cs">
+      <DependentUpon>PlayPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProfilesPage.xaml.cs">
+      <DependentUpon>ProfilesPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -109,11 +121,27 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ModsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="NewsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PlayPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProfilesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\LauncherTabControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -147,6 +175,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="zenova_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Runtime.WindowsRuntime.4.7.0\build\net461\System.Runtime.WindowsRuntime.targets" Condition="Exists('..\packages\System.Runtime.WindowsRuntime.4.7.0\build\net461\System.Runtime.WindowsRuntime.targets')" />

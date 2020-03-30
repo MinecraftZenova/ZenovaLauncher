@@ -1,4 +1,4 @@
-﻿<Page x:Class="ZenovaLauncher.NewsPage"
+﻿<Page x:Class="ZenovaLauncher.ProfilesPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,6 +9,6 @@
       Background="Transparent">
 
     <Grid>
-        <TextBlock Text="News Page goes here." />
+        <TextBlock Text="Profiles Page goes here." />
     </Grid>
 </Page>

@@ -9,6 +9,21 @@
       Background="Transparent">
 
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Margin="16,0,0,0" VerticalAlignment="Bottom" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Settings" />
+        <TabControl
+            Grid.Row="1"
+            Style="{StaticResource LauncherTabControl}"
+            MinHeight="400">
+            <TabItem Header="General">
+                <TextBlock Text="General Settings" />
+            </TabItem>
+            <TabItem Header="About">
+                <TextBlock Text="About Launcher" />
+            </TabItem>
+        </TabControl>
     </Grid>
 </Page>
