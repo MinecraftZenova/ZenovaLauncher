@@ -3,78 +3,6 @@
                     xmlns:local="clr-namespace:ZenovaLauncher"
                     xmlns:ui="http://schemas.modernwpf.com/2019">
 
-    <Style x:Key="LauncherMenuItem" TargetType="ListBoxItem">
-        <Setter Property="OverridesDefaultStyle" Value="True" />
-        <Setter Property="Foreground" Value="{DynamicResource NavigationViewItemForeground}" />
-        <Setter Property="Background" Value="{DynamicResource NavigationViewItemBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource NavigationViewItemBorderBrush}" />
-        <Setter Property="BorderThickness" Value="{StaticResource NavigationViewItemBorderThickness}" />
-        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
-        <Setter Property="FontWeight" Value="Normal" />
-        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
-        <Setter Property="FocusVisualStyle" Value="{Binding ItemFocusVisualStyle, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ui:HamburgerMenuEx}}, FallbackValue={x:Null}}" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ListBoxItem">
-                    <Grid
-                        x:Name="LayoutRoot"
-                        MinHeight="50"
-                        Background="{TemplateBinding Background}"
-                        SnapsToDevicePixels="True">
-
-                        <!-- Wrap SelectionIndicator in a grid so that its offset is 0,0 - this enables the offset animation. -->
-                        <Grid
-                            Margin="0,0,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center">
-
-                            <Rectangle
-                                x:Name="SelectionIndicator"
-                                Width="4"
-                                Height="20"
-                                Fill="White"
-                                Opacity="0.0"
-                                RadiusX="{TemplateBinding ui:ControlHelper.CornerRadius, Converter={StaticResource TopLeftCornerRadiusDoubleValueConverter}}"
-                                RadiusY="{TemplateBinding ui:ControlHelper.CornerRadius, Converter={StaticResource BottomRightCornerRadiusDoubleValueConverter}}" />
-                        </Grid>
-
-                        <ContentPresenter
-                            x:Name="ContentPresenter"
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                            Margin="{TemplateBinding Padding}" />
-                    </Grid>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="LayoutRoot" Property="Background" Value="{DynamicResource NavigationViewItemBackgroundPointerOver}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource NavigationViewItemForegroundPointerOver}" />
-                        </Trigger>
-                        <!-- Selected -->
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="LayoutRoot" Property="Background" Value="{DynamicResource NavigationViewItemBackgroundSelected}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource NavigationViewItemForegroundSelected}" />
-                        </Trigger>
-                        <!-- PointerOverSelected -->
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsMouseOver" Value="True" />
-                                <Condition Property="IsSelected" Value="True" />
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="LayoutRoot" Property="Background" Value="{DynamicResource NavigationViewItemBackgroundSelectedPointerOver}" />
-                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource NavigationViewItemForegroundSelectedPointerOver}" />
-                        </MultiTrigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="LayoutRoot" Property="Opacity" Value="{DynamicResource ListViewItemDisabledThemeOpacity}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <Style x:Key="LauncherTabItem" BasedOn="{StaticResource TabItemPivotStyle}" TargetType="TabItem">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Background" Value="{DynamicResource PivotHeaderItemBackgroundUnselected}" />
@@ -119,10 +47,11 @@
                                 RecognizesAccessKey="True"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             <Rectangle
+                                RenderTransformOrigin="0.5,0.5"
                                 x:Name="SelectedPipe"
                                 Fill="{DynamicResource PivotHeaderItemSelectedPipeFill}"
                                 Height="3"
-                                Width="20"
+                                Width="18"
                                 VerticalAlignment="Bottom"
                                 HorizontalAlignment="Center"
                                 Margin="0,0,0,2" />

@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ZenovaLauncher"
+      xmlns:control="clr-namespace:ZenovaLauncher.Controls"
       xmlns:ui="http://schemas.modernwpf.com/2019"
       mc:Ignorable="d" 
       Background="Transparent">
@@ -14,7 +15,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock Margin="16,0,0,0" VerticalAlignment="Bottom" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Minecraft: Bedrock" />
-        <TabControl
+        <control:LauncherTabControl
             Grid.Row="1"
             Style="{StaticResource LauncherTabControl}"
             MinHeight="400">
@@ -27,6 +28,6 @@
             <TabItem Header="Mods">
                 <ui:ThemeAwareFrame Source="ModsPage.xaml" NavigationUIVisibility="Hidden" />
             </TabItem>
-        </TabControl>
+        </control:LauncherTabControl>
     </Grid>
 </Page>

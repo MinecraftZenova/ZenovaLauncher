@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZenovaLauncher"
+        xmlns:controls="clr-namespace:ZenovaLauncher.Controls"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
@@ -61,12 +62,10 @@
         </Grid>
 
 
-        <ui:HamburgerMenuEx
+        <controls:LauncherSideMenu
             x:Name="NavView"
             IsPaneOpen="True"
             PaneMargin="0 0 0 0"
-            ItemContainerStyle="{StaticResource LauncherMenuItem}"
-            OptionsItemContainerStyle="{StaticResource LauncherMenuItem}"
             HamburgerVisibility="Collapsed"
             ItemInvoked="NavView_ItemInvoked"
             Grid.Column="0" Grid.Row="1" >
@@ -110,7 +109,7 @@
                     </mah:HamburgerMenuIconItem>
                 </mah:HamburgerMenuItemCollection>
             </mah:HamburgerMenu.OptionsItemsSource>
-        </ui:HamburgerMenuEx>
+        </controls:LauncherSideMenu>
 
         <Grid Grid.Column="1" Grid.RowSpan="2">
             <ui:TransitionFrame x:Name="ContentFrame" Navigated="ContentFrame_Navigated">
