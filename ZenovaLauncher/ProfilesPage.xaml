@@ -9,6 +9,46 @@
       Background="#FF303030">
 
     <Grid>
-        <TextBlock Text="Profiles Page goes here." />
+        <ui:ScrollViewerEx
+            HorizontalScrollBarVisibility="Hidden"
+            VerticalScrollBarVisibility="Auto"
+            IsDeferredScrollingEnabled="False">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" MaxWidth="500" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" Grid.ColumnSpan="3" Height="1" VerticalAlignment="Bottom" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+                <Grid Grid.Row="0" Grid.Column="1" Margin="25,10,25,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ui:SimpleStackPanel Grid.Column="0" Orientation="Horizontal">
+                        <Button Margin="0,0,20,0" Background="Transparent">
+                            <Button.Content>
+                                <ui:SimpleStackPanel Orientation="Horizontal" Spacing="8" Margin="3">
+                                    <ui:SymbolIcon VerticalAlignment="Center" Symbol="Add" />
+                                    <TextBlock VerticalAlignment="Center" Text="New..." />
+                                </ui:SimpleStackPanel>
+                            </Button.Content>
+                        </Button>
+                        <Grid Width="1" HorizontalAlignment="Right" Margin="0,10,0,10" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+                    </ui:SimpleStackPanel>                    
+                    <ui:SimpleStackPanel Grid.Column="2" Orientation="Horizontal">
+                        <Grid Width="1" HorizontalAlignment="Left" Margin="0,10,0,10" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+                        <ui:SimpleStackPanel Margin="20,0,20,0">
+                            <TextBlock Margin="0,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Sort By" />
+                        </ui:SimpleStackPanel>
+                    </ui:SimpleStackPanel>
+                </Grid>
+            </Grid>
+        </ui:ScrollViewerEx>
     </Grid>
 </Page>
