@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ZenovaLauncher"
+                    xmlns:ui="http://schemas.modernwpf.com/2019">
+
+    <Color x:Key="LauncherAltMediumColor">#FF303030</Color>
+    <Color x:Key="LauncherBaseMediumColor">#FF595959</Color>
+
+    <SolidColorBrush x:Key="LauncherControlForegroundBaseMediumBrush" Color="{ui:StaticColor LauncherBaseMediumColor}" />
+    <SolidColorBrush x:Key="LauncherControlPageBackgroundAltMediumBrush" Color="{ui:StaticColor LauncherAltMediumColor}" />
+
+    <ui:StaticResource x:Key="AppBarSeparatorForeground" ResourceKey="LauncherControlForegroundBaseMediumBrush" />
+
+    <ui:StaticResource x:Key="CheckBoxCheckBackgroundStrokeUnchecked" ResourceKey="LauncherControlForegroundBaseMediumBrush" />
+    <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillUncheckedPointerOver" Color="{ui:StaticColor SystemBaseHighColor}" Opacity="0.1" />
+</ResourceDictionary>

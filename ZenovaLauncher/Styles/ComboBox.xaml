@@ -408,7 +408,7 @@
                         </Trigger>
                         <!-- Pressed -->
                         <Trigger SourceName="ToggleButton" Property="IsPressed" Value="True">
-                            <Setter TargetName="Background" Property="Background" Value="{DynamicResource ComboBoxBackgroundPointerOver}" />
+                            <Setter TargetName="Background" Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
                             <Setter TargetName="Background" Property="BorderBrush" Value="{DynamicResource ComboBoxBorderBrushPressed}" />
                         </Trigger>
                         <!-- Disabled -->
@@ -750,7 +750,7 @@
                         </Trigger>
                         <!-- Pressed -->
                         <Trigger SourceName="ToggleButton" Property="IsPressed" Value="True">
-                            <Setter TargetName="Background" Property="Background" Value="{DynamicResource ComboBoxBackgroundPointerOver}" />
+                            <Setter TargetName="Background" Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
                             <Setter TargetName="Background" Property="BorderBrush" Value="{DynamicResource ComboBoxBorderBrushPressed}" />
                         </Trigger>
                         <!-- Disabled -->

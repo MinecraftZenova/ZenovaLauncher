@@ -7,7 +7,7 @@
       xmlns:ui="http://schemas.modernwpf.com/2019"
       xmlns:comment="Comments"
       mc:Ignorable="d comment" 
-      Background="#FF303030">
+      Background="{DynamicResource LauncherControlPageBackgroundAltMediumBrush}">
 
     <Grid>
         <ui:ScrollViewerEx
@@ -20,14 +20,14 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Height="1" VerticalAlignment="Bottom" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
-                <Grid Grid.Row="0" MaxWidth="800" Margin="15,10,15,12" HorizontalAlignment="Stretch">
+                <Grid Grid.Row="0" MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <ui:SimpleStackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Button Margin="0,0,15,0" Background="Transparent">
+                        <Button Margin="0,0,15,0">
                             <Button.Content>
                                 <ui:SimpleStackPanel Orientation="Horizontal" Spacing="8" Margin="3">
                                     <ui:SymbolIcon VerticalAlignment="Center" Symbol="Add" />
@@ -35,14 +35,14 @@
                                 </ui:SimpleStackPanel>
                             </Button.Content>
                         </Button>
-                        <Grid Width="1" HorizontalAlignment="Right" Margin="0,10,0,10" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+                        <Grid Width="1" HorizontalAlignment="Right" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
                     </ui:SimpleStackPanel>
                     <ui:SimpleStackPanel Grid.Column="2" Orientation="Horizontal">
-                        <Grid Width="1" HorizontalAlignment="Left" Margin="0,10,0,10" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
-                        <ui:SimpleStackPanel Margin="15,0,15,0">
+                        <Grid Width="1" HorizontalAlignment="Left" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+                        <ui:SimpleStackPanel Margin="17,0,10,0">
                             <TextBlock Margin="0,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Sort By" />
                             <ComboBox
-                                comment:Style="{DynamicResource StandardComboBoxStyle}"
+                                Style="{DynamicResource StandardComboBoxStyle}"
                                 SelectedIndex="0"
                                 MinWidth="120"
                                 HorizontalContentAlignment="Left"
@@ -58,13 +58,13 @@
                                 </ComboBoxItem>
                             </ComboBox>
                         </ui:SimpleStackPanel>
-                        <Grid Width="1" HorizontalAlignment="Right" Margin="0,10,0,10" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+                        <Grid Width="1" HorizontalAlignment="Right" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
                         <ui:SimpleStackPanel Margin="15,0,0,0">
                             <TextBlock Margin="0,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Versions" />
-                            <ui:SimpleStackPanel Orientation="Horizontal">
-                                <CheckBox ui:ControlHelper.CornerRadius="0" MinHeight="25" MinWidth="30" Content="Releases"></CheckBox>
-                                <CheckBox ui:ControlHelper.CornerRadius="0" MinHeight="25" MinWidth="30" Content="Beta Builds"></CheckBox>
-                                <CheckBox ui:ControlHelper.CornerRadius="0" MinHeight="25" MinWidth="30" Content="Historical"></CheckBox>
+                            <ui:SimpleStackPanel Orientation="Horizontal" Spacing="13">
+                                <CheckBox Style="{DynamicResource SmallCheckBoxStyle}" Content="Releases"></CheckBox>
+                                <CheckBox Style="{DynamicResource SmallCheckBoxStyle}" Content="Beta Builds"></CheckBox>
+                                <CheckBox Style="{DynamicResource SmallCheckBoxStyle}" Content="Historical"></CheckBox>
                             </ui:SimpleStackPanel>
                         </ui:SimpleStackPanel>
                     </ui:SimpleStackPanel>

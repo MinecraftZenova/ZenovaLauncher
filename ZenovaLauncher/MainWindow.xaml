@@ -10,11 +10,12 @@
         mc:Ignorable="d"
         Icon="zenova_icon.ico"
         Title="Zenova Launcher" 
-        Height="593" Width="987"
-        MinHeight="593" MinWidth="987"
+        Height="600" Width="1000"
+        MinHeight="600" MinWidth="1000"
         WindowStartupLocation="CenterScreen"
-        ui:WindowHelper.UseModernWindowStyle="True"
-        ui:TitleBar.IsIconVisible="True">
+        Background="{DynamicResource SystemControlPageBackgroundAltHighBrush}"
+        Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+        ui:ThemeManager.IsThemeAware="True">
     <Window.Resources>
         <ResourceDictionary>
             <Style x:Key="AccountFlyoutPresenter" BasedOn="{StaticResource {x:Type ui:MenuFlyoutPresenter}}" TargetType="{x:Type ui:MenuFlyoutPresenter}">
@@ -43,7 +44,6 @@
             <ui:DropDownButton
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
-                Background="Transparent"
                 CornerRadius="0,0,0,0">
                 <ui:DropDownButton.Content>
                     <StackPanel>

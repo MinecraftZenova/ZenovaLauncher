@@ -16,7 +16,9 @@
                                     TargetTheme="Dark"
                                     Accent="#FF008A44"
                                     AltHigh="#FF282828"
-                                    AltMedium="#FF1E1E1E" />
+                                    AltMedium="#FF1E1E1E"
+                                    BaseLow="Transparent"
+                                    BaseMediumLow="#11FFFFFF"/>
                             </ResourceDictionary.MergedDictionaries>
                         </ResourceDictionary>
                     </ui:ThemeResources.ThemeDictionaries>
@@ -30,8 +32,10 @@
                 <ui:XamlControlsResources />
                 <ResourceDictionary Source="/ModernWpf.MahApps;component/Styles/Controls.xaml" />
                 <!-- Other merged dictionaries here -->
+                <ResourceDictionary Source="Styles/LauncherTheme.xaml" />
                 <ResourceDictionary Source="Styles/LauncherTabControl.xaml" />
                 <ResourceDictionary Source="Styles/ComboBox.xaml" />
+                <ResourceDictionary Source="Styles/CheckBox.xaml" />
                 <ResourceDictionary Source="Controls/LauncherSideMenu.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->

@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:ZenovaLauncher"
       xmlns:ui="http://schemas.modernwpf.com/2019"
       mc:Ignorable="d" 
-      Background="#FF303030">
+      Background="{DynamicResource LauncherControlPageBackgroundAltMediumBrush}">
 
     <Grid>
         <Grid.RowDefinitions>

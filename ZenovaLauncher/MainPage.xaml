@@ -11,10 +11,10 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="52" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Margin="16,0,0,0" VerticalAlignment="Bottom" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Minecraft: Bedrock" />
+        <TextBlock Margin="16,2,0,0" VerticalAlignment="Bottom" FontSize="16" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Minecraft: Bedrock" />
         <control:LauncherTabControl
             Grid.Row="1"
             Style="{StaticResource LauncherTabControl}"
