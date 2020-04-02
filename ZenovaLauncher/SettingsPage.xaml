@@ -11,28 +11,31 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="52" />
+            <RowDefinition Height="33" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Margin="16,0,0,0" VerticalAlignment="Bottom" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Settings" />
+        <ui:ThemeShadowChrome
+            Grid.Row="0" Grid.RowSpan="2" 
+            IsShadowEnabled="True"
+            Depth="10">
+            <Grid Background="{DynamicResource SystemControlPageBackgroundAltHighBrush}" />
+        </ui:ThemeShadowChrome>
+        <Grid Grid.Row="0" Grid.RowSpan="2" Background="{DynamicResource SystemControlPageBackgroundAltHighBrush}" />
+        <TextBlock Grid.Row="0" Margin="16,2,0,0" VerticalAlignment="Bottom" FontSize="16" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Settings" />
         <control:LauncherTabControl
             Grid.Row="1"
+            Grid.RowSpan="2"
             Style="{StaticResource LauncherTabControl}"
             MinHeight="400">
             <TabItem Header="General">
-                <Grid Background="#FF303030">
-                    <TextBlock Text="General Settings" />
-                </Grid>
+                <TextBlock Text="General Settings" />
             </TabItem>
             <TabItem Header="Accounts">
-                <Grid Background="#FF303030">
-                    <TextBlock Text="Accounts Settings" />
-                </Grid>
+                <TextBlock Text="Accounts Settings" />
             </TabItem>
             <TabItem Header="About">
-                <Grid Background="#FF303030">
-                    <TextBlock Text="About Launcher" />
-                </Grid>
+                <TextBlock Text="About Launcher" />
             </TabItem>
         </control:LauncherTabControl>
     </Grid>

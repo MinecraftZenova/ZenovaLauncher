@@ -6,8 +6,7 @@
       xmlns:local="clr-namespace:ZenovaLauncher"
       xmlns:ui="http://schemas.modernwpf.com/2019"
       xmlns:comment="Comments"
-      mc:Ignorable="d comment" 
-      Background="{DynamicResource LauncherControlPageBackgroundAltMediumBrush}">
+      mc:Ignorable="d comment">
 
     <Grid>
         <ui:ScrollViewerEx

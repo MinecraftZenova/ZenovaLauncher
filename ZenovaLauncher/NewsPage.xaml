@@ -5,8 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ZenovaLauncher"
       xmlns:ui="http://schemas.modernwpf.com/2019"
-      mc:Ignorable="d" 
-      Background="{DynamicResource LauncherControlPageBackgroundAltMediumBrush}">
+      mc:Ignorable="d">
 
     <Grid>
         <TextBlock Text="News Page goes here." />
