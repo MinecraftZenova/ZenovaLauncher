@@ -51,7 +51,7 @@
                                 x:Name="SelectedPipe"
                                 Fill="{DynamicResource PivotHeaderItemSelectedPipeFill}"
                                 Height="3.5"
-                                Width="18"
+                                Width="20"
                                 VerticalAlignment="Bottom"
                                 HorizontalAlignment="Center"
                                 Margin="0,0,0,0" />

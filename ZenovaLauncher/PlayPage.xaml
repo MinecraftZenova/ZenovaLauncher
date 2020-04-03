@@ -18,6 +18,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Button 
+            x:Name="PlayButton"
             Grid.Column="1"
             Grid.RowSpan="2"
             Panel.ZIndex="2"

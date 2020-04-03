@@ -36,21 +36,14 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ZenovaLauncher.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ControlzEx.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ControlzEx.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ControlzEx.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\MahApps.Metro.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\MahApps.Metro.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\MahApps.Metro.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\Microsoft.Xaml.Behaviors.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\Microsoft.Xaml.Behaviors.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\Microsoft.Xaml.Behaviors.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ModernWpf.Controls.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ModernWpf.Controls.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ModernWpf.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ModernWpf.MahApps.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ModernWpf.MahApps.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ModernWpf.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\System.ValueTuple.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ZenovaLauncher.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ZenovaLauncher.pdb"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
