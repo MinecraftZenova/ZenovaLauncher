@@ -75,6 +75,8 @@
     <Compile Include="ProfilesPage.xaml.cs">
       <DependentUpon>ProfilesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Profiles\MinecraftVersion.cs" />
+    <Compile Include="Profiles\Profile.cs" />
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
