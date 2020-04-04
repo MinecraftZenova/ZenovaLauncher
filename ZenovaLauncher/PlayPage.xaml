@@ -6,6 +6,9 @@
       xmlns:local="clr-namespace:ZenovaLauncher"
       xmlns:ui="http://schemas.modernwpf.com/2019"
       mc:Ignorable="d">
+    <Page.Resources>
+        <ImageBrush x:Key="ImageBackground" ImageSource="zenova_background.png" Stretch="UniformToFill" />
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -17,6 +20,29 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.ColumnSpan="3" Background="{DynamicResource ImageBackground}" />
+        <Image
+            Grid.ColumnSpan="3"
+            Grid.RowSpan="2"
+            Source="zenova_banner.png"
+            Width="250"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Margin="0,40,0,0">
+            <Image.RenderTransform>
+                <TranslateTransform />
+            </Image.RenderTransform>
+            <Image.Triggers>
+                <EventTrigger RoutedEvent="Image.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="-20" To="0" Duration="0:0:0.2" />
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.1" To="1.0" Duration="0:0:0.2" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Image.Triggers>
+        </Image>
         <Button 
             x:Name="PlayButton"
             Grid.Column="1"

@@ -73,26 +73,24 @@
                     </ui:SimpleStackPanel>
                 </Grid>
                 <Grid Grid.Row="1" HorizontalAlignment="Stretch">
-                    <ListBox ItemsSource="{Binding Source={StaticResource CurrentProfiles}}" HorizontalContentAlignment="Stretch">
+                    <ListBox ItemsSource="{Binding Source={StaticResource CurrentProfiles}}" Style="{DynamicResource ProfileListBoxStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid Background="Blue" HorizontalAlignment="Center">
-                                    <Grid MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch" Background="Green">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <ui:SimpleStackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                                            <ui:SimpleStackPanel>
-                                                <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Path=ProfileName}" />
-                                                <TextBlock FontSize="12" Text="{Binding Path=VersionName}" />
-                                            </ui:SimpleStackPanel>
+                                <Grid MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <ui:SimpleStackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                        <ui:SimpleStackPanel>
+                                            <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Path=ProfileName}" />
+                                            <TextBlock FontSize="12" Text="{Binding Path=VersionName}" />
                                         </ui:SimpleStackPanel>
-                                        <ui:SimpleStackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal">
-                                            <Button Content="Play" Style="{DynamicResource AccentButtonStyle}" />
-                                        </ui:SimpleStackPanel>
-                                    </Grid>
+                                    </ui:SimpleStackPanel>
+                                    <ui:SimpleStackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Button Content="Play" Style="{DynamicResource AccentButtonStyle}" />
+                                    </ui:SimpleStackPanel>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

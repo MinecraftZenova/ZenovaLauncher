@@ -36,6 +36,7 @@
                 <ResourceDictionary Source="Styles/LauncherTabControl.xaml" />
                 <ResourceDictionary Source="Styles/ComboBox.xaml" />
                 <ResourceDictionary Source="Styles/CheckBox.xaml" />
+                <ResourceDictionary Source="Styles/ListBox.xaml" />
                 <ResourceDictionary Source="Controls/LauncherSideMenu.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
