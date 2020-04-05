@@ -52,7 +52,7 @@
                                 <Condition Property="IsSelected" Value="True" />
                                 <Condition Property="IsMouseOver" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PressedBackground" Property="Fill" Value="{DynamicResource SystemControlHighlightListAccentLowBrush}" />
+                            <Setter TargetName="PressedBackground" Property="Fill" Value="{DynamicResource SystemControlHighlightListMediumBrush}" />
                             <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource SystemControlHighlightAltBaseHighBrush}" />
                         </MultiTrigger>
                         <!-- SelectedUnfocused -->
@@ -62,7 +62,7 @@
                                 <Condition Property="IsSelected" Value="True" />
                                 <Condition Property="IsMouseOver" Value="False" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PressedBackground" Property="Fill" Value="{DynamicResource SystemControlHighlightListAccentLowBrush}" />
+                            <Setter TargetName="PressedBackground" Property="Fill" Value="{DynamicResource SystemControlHighlightListMediumBrush}" />
                             <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource SystemControlHighlightAltBaseHighBrush}" />
                         </MultiTrigger>
                         <!-- SelectedPointerOver -->
@@ -71,7 +71,7 @@
                                 <Condition Property="IsSelected" Value="True" />
                                 <Condition Property="IsMouseOver" Value="True" />
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="PressedBackground" Property="Fill" Value="{DynamicResource SystemControlHighlightListAccentMediumBrush}" />
+                            <Setter TargetName="PressedBackground" Property="Fill" Value="{DynamicResource SystemControlHighlightListMediumBrush}" />
                             <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource SystemControlHighlightAltBaseHighBrush}" />
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
@@ -80,19 +80,12 @@
         </Setter>
     </Style>
 
-    <Style TargetType="ListBoxItem" BasedOn="{StaticResource DefaultListBoxItemStyle}" />
-
     <Style x:Key="ProfileListBoxStyle" TargetType="ListBox">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
         <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseHighBrush}" />
         <Setter Property="BorderThickness" Value="{DynamicResource ListBoxBorderThemeThickness}" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-        <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False" />
-        <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
-        <Setter Property="ScrollViewer.PanningMode" Value="VerticalOnly" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="KeyboardNavigation.TabNavigation" Value="Once" />
@@ -108,24 +101,10 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}"
                         SnapsToDevicePixels="true">
-                        <ScrollViewer
-                            x:Name="ScrollViewer"
-                            Padding="{TemplateBinding Padding}"
-                            Focusable="False"
-                            ui:ScrollViewerHelper.AutoHideScrollBars="{TemplateBinding ui:ScrollViewerHelper.AutoHideScrollBars}">
-                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                        </ScrollViewer>
+                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsGrouping" Value="true" />
-                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
-                            </MultiTrigger.Conditions>
-                            <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
-                        </MultiTrigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

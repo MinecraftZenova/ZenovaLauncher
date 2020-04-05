@@ -8,6 +8,7 @@
       mc:Ignorable="d">
     <Page.Resources>
         <ImageBrush x:Key="ImageBackground" ImageSource="zenova_background.png" Stretch="UniformToFill" />
+        <local:Profiles x:Key="CurrentProfiles" />
     </Page.Resources>
 
     <Grid>
@@ -59,6 +60,7 @@
         <Grid Grid.Row="1" Grid.Column="0">
             <ComboBox
                 Style="{StaticResource ProfileBoxStyle}"
+                ItemsSource="{Binding Source={StaticResource CurrentProfiles}}"
                 x:Name="ProfileCombo"
                 Margin="10,4,10,4"
                 MinWidth="200"
@@ -66,18 +68,14 @@
                 Background="Transparent"
                 BorderThickness="0"
                 SelectedIndex="0">
-                <ComboBoxItem>
-                    <ui:SimpleStackPanel Spacing="4">
-                        <TextBlock FontWeight="Bold" FontSize="14" Text="Latest release" />
-                        <TextBlock FontSize="10" Text="1.14.30.2" />
-                    </ui:SimpleStackPanel>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <ui:SimpleStackPanel Spacing="4">
-                        <TextBlock FontWeight="Bold" FontSize="14" Text="Profile2" />
-                        <TextBlock FontSize="10" Text="1.14.1.0" />
-                    </ui:SimpleStackPanel>
-                </ComboBoxItem>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <ui:SimpleStackPanel Spacing="4">
+                            <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Path=ProfileName}" />
+                            <TextBlock FontSize="10" Text="{Binding Path=VersionName}" />
+                        </ui:SimpleStackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
         </Grid>
 

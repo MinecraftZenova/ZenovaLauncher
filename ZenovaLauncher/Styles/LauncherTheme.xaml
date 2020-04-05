@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:ZenovaLauncher"
-                    xmlns:ui="http://schemas.modernwpf.com/2019">
+                    xmlns:ui="http://schemas.modernwpf.com/2019"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <Color x:Key="LauncherAltMediumColor">#FF303030</Color>
     <Color x:Key="LauncherBaseMediumColor">#FF595959</Color>
@@ -13,4 +14,6 @@
 
     <ui:StaticResource x:Key="CheckBoxCheckBackgroundStrokeUnchecked" ResourceKey="LauncherControlForegroundBaseMediumBrush" />
     <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillUncheckedPointerOver" Color="{ui:StaticColor SystemBaseHighColor}" Opacity="0.1" />
+
+    <sys:Boolean x:Key="AutoHideScrollBars">True</sys:Boolean>
 </ResourceDictionary>

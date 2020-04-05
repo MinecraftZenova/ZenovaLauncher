@@ -30,7 +30,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <ui:SimpleStackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Button Margin="0,0,15,0">
+                        <Button x:Name="AddProfileButton" Margin="0,0,15,0">
                             <Button.Content>
                                 <ui:SimpleStackPanel Orientation="Horizontal" Spacing="8" Margin="3">
                                     <ui:SymbolIcon VerticalAlignment="Center" Symbol="Add" />
@@ -45,6 +45,7 @@
                         <ui:SimpleStackPanel Margin="17,0,10,0">
                             <TextBlock Margin="0,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Sort By" />
                             <ComboBox
+                                x:Name="SortProfileBox"
                                 Style="{DynamicResource StandardComboBoxStyle}"
                                 SelectedIndex="0"
                                 MinWidth="120"
@@ -65,32 +66,47 @@
                         <ui:SimpleStackPanel Margin="15,0,0,0">
                             <TextBlock Margin="0,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Versions" />
                             <ui:SimpleStackPanel Orientation="Horizontal" Spacing="13">
-                                <CheckBox Style="{DynamicResource SmallCheckBoxStyle}" Content="Releases"></CheckBox>
-                                <CheckBox Style="{DynamicResource SmallCheckBoxStyle}" Content="Beta Builds"></CheckBox>
-                                <CheckBox Style="{DynamicResource SmallCheckBoxStyle}" Content="Historical"></CheckBox>
+                                <CheckBox x:Name="ReleasesBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Releases"></CheckBox>
+                                <CheckBox x:Name="BetasBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Beta Builds"></CheckBox>
+                                <CheckBox x:Name="HistoricalBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Historical"></CheckBox>
                             </ui:SimpleStackPanel>
                         </ui:SimpleStackPanel>
                     </ui:SimpleStackPanel>
                 </Grid>
                 <Grid Grid.Row="1" HorizontalAlignment="Stretch">
-                    <ListBox ItemsSource="{Binding Source={StaticResource CurrentProfiles}}" Style="{DynamicResource ProfileListBoxStyle}">
+                    <ListBox
+                        ItemsSource="{Binding Source={StaticResource CurrentProfiles}}"
+                        Style="{DynamicResource ProfileListBoxStyle}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <ui:SimpleStackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                                        <ui:SimpleStackPanel>
-                                            <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Path=ProfileName}" />
-                                            <TextBlock FontSize="12" Text="{Binding Path=VersionName}" />
+                                <Grid>
+                                    <Grid MaxWidth="900" Height="1" VerticalAlignment="Top" Margin="15,0,15,0" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+                                    <Grid MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <ui:SimpleStackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                            <ui:SimpleStackPanel>
+                                                <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Path=ProfileName}" />
+                                                <TextBlock FontSize="12" Text="{Binding Path=VersionName}" />
+                                            </ui:SimpleStackPanel>
                                         </ui:SimpleStackPanel>
-                                    </ui:SimpleStackPanel>
-                                    <ui:SimpleStackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal">
-                                        <Button Content="Play" Style="{DynamicResource AccentButtonStyle}" />
-                                    </ui:SimpleStackPanel>
+                                        <ui:SimpleStackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="5">
+                                            <Button Width="68" ui:ControlHelper.CornerRadius="0" Content="Play" FontWeight="Bold" Style="{DynamicResource AccentButtonStyle}" />
+                                            <Button ui:ControlHelper.CornerRadius="0" FontWeight="Bold">
+                                                <Button.Content>
+                                                    <ui:SymbolIcon Symbol="More" />
+                                                </Button.Content>
+                                                <ui:FlyoutService.Flyout>
+                                                    <ui:MenuFlyout Placement="Bottom">
+
+                                                    </ui:MenuFlyout>
+                                                </ui:FlyoutService.Flyout>
+                                            </Button>
+                                        </ui:SimpleStackPanel>
+                                    </Grid>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
