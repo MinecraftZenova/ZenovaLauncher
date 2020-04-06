@@ -22,7 +22,6 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0" Height="1" VerticalAlignment="Bottom" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
                 <Grid Grid.Row="0" MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -73,14 +72,21 @@
                         </ui:SimpleStackPanel>
                     </ui:SimpleStackPanel>
                 </Grid>
+                <Separator Grid.Row="0" VerticalAlignment="Bottom" Background="{DynamicResource AppBarSeparatorLowForeground}" />
                 <Grid Grid.Row="1" HorizontalAlignment="Stretch">
                     <ListBox
                         ItemsSource="{Binding Source={StaticResource CurrentProfiles}}"
-                        Style="{DynamicResource ProfileListBoxStyle}">
+                        Style="{DynamicResource ProfileListBoxStyle}"
+                        Background="Transparent">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource ProfileListBoxItemStyle}">
+                                <EventSetter Event="PreviewGotKeyboardFocus" Handler="SelectCurrentItem"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <Grid MaxWidth="900" Height="1" VerticalAlignment="Top" Margin="15,0,15,0" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+                                    <Separator x:Name="Separator" MaxWidth="900" VerticalAlignment="Top" Margin="15,0,15,0" Background="{DynamicResource AppBarSeparatorLowForeground}" />
                                     <Grid MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
@@ -93,21 +99,34 @@
                                                 <TextBlock FontSize="12" Text="{Binding Path=VersionName}" />
                                             </ui:SimpleStackPanel>
                                         </ui:SimpleStackPanel>
-                                        <ui:SimpleStackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="5">
+                                        <ui:SimpleStackPanel x:Name="InteractButtons" Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="5" Visibility="Hidden">
                                             <Button Width="68" ui:ControlHelper.CornerRadius="0" Content="Play" FontWeight="Bold" Style="{DynamicResource AccentButtonStyle}" />
                                             <Button ui:ControlHelper.CornerRadius="0" FontWeight="Bold">
                                                 <Button.Content>
                                                     <ui:SymbolIcon Symbol="More" />
                                                 </Button.Content>
                                                 <ui:FlyoutService.Flyout>
-                                                    <ui:MenuFlyout Placement="Bottom">
-
+                                                    <ui:MenuFlyout Placement="BottomEdgeAlignedRight" >
+                                                        <TextBlock Text="Edit" />
+                                                        <TextBlock Text="Duplicate" />
+                                                        <TextBlock Text="Delete" />
                                                     </ui:MenuFlyout>
                                                 </ui:FlyoutService.Flyout>
                                             </Button>
                                         </ui:SimpleStackPanel>
                                     </Grid>
                                 </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver}" Value="True">
+                                        <Setter TargetName="InteractButtons" Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                        <Setter TargetName="InteractButtons" Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                        <Setter Property="Visibility" TargetName="Separator" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

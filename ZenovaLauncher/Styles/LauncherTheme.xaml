@@ -6,11 +6,18 @@
 
     <Color x:Key="LauncherAltMediumColor">#FF303030</Color>
     <Color x:Key="LauncherBaseMediumColor">#FF595959</Color>
+    <Color x:Key="LauncherBaseMediumLowColor">#FF454545</Color>
+    <Color x:Key="LauncherListLowColor">#10FFFFFF</Color>
+    <Color x:Key="LauncherListMediumColor">#19FFFFFF</Color>
 
     <SolidColorBrush x:Key="LauncherControlForegroundBaseMediumBrush" Color="{ui:StaticColor LauncherBaseMediumColor}" />
+    <SolidColorBrush x:Key="LauncherControlForegroundBaseMediumLowBrush" Color="{ui:StaticColor LauncherBaseMediumLowColor}" />
     <SolidColorBrush x:Key="LauncherControlPageBackgroundAltMediumBrush" Color="{ui:StaticColor LauncherAltMediumColor}" />
+    <SolidColorBrush x:Key="LauncherControlHighlightListMediumBrush" Color="{ui:StaticColor LauncherListMediumColor}" />
+    <SolidColorBrush x:Key="LauncherControlHighlightListLowBrush" Color="{ui:StaticColor LauncherListLowColor}" />
 
     <ui:StaticResource x:Key="AppBarSeparatorForeground" ResourceKey="LauncherControlForegroundBaseMediumBrush" />
+    <ui:StaticResource x:Key="AppBarSeparatorLowForeground" ResourceKey="LauncherControlForegroundBaseMediumLowBrush" />
 
     <ui:StaticResource x:Key="CheckBoxCheckBackgroundStrokeUnchecked" ResourceKey="LauncherControlForegroundBaseMediumBrush" />
     <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillUncheckedPointerOver" Color="{ui:StaticColor SystemBaseHighColor}" Opacity="0.1" />
