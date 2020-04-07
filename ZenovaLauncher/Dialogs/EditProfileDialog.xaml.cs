@@ -25,7 +25,8 @@ namespace ZenovaLauncher
         {
             InitializeComponent();
             EditedProfile = profile;
-            DataContext = EditedProfile;
+            ProfileNameBox.Text = profile.ProfileName;
+            VersionBox.Text = profile.VersionName;
         }
 
         public Profile EditedProfile { get; set; }

@@ -15,46 +15,19 @@
       DefaultButton="Primary">
 
     <Grid>
-        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Center">
-            <!-- Content body -->
-            <TextBlock Text="{Binding ProfileName}" TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
-            <CheckBox Content="Upload your content to the cloud."/>
-        </StackPanel>
+        <ui:SimpleStackPanel VerticalAlignment="Stretch" HorizontalAlignment="Center" Spacing="30" Margin="21" Width="400">
+            <ui:SimpleStackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Spacing="2">
+                <TextBlock Margin="2,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Name" />
+                <TextBox 
+                    x:Name="ProfileNameBox"
+                    HorizontalAlignment="Stretch"/>
+            </ui:SimpleStackPanel>
+            <ui:SimpleStackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Spacing="2">
+                <TextBlock Margin="2,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Version" />
+                <TextBox 
+                    x:Name="VersionBox"
+                    HorizontalAlignment="Stretch"/>
+            </ui:SimpleStackPanel>
+        </ui:SimpleStackPanel>
     </Grid>
 </ui:ContentDialog>
