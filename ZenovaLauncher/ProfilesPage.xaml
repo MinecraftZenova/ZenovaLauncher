@@ -52,7 +52,8 @@
                                 Background="Transparent"
                                 BorderThickness="0"
                                 Padding="6,4,0,4"
-                                Margin="-6,0,0,0">
+                                Margin="-6,0,0,0"
+                                SelectionChanged="SortChanged">
                                 <ComboBoxItem>
                                     <TextBlock FontSize="14" Text="Latest played" />
                                 </ComboBoxItem>
@@ -65,9 +66,9 @@
                         <ui:SimpleStackPanel Margin="15,0,0,0">
                             <TextBlock Margin="0,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Versions" />
                             <ui:SimpleStackPanel Orientation="Horizontal" Spacing="13">
-                                <CheckBox x:Name="ReleasesBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Releases"></CheckBox>
-                                <CheckBox x:Name="BetasBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Beta Builds"></CheckBox>
-                                <CheckBox x:Name="HistoricalBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Historical"></CheckBox>
+                                <CheckBox x:Name="ReleasesBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Releases" Click="CheckBoxClick" IsChecked="True" />
+                                <CheckBox x:Name="BetasBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Beta Builds" Click="CheckBoxClick" />
+                                <CheckBox x:Name="HistoricalBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Historical" Click="CheckBoxClick" />
                             </ui:SimpleStackPanel>
                         </ui:SimpleStackPanel>
                     </ui:SimpleStackPanel>
@@ -75,6 +76,7 @@
                 <Separator Grid.Row="0" VerticalAlignment="Bottom" Background="{DynamicResource AppBarSeparatorLowForeground}" />
                 <Grid Grid.Row="1" HorizontalAlignment="Stretch">
                     <ListBox
+                        x:Name="ProfileListBox"
                         ItemsSource="{Binding Source={StaticResource CurrentProfiles}}"
                         Style="{DynamicResource ProfileListBoxStyle}"
                         Background="Transparent">

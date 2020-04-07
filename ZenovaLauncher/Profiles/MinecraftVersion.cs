@@ -10,18 +10,22 @@ namespace ZenovaLauncher
     {
         private string _name;
         private string _uuid;
-        private bool _isBeta;
 
-        public MinecraftVersion(string name, string uuid, bool isBeta)
+        public MinecraftVersion(string name, string uuid, bool isBeta = false, bool isHistorical = false)
         {
             _name = name;
             _uuid = uuid;
-            _isBeta = isBeta;
+            Beta = isBeta;
+            Historical = isHistorical;
         }
 
         public string Name
         {
-            get { return _name + (_isBeta ? " (Beta)" : ""); }
+            get { return _name + (Beta ? " (Beta)" : ""); }
         }
+
+        public bool Beta { get; set; }
+        public bool Historical { get; set; }
+        public bool Release { get { return !Beta && !Historical; } }
     }
 }
