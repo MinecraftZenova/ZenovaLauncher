@@ -37,7 +37,7 @@ namespace ZenovaLauncher
         public ProfilesPage() {
             InitializeComponent();
 
-            SortProfileList(false);
+            SortProfileList(true);
             FilterProfileList();
         }
 
@@ -45,6 +45,12 @@ namespace ZenovaLauncher
         {
             ListBoxItem item = (ListBoxItem)sender;
             item.IsSelected = true;
+        }
+
+        private async void AddProfileClick(object sender, RoutedEventArgs e)
+        {
+            AddProfileDialog newProfile = new AddProfileDialog();
+            var result = await newProfile.ShowAsync();
         }
 
         private void SortChanged(object sender, SelectionChangedEventArgs e)

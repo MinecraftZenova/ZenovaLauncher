@@ -66,6 +66,9 @@
     <Compile Include="Controls\LauncherSideMenu.cs" />
     <Compile Include="Controls\LauncherSideMenuArgs.cs" />
     <Compile Include="Controls\LauncherTabControl.cs" />
+    <Compile Include="Dialogs\AddProfileDialog.xaml.cs">
+      <DependentUpon>AddProfileDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ModsPage.xaml.cs">
       <DependentUpon>ModsPage.xaml</DependentUpon>
     </Compile>
@@ -80,6 +83,10 @@
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Page Include="Dialogs\AddProfileDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="HelpPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -131,6 +138,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\CheckBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\ContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
