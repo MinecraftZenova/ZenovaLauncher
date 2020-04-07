@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZenovaLauncher
 {
-    class MinecraftVersion
+    public class MinecraftVersion
     {
         private string _name;
         private string _uuid;

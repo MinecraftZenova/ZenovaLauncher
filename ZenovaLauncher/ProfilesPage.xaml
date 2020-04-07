@@ -8,10 +8,6 @@
       xmlns:comment="Comments"
       mc:Ignorable="d comment">
 
-    <Page.Resources>
-        <local:Profiles x:Key="CurrentProfiles" />
-    </Page.Resources>
-
     <Grid>
         <ui:ScrollViewerEx
             HorizontalScrollBarVisibility="Hidden"
@@ -77,17 +73,17 @@
                 <Grid Grid.Row="1" HorizontalAlignment="Stretch">
                     <ListBox
                         x:Name="ProfileListBox"
-                        ItemsSource="{Binding Source={StaticResource CurrentProfiles}}"
                         Style="{DynamicResource ProfileListBoxStyle}"
                         Background="Transparent">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem" BasedOn="{StaticResource ProfileListBoxItemStyle}">
-                                <EventSetter Event="PreviewGotKeyboardFocus" Handler="SelectCurrentItem"/>
+                                <EventSetter Event="PreviewGotKeyboardFocus" Handler="SelectCurrentItem" />
                             </Style>
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid MouseLeftButtonUp="ProfileSelected">
+                                    <Rectangle MaxWidth="900" Fill="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                                     <Separator x:Name="Separator" MaxWidth="900" VerticalAlignment="Top" Margin="15,0,15,0" Background="{DynamicResource AppBarSeparatorLowForeground}" />
                                     <Grid MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
                                         <Grid.ColumnDefinitions>
@@ -101,17 +97,17 @@
                                                 <TextBlock FontSize="12" Text="{Binding Path=VersionName}" />
                                             </ui:SimpleStackPanel>
                                         </ui:SimpleStackPanel>
-                                        <ui:SimpleStackPanel x:Name="InteractButtons" Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="5" Visibility="Hidden">
-                                            <Button Width="68" ui:ControlHelper.CornerRadius="0" Content="Play" FontWeight="Bold" Style="{DynamicResource AccentButtonStyle}" />
-                                            <Button ui:ControlHelper.CornerRadius="0" FontWeight="Bold">
+                                        <ui:SimpleStackPanel x:Name="InteractButtons" Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="8" Visibility="Hidden">
+                                            <Button Content="Play" Style="{DynamicResource LauncherAccentButtonStyle}" />
+                                            <Button Padding="5,5,6,6"  Style="{DynamicResource LauncherDefaultButtonStyle}">
                                                 <Button.Content>
                                                     <ui:SymbolIcon Symbol="More" />
                                                 </Button.Content>
                                                 <ui:FlyoutService.Flyout>
                                                     <ui:MenuFlyout Placement="BottomEdgeAlignedRight" >
-                                                        <TextBlock Text="Edit" />
-                                                        <TextBlock Text="Duplicate" />
-                                                        <TextBlock Text="Delete" />
+                                                        <MenuItem Click="EditProfileClick" Header="Edit" />
+                                                        <MenuItem Click="DuplicateProfileClick" Header="Duplicate" />
+                                                        <MenuItem Click="DeleteProfileClick" Header="Delete" />
                                                     </ui:MenuFlyout>
                                                 </ui:FlyoutService.Flyout>
                                             </Button>

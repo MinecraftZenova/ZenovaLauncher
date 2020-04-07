@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ZenovaLauncher
 {
-    class Profile
+    public class Profile
     {
         private MinecraftVersion _version;
 
@@ -18,16 +18,17 @@ namespace ZenovaLauncher
             LastPlayed = lastPlayed;
         }
 
+        public Profile(Profile profile) : this(profile.ProfileName, profile._version, profile.LastPlayed) { }
+
         public string ProfileName { get; set; }
         public DateTime LastPlayed { get; set; }
         public string VersionName { get { return _version.Name; } }
         public bool Beta { get { return _version.Beta; } }
         public bool Historical { get { return _version.Historical; } }
         public bool Release { get { return _version.Release; } }
-
     }
 
-    class Profiles : ObservableCollection<Profile>
+    public class Profiles : ObservableCollection<Profile>
     {
         public Profiles()
         {

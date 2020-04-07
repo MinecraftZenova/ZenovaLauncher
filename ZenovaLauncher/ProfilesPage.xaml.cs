@@ -21,6 +21,8 @@ namespace ZenovaLauncher
     /// </summary>
     public partial class ProfilesPage : Page
     {
+        public Profiles ProfilesList;
+
         Predicate<object> releaseFilter = (object item) =>
         {
             return (item as Profile).Release == true;
@@ -36,6 +38,8 @@ namespace ZenovaLauncher
 
         public ProfilesPage() {
             InitializeComponent();
+            ProfilesList = new Profiles();
+            ProfileListBox.ItemsSource = ProfilesList;
 
             SortProfileList(true);
             FilterProfileList();
@@ -51,6 +55,33 @@ namespace ZenovaLauncher
         {
             AddProfileDialog newProfile = new AddProfileDialog();
             var result = await newProfile.ShowAsync();
+        }
+
+        private void EditProfileClick(object sender, RoutedEventArgs e)
+        {
+            EditProfile((sender as FrameworkElement).DataContext as Profile);
+        }
+
+        private void DuplicateProfileClick(object sender, RoutedEventArgs e)
+        {
+            Profile newProfile = new Profile((sender as FrameworkElement).DataContext as Profile);
+            int index = 2;
+            while (ProfilesList.SingleOrDefault(p => p.ProfileName == (newProfile.ProfileName + " (" + index + ")")) != null)
+                index++;
+            newProfile.ProfileName += " (" + index + ")";
+            ProfilesList.Add(newProfile);
+            SortProfileList(SortProfileBox.SelectedIndex == 0);
+        }
+
+        private void DeleteProfileClick(object sender, RoutedEventArgs e)
+        {
+            ProfilesList.Remove((sender as FrameworkElement).DataContext as Profile);
+            ProfileListBox.Items.Refresh();
+        }
+
+        private void ProfileSelected(object sender, MouseButtonEventArgs e)
+        {
+            EditProfile((sender as FrameworkElement).DataContext as Profile);
         }
 
         private void SortChanged(object sender, SelectionChangedEventArgs e)
@@ -86,6 +117,12 @@ namespace ZenovaLauncher
                 SortDescription sd = new SortDescription(sortTypeString, sortDirection);
                 ProfileListBox.Items.SortDescriptions.Add(sd);
             }
+        }
+
+        protected async void EditProfile(Profile profile)
+        {
+            EditProfileDialog editProfile = new EditProfileDialog(profile);
+            var result = await editProfile.ShowAsync();
         }
     }
 }

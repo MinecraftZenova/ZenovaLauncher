@@ -1,4 +1,4 @@
-﻿<ui:ContentDialog x:Class="ZenovaLauncher.AddProfileDialog"
+﻿<ui:ContentDialog x:Class="ZenovaLauncher.EditProfileDialog"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,8 +8,8 @@
       mc:Ignorable="d"
       Style="{StaticResource LauncherContentDialog}"
       HorizontalContentAlignment="Center"
-      Title="Create new profile"
-      PrimaryButtonText="Create"
+      Title="Edit profile"
+      PrimaryButtonText="Save"
       SecondaryButtonText="Cancel"
       CloseButtonText="Close"
       DefaultButton="Primary">
@@ -17,7 +17,7 @@
     <Grid>
         <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Center">
             <!-- Content body -->
-            <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
+            <TextBlock Text="{Binding ProfileName}" TextWrapping="Wrap" />
             <CheckBox Content="Upload your content to the cloud."/>
             <TextBlock Text="Lorem ipsum dolor sit amet, adipisicing elit." TextWrapping="Wrap" />
             <CheckBox Content="Upload your content to the cloud."/>

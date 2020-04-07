@@ -10,6 +10,7 @@
     <Color x:Key="LauncherBaseLowColor">#FF373737</Color>
     <Color x:Key="LauncherListLowColor">#10FFFFFF</Color>
     <Color x:Key="LauncherListMediumColor">#19FFFFFF</Color>
+    <Color x:Key="LauncherAccentHoverColor">#FF0DD166</Color>
 
     <SolidColorBrush x:Key="LauncherControlForegroundBaseMediumBrush" Color="{ui:StaticColor LauncherBaseMediumColor}" />
     <SolidColorBrush x:Key="LauncherControlForegroundBaseMediumLowBrush" Color="{ui:StaticColor LauncherBaseMediumLowColor}" />
@@ -17,13 +18,21 @@
     <SolidColorBrush x:Key="LauncherControlPageBackgroundAltMediumBrush" Color="{ui:StaticColor LauncherAltMediumColor}" />
     <SolidColorBrush x:Key="LauncherControlHighlightListMediumBrush" Color="{ui:StaticColor LauncherListMediumColor}" />
     <SolidColorBrush x:Key="LauncherControlHighlightListLowBrush" Color="{ui:StaticColor LauncherListLowColor}" />
+    <SolidColorBrush x:Key="LauncherControlAccentHoverBrush" Color="{ui:StaticColor LauncherAccentHoverColor}" />
 
     <ui:StaticResource x:Key="AppBarSeparatorForeground" ResourceKey="LauncherControlForegroundBaseMediumBrush" />
     <ui:StaticResource x:Key="AppBarSeparatorLowForeground" ResourceKey="LauncherControlForegroundBaseMediumLowBrush" />
-    <ui:StaticResource x:Key="AppBarSeparatorLowerForeground" ResourceKey="LauncherControlForegroundBaseMediumLowBrush" />
+    <ui:StaticResource x:Key="AppBarSeparatorLowerForeground" ResourceKey="LauncherControlForegroundBaseLowBrush" />
+
+    <SolidColorBrush x:Key="LauncherButtonBorderBrush" Color="#FF7D7D7D" />
+    <SolidColorBrush x:Key="LauncherButtonBorderBrushPointerOver" Color="#FF979797" />
+    <SolidColorBrush x:Key="LauncherButtonBorderBrushPressed" Color="{ui:StaticColor SystemBaseHighColor}" />
 
     <ui:StaticResource x:Key="CheckBoxCheckBackgroundStrokeUnchecked" ResourceKey="LauncherControlForegroundBaseMediumBrush" />
     <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillUncheckedPointerOver" Color="{ui:StaticColor SystemBaseHighColor}" Opacity="0.1" />
+    <ui:StaticResource x:Key="CheckBoxCheckBackgroundFillCheckedPointerOver" ResourceKey="LauncherControlAccentHoverBrush" />
+
+    <ui:StaticResource x:Key="AccentButtonBackgroundPointerOver" ResourceKey="LauncherControlAccentHoverBrush" />
 
     <sys:Boolean x:Key="AutoHideScrollBars">True</sys:Boolean>
 </ResourceDictionary>

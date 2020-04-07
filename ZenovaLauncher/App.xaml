@@ -34,6 +34,7 @@
                 <!-- Other merged dictionaries here -->
                 <ResourceDictionary Source="Styles/LauncherTheme.xaml" />
                 <ResourceDictionary Source="Styles/LauncherTabControl.xaml" />
+                <ResourceDictionary Source="Styles/Button.xaml" />
                 <ResourceDictionary Source="Styles/ComboBox.xaml" />
                 <ResourceDictionary Source="Styles/ContentDialog.xaml" />
                 <ResourceDictionary Source="Styles/CheckBox.xaml" />
