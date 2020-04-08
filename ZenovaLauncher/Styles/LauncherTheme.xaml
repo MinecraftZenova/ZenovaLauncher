@@ -5,20 +5,28 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <Color x:Key="LauncherAltMediumColor">#FF303030</Color>
+    <Color x:Key="LauncherBaseMediumHighColor">#FF696969</Color>
     <Color x:Key="LauncherBaseMediumColor">#FF595959</Color>
     <Color x:Key="LauncherBaseMediumLowColor">#FF454545</Color>
     <Color x:Key="LauncherBaseLowColor">#FF373737</Color>
     <Color x:Key="LauncherListLowColor">#10FFFFFF</Color>
     <Color x:Key="LauncherListMediumColor">#19FFFFFF</Color>
     <Color x:Key="LauncherAccentHoverColor">#FF0DD166</Color>
+    <Color x:Key="LauncherChromeMediumColor">#FF282828</Color>
+    <Color x:Key="LauncherChromeMediumLowColor">#FF131313</Color>
+    <Color x:Key="LauncherChromeLowColor">#FF0E0E0E</Color>
 
+    <SolidColorBrush x:Key="LauncherControlBackgroundDisabledBrush" Color="{ui:StaticColor LauncherChromeMediumColor}" />
     <SolidColorBrush x:Key="LauncherControlForegroundBaseMediumBrush" Color="{ui:StaticColor LauncherBaseMediumColor}" />
     <SolidColorBrush x:Key="LauncherControlForegroundBaseMediumLowBrush" Color="{ui:StaticColor LauncherBaseMediumLowColor}" />
     <SolidColorBrush x:Key="LauncherControlForegroundBaseLowBrush" Color="{ui:StaticColor LauncherBaseLowColor}" />
+    <SolidColorBrush x:Key="LauncherControlDisabledBaseMediumHighBrush" Color="{ui:StaticColor LauncherBaseMediumHighColor}" />
     <SolidColorBrush x:Key="LauncherControlPageBackgroundAltMediumBrush" Color="{ui:StaticColor LauncherAltMediumColor}" />
     <SolidColorBrush x:Key="LauncherControlHighlightListMediumBrush" Color="{ui:StaticColor LauncherListMediumColor}" />
     <SolidColorBrush x:Key="LauncherControlHighlightListLowBrush" Color="{ui:StaticColor LauncherListLowColor}" />
     <SolidColorBrush x:Key="LauncherControlAccentHoverBrush" Color="{ui:StaticColor LauncherAccentHoverColor}" />
+    <SolidColorBrush x:Key="LauncherControlTransientBackgroundBrush" Color="{ui:StaticColor LauncherChromeMediumLowColor}" />
+    <SolidColorBrush x:Key="LauncherControlTransientLowBackgroundBrush" Color="{ui:StaticColor LauncherChromeLowColor}" />
 
     <ui:StaticResource x:Key="AppBarSeparatorForeground" ResourceKey="LauncherControlForegroundBaseMediumBrush" />
     <ui:StaticResource x:Key="AppBarSeparatorLowForeground" ResourceKey="LauncherControlForegroundBaseMediumLowBrush" />
@@ -31,6 +39,41 @@
     <ui:StaticResource x:Key="CheckBoxCheckBackgroundStrokeUnchecked" ResourceKey="LauncherControlForegroundBaseMediumBrush" />
     <SolidColorBrush x:Key="CheckBoxCheckBackgroundFillUncheckedPointerOver" Color="{ui:StaticColor SystemBaseHighColor}" Opacity="0.1" />
     <ui:StaticResource x:Key="CheckBoxCheckBackgroundFillCheckedPointerOver" ResourceKey="LauncherControlAccentHoverBrush" />
+
+    <ui:StaticResource x:Key="ComboBoxBackground" ResourceKey="LauncherControlTransientBackgroundBrush" />
+    <ui:StaticResource x:Key="ComboBoxBackgroundPointerOver" ResourceKey="LauncherControlTransientLowBackgroundBrush" />
+    <ui:StaticResource x:Key="ComboBoxBackgroundPressed" ResourceKey="LauncherControlTransientLowBackgroundBrush" />
+    <ui:StaticResource x:Key="ComboBoxBackgroundDisabled" ResourceKey="LauncherControlBackgroundDisabledBrush" />
+    <ui:StaticResource x:Key="ComboBoxForegroundDisabled" ResourceKey="LauncherControlDisabledBaseMediumHighBrush" />
+    <ui:StaticResource x:Key="ComboBoxBorderBrush" ResourceKey="SystemControlTransparentBrush" />
+    <ui:StaticResource x:Key="ComboBoxBorderBrushPointerOver" ResourceKey="SystemControlTransparentBrush" />
+    <ui:StaticResource x:Key="ComboBoxBorderBrushPressed" ResourceKey="SystemControlHighlightBaseMediumHighBrush" />
+    <ui:StaticResource x:Key="ComboBoxBorderBrushDisabled" ResourceKey="SystemControlTransparentBrush" />
+    <ui:StaticResource x:Key="ComboBoxDropDownBackground" ResourceKey="LauncherControlTransientBackgroundBrush" />
+
+    <ui:StaticResource x:Key="ComboBoxItemBackgroundPointerOver" ResourceKey="SystemControlBackgroundAccentBrush" />
+    <ui:StaticResource x:Key="ComboBoxItemBackgroundSelected" ResourceKey="SystemControlBackgroundAccentBrush" />
+    <ui:StaticResource x:Key="ComboBoxItemBackgroundSelectedUnfocused" ResourceKey="SystemControlTransparentBrush" />
+    <ui:StaticResource x:Key="ComboBoxItemBackgroundSelectedPressed" ResourceKey="SystemControlBackgroundAccentBrush" />
+    <ui:StaticResource x:Key="ComboBoxItemBackgroundSelectedPointerOver" ResourceKey="SystemControlBackgroundAccentBrush" />
+
+    <Thickness x:Key="MenuFlyoutPresenterBorderThemeThickness">0</Thickness>
+    <ui:StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="LauncherControlTransientBackgroundBrush" />
+    <ui:StaticResource x:Key="MenuFlyoutItemRevealBackgroundPointerOver" ResourceKey="SystemControlBackgroundAccentBrush" />
+    <ui:StaticResource x:Key="MenuFlyoutItemRevealBackgroundPressed" ResourceKey="SystemAccentColorDark1Brush" />
+
+    <Thickness x:Key="TextControlBorderThemeThicknessFocused">1</Thickness>
+    <ui:StaticResource x:Key="TextControlForegroundFocused" ResourceKey="SystemControlForegroundBaseHighBrush" />
+    <ui:StaticResource x:Key="TextControlForegroundDisabled" ResourceKey="LauncherControlDisabledBaseMediumHighBrush" />
+    <ui:StaticResource x:Key="TextControlBackground" ResourceKey="LauncherControlTransientBackgroundBrush" />
+    <ui:StaticResource x:Key="TextControlBackgroundPointerOver" ResourceKey="LauncherControlTransientLowBackgroundBrush" />
+    <ui:StaticResource x:Key="TextControlBackgroundFocused" ResourceKey="LauncherControlTransientLowBackgroundBrush" />
+    <ui:StaticResource x:Key="TextControlBackgroundDisabled" ResourceKey="LauncherControlBackgroundDisabledBrush" />
+    <ui:StaticResource x:Key="TextControlBorderBrush" ResourceKey="SystemControlTransparentBrush" />
+    <ui:StaticResource x:Key="TextControlBorderBrushPointerOver" ResourceKey="SystemControlTransparentBrush" />
+    <ui:StaticResource x:Key="TextControlBorderBrushFocused" ResourceKey="SystemControlHighlightBaseMediumHighBrush" />
+    <ui:StaticResource x:Key="TextControlBorderBrushDisabled" ResourceKey="SystemControlTransparentBrush" />
+    <ui:StaticResource x:Key="TextControlPlaceholderForegroundFocused" ResourceKey="LauncherControlDisabledBaseMediumHighBrush" />
 
     <ui:StaticResource x:Key="AccentButtonBackgroundPointerOver" ResourceKey="LauncherControlAccentHoverBrush" />
 

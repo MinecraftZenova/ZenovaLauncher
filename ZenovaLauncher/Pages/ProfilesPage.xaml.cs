@@ -21,19 +21,6 @@ namespace ZenovaLauncher
     /// </summary>
     public partial class ProfilesPage : Page
     {
-        Predicate<object> releaseFilter = (object item) =>
-        {
-            return (item as Profile).Release == true;
-        };
-        Predicate<object> betaFilter = (object item) =>
-        {
-            return (item as Profile).Beta == true;
-        };
-        Predicate<object> historicalFilter = (object item) =>
-        {
-            return (item as Profile).Historical == true;
-        };
-
         public ProfilesPage() {
             InitializeComponent();
             ProfileListBox.ItemsSource = ProfileManager.instance;
@@ -50,8 +37,10 @@ namespace ZenovaLauncher
 
         private async void AddProfileClick(object sender, RoutedEventArgs e)
         {
-            AddProfileDialog newProfile = new AddProfileDialog();
+            AddProfileDialog newProfile = new AddProfileDialog(ReleasesBox.IsChecked == true, BetasBox.IsChecked == true, HistoricalBox.IsChecked == true);
             var result = await newProfile.ShowAsync();
+            if (result == ModernWpf.Controls.ContentDialogResult.Primary)
+                ProfileListBox.Items.Refresh();
         }
 
         private void EditProfileClick(object sender, RoutedEventArgs e)
@@ -63,9 +52,9 @@ namespace ZenovaLauncher
         {
             Profile newProfile = new Profile((sender as FrameworkElement).DataContext as Profile);
             int index = 2;
-            while (ProfileManager.instance.SingleOrDefault(p => p.ProfileName == (newProfile.ProfileName + " (" + index + ")")) != null)
+            while (ProfileManager.instance.SingleOrDefault(p => p.Name == (newProfile.Name + " (" + index + ")")) != null)
                 index++;
-            newProfile.ProfileName += " (" + index + ")";
+            newProfile.Name += " (" + index + ")";
             ProfileManager.instance.Add(newProfile);
             SortProfileList(SortProfileBox.SelectedIndex == 0);
         }
@@ -95,18 +84,18 @@ namespace ZenovaLauncher
         {
             List<Predicate<object>> predicates = new List<Predicate<object>>();
             if (ReleasesBox.IsChecked == true)
-                predicates.Add(releaseFilter);
+                predicates.Add(Profile.releaseFilter);
             if (BetasBox.IsChecked == true)
-                predicates.Add(betaFilter);
+                predicates.Add(Profile.betaFilter);
             if (HistoricalBox.IsChecked == true)
-                predicates.Add(historicalFilter);
+                predicates.Add(Profile.historicalFilter);
             if(ProfileListBox != null)
                 ProfileListBox.Items.Filter = o => predicates.Any(predicate => predicate(o));
         }
 
         protected void SortProfileList(bool sortType)
         {
-            string sortTypeString = sortType ? "LastPlayed" : "ProfileName";
+            string sortTypeString = sortType ? "LastPlayed" : "Name";
             ListSortDirection sortDirection = sortType ? ListSortDirection.Descending : ListSortDirection.Ascending;
             if (ProfileListBox != null)
             {
@@ -118,8 +107,10 @@ namespace ZenovaLauncher
 
         protected async void EditProfile(Profile profile)
         {
-            EditProfileDialog editProfile = new EditProfileDialog(profile);
+            EditProfileDialog editProfile = new EditProfileDialog(profile, ReleasesBox.IsChecked == true, BetasBox.IsChecked == true, HistoricalBox.IsChecked == true);
             var result = await editProfile.ShowAsync();
+            if (result == ModernWpf.Controls.ContentDialogResult.Primary)
+                ProfileListBox.Items.Refresh();
         }
     }
 }

@@ -50,12 +50,8 @@
                                 Padding="6,4,0,4"
                                 Margin="-6,0,0,0"
                                 SelectionChanged="SortChanged">
-                                <ComboBoxItem>
-                                    <TextBlock FontSize="14" Text="Latest played" />
-                                </ComboBoxItem>
-                                <ComboBoxItem>
-                                    <TextBlock FontSize="14" Text="Name" />
-                                </ComboBoxItem>
+                                <ComboBoxItem Content="Latest played" />
+                                <ComboBoxItem Content="Name" />
                             </ComboBox>
                         </ui:SimpleStackPanel>
                         <Grid Width="1" HorizontalAlignment="Right" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
@@ -93,7 +89,7 @@
                                         </Grid.ColumnDefinitions>
                                         <ui:SimpleStackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
                                             <ui:SimpleStackPanel>
-                                                <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Path=ProfileName}" />
+                                                <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Path=Name}" />
                                                 <TextBlock FontSize="12" Text="{Binding Path=VersionName}" />
                                             </ui:SimpleStackPanel>
                                         </ui:SimpleStackPanel>
@@ -107,7 +103,7 @@
                                                     <ui:MenuFlyout Placement="BottomEdgeAlignedRight" >
                                                         <MenuItem Click="EditProfileClick" Header="Edit" />
                                                         <MenuItem Click="DuplicateProfileClick" Header="Duplicate" />
-                                                        <MenuItem Click="DeleteProfileClick" Header="Delete" />
+                                                        <MenuItem Click="DeleteProfileClick" Header="Delete" Visibility="{Binding Path=Editable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                                     </ui:MenuFlyout>
                                                 </ui:FlyoutService.Flyout>
                                             </Button>

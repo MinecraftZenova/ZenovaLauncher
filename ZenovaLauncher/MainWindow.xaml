@@ -15,14 +15,7 @@
         Background="{DynamicResource LauncherControlPageBackgroundAltMediumBrush}"
         Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
         ui:ThemeManager.IsThemeAware="True">
-    <Window.Resources>
-        <ResourceDictionary>
-            <Style x:Key="AccountFlyoutPresenter" BasedOn="{StaticResource {x:Type ui:MenuFlyoutPresenter}}" TargetType="{x:Type ui:MenuFlyoutPresenter}">
-                <Setter Property="CornerRadius" Value="0,0,0,0" />
-            </Style>
-        </ResourceDictionary>
-    </Window.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="180" />
@@ -51,7 +44,7 @@
                     </StackPanel>
                 </ui:DropDownButton.Content>
                 <ui:DropDownButton.Flyout>
-                    <ui:MenuFlyout MenuFlyoutPresenterStyle="{StaticResource AccountFlyoutPresenter}" Placement="BottomEdgeAlignedLeft">
+                    <ui:MenuFlyout Placement="BottomEdgeAlignedLeft">
                         <MenuItem FontSize="12" Header="andrew.miller2@mavs.uta.edu" />
                         <MenuItem FontSize="12" Header="fiddleandrew@hotmail.com" />
                         <MenuItem FontSize="12" Header="micahlusk@gmail.com" />
@@ -73,7 +66,7 @@
 
                     <mah:HamburgerMenuIconItem
                         Label="Minecraft: Bedrock"
-                        Tag="/Pages/MainPage.xaml">
+                        Tag="Pages/MainPage.xaml">
                         <mah:HamburgerMenuIconItem.Icon>
                             <ui:SymbolIcon Symbol="Home" />
                         </mah:HamburgerMenuIconItem.Icon>
@@ -81,7 +74,7 @@
                     
                     <mah:HamburgerMenuIconItem
                         Label="News"
-                        Tag="/Pages/NewsPage.xaml">
+                        Tag="Pages/NewsPage.xaml">
                         <mah:HamburgerMenuIconItem.Icon>
                             <ui:SymbolIcon Symbol="PreviewLink" />
                         </mah:HamburgerMenuIconItem.Icon>
@@ -89,7 +82,7 @@
 
                     <mah:HamburgerMenuIconItem
                         Label="Help"
-                        Tag="/Pages/HelpPage.xaml">
+                        Tag="Pages/HelpPage.xaml">
                         <mah:HamburgerMenuIconItem.Icon>
                             <ui:SymbolIcon Symbol="Help" />
                         </mah:HamburgerMenuIconItem.Icon>
@@ -101,7 +94,7 @@
                 <mah:HamburgerMenuItemCollection x:Name="NavViewOptions">
                     <mah:HamburgerMenuIconItem
                         Label="Settings"
-                        Tag="/Pages/SettingsPage.xaml">
+                        Tag="Pages/SettingsPage.xaml">
                         <mah:HamburgerMenuIconItem.Icon>
                             <ui:SymbolIcon Symbol="Setting" />
                         </mah:HamburgerMenuIconItem.Icon>

@@ -13,10 +13,15 @@ namespace ZenovaLauncher
 
         public ProfileManager() { }
 
+        public void AddProfiles()
+        {
+            AddDefaultProfiles();
+        }
+
         public void AddDefaultProfiles()
         {
-            Add(new Profile("Latest release", VersionManager.instance.LatestRelease));
-            Add(new Profile("Latest beta", VersionManager.instance.LatestBeta));
+            Add(new Profile("Latest release", VersionManager.instance.LatestRelease, type: Profile.ProfileType.LatestRelease));
+            Add(new Profile("Latest beta", VersionManager.instance.LatestBeta, type: Profile.ProfileType.LatestBeta));
         }
     }
 }

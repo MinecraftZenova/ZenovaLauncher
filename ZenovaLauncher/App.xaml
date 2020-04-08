@@ -15,7 +15,7 @@
                             <ResourceDictionary.MergedDictionaries>
                                 <ui:ColorPaletteResources
                                     TargetTheme="Dark"
-                                    Accent="#FF008A44"
+                                    Accent="#FF008542"
                                     AltHigh="#FF282828"
                                     AltMedium="#FF1E1E1E"
                                     BaseLow="Transparent"
@@ -40,6 +40,7 @@
                 <ResourceDictionary Source="Styles/ContentDialog.xaml" />
                 <ResourceDictionary Source="Styles/CheckBox.xaml" />
                 <ResourceDictionary Source="Styles/ListBox.xaml" />
+                <ResourceDictionary Source="Styles/TextBox.xaml" />
                 <ResourceDictionary Source="Controls/LauncherSideMenu.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->

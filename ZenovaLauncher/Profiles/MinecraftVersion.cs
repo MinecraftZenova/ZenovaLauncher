@@ -8,14 +8,26 @@ namespace ZenovaLauncher
 {
     public class MinecraftVersion
     {
+        public static Predicate<object> releaseFilter = (object item) =>
+        {
+            return (item as MinecraftVersion).Release == true;
+        };
+        public static Predicate<object> betaFilter = (object item) =>
+        {
+            return (item as MinecraftVersion).Beta == true;
+        };
+        public static Predicate<object> historicalFilter = (object item) =>
+        {
+            return (item as MinecraftVersion).Historical == true;
+        };
+
         private string _uuid;
 
-        public MinecraftVersion(Version version, string uuid, bool isBeta = false, bool isHistorical = false)
+        public MinecraftVersion(Version version, string uuid, bool isBeta = false)
         {
             Version = version;
             _uuid = uuid;
             Beta = isBeta;
-            Historical = isHistorical;
         }
         public int SortOrder
         {
@@ -42,7 +54,7 @@ namespace ZenovaLauncher
         public string Name { get { return Version.ToString(); } }
         public Version Version { get; set; }
         public bool Beta { get; set; }
-        public bool Historical { get; set; }
+        public bool Historical { get { return Version.Major < 1; } }
         public bool Release { get { return !Beta && !Historical; } }
     }
 }

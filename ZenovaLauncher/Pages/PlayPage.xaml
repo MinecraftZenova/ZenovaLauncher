@@ -69,7 +69,7 @@
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <ui:SimpleStackPanel Spacing="4">
-                            <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Path=ProfileName}" />
+                            <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Path=Name}" />
                             <TextBlock FontSize="10" Text="{Binding Path=VersionName}" />
                         </ui:SimpleStackPanel>
                     </DataTemplate>

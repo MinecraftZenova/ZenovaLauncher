@@ -18,7 +18,7 @@ namespace ZenovaLauncher
             VersionManager.instance = new VersionManager();
             ProfileManager.instance = new ProfileManager();
             await VersionManager.instance.LoadMinecraftVersions();
-            ProfileManager.instance.AddDefaultProfiles();
+            ProfileManager.instance.AddProfiles();
         }
     }
 }
