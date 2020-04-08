@@ -22,6 +22,7 @@ namespace ZenovaLauncher
     {
         public PlayPage() {
             InitializeComponent();
+            ProfileBox.ItemsSource = ProfileManager.instance;
         }
     }
 }

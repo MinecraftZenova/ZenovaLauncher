@@ -7,8 +7,7 @@
       xmlns:ui="http://schemas.modernwpf.com/2019"
       mc:Ignorable="d">
     <Page.Resources>
-        <ImageBrush x:Key="ImageBackground" ImageSource="zenova_background.png" Stretch="UniformToFill" />
-        <local:Profiles x:Key="CurrentProfiles" />
+        <ImageBrush x:Key="ImageBackground" ImageSource="/Assets/zenova_background.png" Stretch="UniformToFill" />
     </Page.Resources>
 
     <Grid>
@@ -25,7 +24,7 @@
         <Image
             Grid.ColumnSpan="3"
             Grid.RowSpan="2"
-            Source="zenova_banner.png"
+            Source="/Assets/zenova_banner.png"
             Width="250"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
@@ -60,8 +59,7 @@
         <Grid Grid.Row="1" Grid.Column="0">
             <ComboBox
                 Style="{StaticResource ProfileBoxStyle}"
-                ItemsSource="{Binding Source={StaticResource CurrentProfiles}}"
-                x:Name="ProfileCombo"
+                x:Name="ProfileBox"
                 Margin="10,4,10,4"
                 MinWidth="200"
                 HorizontalContentAlignment="Left"

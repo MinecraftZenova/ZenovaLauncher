@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>zenova_icon.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\zenova_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -72,20 +72,21 @@
     <Compile Include="Dialogs\AddProfileDialog.xaml.cs">
       <DependentUpon>AddProfileDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ModsPage.xaml.cs">
+    <Compile Include="Pages\ModsPage.xaml.cs">
       <DependentUpon>ModsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PlayPage.xaml.cs">
+    <Compile Include="Pages\PlayPage.xaml.cs">
       <DependentUpon>PlayPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProfilesPage.xaml.cs">
+    <Compile Include="Pages\ProfilesPage.xaml.cs">
       <DependentUpon>ProfilesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Profiles\MinecraftVersion.cs" />
     <Compile Include="Profiles\Profile.cs" />
-    <Compile Include="SettingsPage.xaml.cs">
+    <Compile Include="Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Profiles\ProfileManager.cs" />
     <Page Include="Dialogs\EditProfileDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -94,11 +95,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="HelpPage.xaml">
+    <Page Include="Pages\HelpPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="Pages\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -110,33 +111,33 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="HelpPage.xaml.cs">
+    <Compile Include="Pages\HelpPage.xaml.cs">
       <DependentUpon>HelpPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ModsPage.xaml">
+    <Page Include="Pages\ModsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NewsPage.xaml">
+    <Page Include="Pages\NewsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PlayPage.xaml">
+    <Page Include="Pages\PlayPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ProfilesPage.xaml">
+    <Page Include="Pages\ProfilesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SettingsPage.xaml">
+    <Page Include="Pages\SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,9 +175,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NewsPage.xaml.cs">
+    <Compile Include="Pages\NewsPage.xaml.cs">
       <DependentUpon>NewsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Profiles\VersionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -203,7 +205,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="zenova_icon.ico" />
+    <Resource Include="Assets\zenova_icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
@@ -215,12 +217,15 @@
     <PackageReference Include="ModernWpfUI.MahApps">
       <Version>0.8.0</Version>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="zenova_background.png" />
+    <Resource Include="Assets\zenova_background.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="zenova_banner.png" />
+    <Resource Include="Assets\zenova_banner.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

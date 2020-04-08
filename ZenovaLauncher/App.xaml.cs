@@ -13,5 +13,9 @@ namespace ZenovaLauncher
     /// </summary>
     public partial class App : Application
     {
+        public void AppStart(object sender, StartupEventArgs e)
+        {
+            ProfileManager.instance = new ProfileManager();
+        }
     }
 }

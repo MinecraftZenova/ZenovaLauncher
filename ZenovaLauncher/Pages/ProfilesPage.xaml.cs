@@ -21,8 +21,6 @@ namespace ZenovaLauncher
     /// </summary>
     public partial class ProfilesPage : Page
     {
-        public Profiles ProfilesList;
-
         Predicate<object> releaseFilter = (object item) =>
         {
             return (item as Profile).Release == true;
@@ -38,8 +36,7 @@ namespace ZenovaLauncher
 
         public ProfilesPage() {
             InitializeComponent();
-            ProfilesList = new Profiles();
-            ProfileListBox.ItemsSource = ProfilesList;
+            ProfileListBox.ItemsSource = ProfileManager.instance;
 
             SortProfileList(true);
             FilterProfileList();
@@ -66,16 +63,16 @@ namespace ZenovaLauncher
         {
             Profile newProfile = new Profile((sender as FrameworkElement).DataContext as Profile);
             int index = 2;
-            while (ProfilesList.SingleOrDefault(p => p.ProfileName == (newProfile.ProfileName + " (" + index + ")")) != null)
+            while (ProfileManager.instance.SingleOrDefault(p => p.ProfileName == (newProfile.ProfileName + " (" + index + ")")) != null)
                 index++;
             newProfile.ProfileName += " (" + index + ")";
-            ProfilesList.Add(newProfile);
+            ProfileManager.instance.Add(newProfile);
             SortProfileList(SortProfileBox.SelectedIndex == 0);
         }
 
         private void DeleteProfileClick(object sender, RoutedEventArgs e)
         {
-            ProfilesList.Remove((sender as FrameworkElement).DataContext as Profile);
+            ProfileManager.instance.Remove((sender as FrameworkElement).DataContext as Profile);
             ProfileListBox.Items.Refresh();
         }
 

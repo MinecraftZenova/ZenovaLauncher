@@ -8,7 +8,6 @@
         xmlns:ui="http://schemas.modernwpf.com/2019"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Icon="zenova_icon.ico"
         Title="Zenova Launcher" 
         Height="600" Width="1000"
         MinHeight="600" MinWidth="1000"
@@ -74,7 +73,7 @@
 
                     <mah:HamburgerMenuIconItem
                         Label="Minecraft: Bedrock"
-                        Tag="MainPage.xaml">
+                        Tag="/Pages/MainPage.xaml">
                         <mah:HamburgerMenuIconItem.Icon>
                             <ui:SymbolIcon Symbol="Home" />
                         </mah:HamburgerMenuIconItem.Icon>
@@ -82,7 +81,7 @@
                     
                     <mah:HamburgerMenuIconItem
                         Label="News"
-                        Tag="NewsPage.xaml">
+                        Tag="/Pages/NewsPage.xaml">
                         <mah:HamburgerMenuIconItem.Icon>
                             <ui:SymbolIcon Symbol="PreviewLink" />
                         </mah:HamburgerMenuIconItem.Icon>
@@ -90,7 +89,7 @@
 
                     <mah:HamburgerMenuIconItem
                         Label="Help"
-                        Tag="HelpPage.xaml">
+                        Tag="/Pages/HelpPage.xaml">
                         <mah:HamburgerMenuIconItem.Icon>
                             <ui:SymbolIcon Symbol="Help" />
                         </mah:HamburgerMenuIconItem.Icon>
@@ -102,7 +101,7 @@
                 <mah:HamburgerMenuItemCollection x:Name="NavViewOptions">
                     <mah:HamburgerMenuIconItem
                         Label="Settings"
-                        Tag="SettingsPage.xaml">
+                        Tag="/Pages/SettingsPage.xaml">
                         <mah:HamburgerMenuIconItem.Icon>
                             <ui:SymbolIcon Symbol="Setting" />
                         </mah:HamburgerMenuIconItem.Icon>
