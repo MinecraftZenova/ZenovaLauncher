@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,11 @@ namespace ZenovaLauncher
             InitializeComponent();
             EditedProfile = profile;
             ProfileNameBox.Text = profile.ProfileName;
-            VersionBox.Text = profile.VersionName;
+            VersionBox.ItemsSource = VersionManager.instance;
+            VersionBox.Items.SortDescriptions.Clear();
+            VersionBox.Items.SortDescriptions.Add(new SortDescription("SortOrder", ListSortDirection.Ascending));
+            VersionBox.Items.SortDescriptions.Add(new SortDescription("Version", ListSortDirection.Descending));
+            VersionBox.SelectedItem = profile.Version;
         }
 
         public Profile EditedProfile { get; set; }

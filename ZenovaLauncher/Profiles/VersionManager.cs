@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ZenovaLauncher
 {
@@ -19,7 +21,22 @@ namespace ZenovaLauncher
 
         public VersionManager()
         {
+        }
 
+        public MinecraftVersion LatestRelease
+        {
+            get 
+            {
+                return this.FirstOrDefault(v => v.Release);
+            }
+        }
+
+        public MinecraftVersion LatestBeta
+        {
+            get
+            {
+                return this.FirstOrDefault(v => v.Beta);
+            }
         }
 
         private void ParseList(JArray data)
@@ -28,22 +45,37 @@ namespace ZenovaLauncher
             // ([name, uuid, isBeta])[]
             foreach (JArray o in data.AsEnumerable().Reverse())
             {
-                Add(new MinecraftVersion(o[0].Value<string>(), o[1].Value<string>(), o[2].Value<int>() == 1));
+                Add(new MinecraftVersion(new Version(o[0].Value<string>()), o[1].Value<string>(), o[2].Value<int>() == 1));
+            }
+        }
+
+        public async Task LoadMinecraftVersions()
+        {
+            try
+            {
+                await LoadFromCache();
+            }
+            catch (Exception e)
+            {
+                if (!(e is FileNotFoundException))
+                    Debug.WriteLine("List cache load failed:\n" + e.ToString());
+                try
+                {
+                    await DownloadList();
+                }
+                catch (Exception e2)
+                {
+                    Debug.WriteLine("List download failed:\n" + e2.ToString());
+                }
             }
         }
 
         public async Task LoadFromCache()
         {
-            try
+            using (var reader = File.OpenText(_cacheFile))
             {
-                using (var reader = File.OpenText(_cacheFile))
-                {
-                    var data = await reader.ReadToEndAsync();
-                    ParseList(JArray.Parse(data));
-                }
-            }
-            catch (FileNotFoundException)
-            { // ignore
+                var data = await reader.ReadToEndAsync();
+                ParseList(JArray.Parse(data));
             }
         }
 

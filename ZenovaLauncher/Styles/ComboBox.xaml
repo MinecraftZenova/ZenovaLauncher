@@ -533,6 +533,8 @@
         <Setter Property="BorderThickness" Value="{DynamicResource ComboBoxBorderThemeThickness}" />
         <Setter Property="KeyboardNavigation.TabNavigation" Value="Once" />
         <Setter Property="ui:ComboBoxHelper.TextBoxStyle" Value="{StaticResource ComboBoxTextBoxStyle}" />
+        <Setter Property="Popup.Placement" Value="Bottom" />
+        <Setter Property="Popup.VerticalOffset" Value="0" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="False" />
@@ -696,7 +698,8 @@
                         <Popup
                             x:Name="PART_Popup"
                             AllowsTransparency="True"
-                            Placement="Bottom"
+                            Placement="{TemplateBinding Popup.Placement}"
+                            VerticalOffset="{TemplateBinding Popup.VerticalOffset}"
                             PlacementTarget="{Binding ElementName=Background}"
                             IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                             PopupAnimation="None">

@@ -24,9 +24,22 @@
             </ui:SimpleStackPanel>
             <ui:SimpleStackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Spacing="2">
                 <TextBlock Margin="2,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Version" />
-                <TextBox 
+                <ComboBox
                     x:Name="VersionBox"
-                    HorizontalAlignment="Stretch"/>
+                    HorizontalAlignment="Stretch">
+                    <ComboBox.Style>
+                        <Style BasedOn="{StaticResource StandardComboBoxStyle}" TargetType="ComboBox">
+                            <Setter Property="Popup.Placement" Value="Center" />
+                            <Setter Property="Popup.VerticalOffset" Value="20" />
+                            <Setter Property="MaxDropDownHeight" Value="300" />
+                        </Style>
+                    </ComboBox.Style>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=FullName}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </ui:SimpleStackPanel>
         </ui:SimpleStackPanel>
     </Grid>

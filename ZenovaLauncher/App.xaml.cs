@@ -13,9 +13,12 @@ namespace ZenovaLauncher
     /// </summary>
     public partial class App : Application
     {
-        public void AppStart(object sender, StartupEventArgs e)
+        public async void AppStart(object sender, StartupEventArgs e)
         {
+            VersionManager.instance = new VersionManager();
             ProfileManager.instance = new ProfileManager();
+            await VersionManager.instance.LoadMinecraftVersions();
+            ProfileManager.instance.AddDefaultProfiles();
         }
     }
 }

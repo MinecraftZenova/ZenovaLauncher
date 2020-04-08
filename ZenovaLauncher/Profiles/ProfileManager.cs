@@ -11,10 +11,12 @@ namespace ZenovaLauncher
     {
         public static ProfileManager instance;
 
-        public ProfileManager()
+        public ProfileManager() { }
+
+        public void AddDefaultProfiles()
         {
-            Add(new Profile("Latest release", new MinecraftVersion("1.14.30.2", "uuid")));
-            Add(new Profile("Latest beta", new MinecraftVersion("1.16.0.55", "uuid", isBeta: true)));
+            Add(new Profile("Latest release", VersionManager.instance.LatestRelease));
+            Add(new Profile("Latest beta", VersionManager.instance.LatestBeta));
         }
     }
 }
