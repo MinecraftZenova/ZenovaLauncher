@@ -231,5 +231,17 @@
   <ItemGroup>
     <Resource Include="Assets\zenova_banner.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="SetupZenovaLauncher.iss" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>$(ProjectDir)Inno\ISCC.exe $(ProjectDir)SetupZenovaLauncher.iss</PostBuildEvent>
+  </PropertyGroup>
+  <Target Name="SpicNSpan" AfterTargets="Clean">
+    <RemoveDir Directories="$(TargetDir)" /> <!-- bin -->
+    <RemoveDir Directories="$(SolutionDir).vs" /> <!-- .vs -->
+    <RemoveDir Directories="$(ProjectDir)$(BaseIntermediateOutputPath)" /> <!-- obj -->
+    <RemoveDir Directories="$(ProjectDir)Output" />
+  </Target>
 </Project>

@@ -56,6 +56,11 @@ Source: "bin\Release\ZenovaLauncher.exe.config"; DestDir: "{app}"; Flags: ignore
 Source: "bin\Release\ZenovaLauncher.pdb"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
+[Dirs]
+Name: "{code:GetDataDir}\Versions"
+Name: "{code:GetDataDir}\Profiles"
+Name: "{code:GetDataDir}\Mods"
+
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
@@ -64,7 +69,7 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
 [Registry]
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; \
+Root: HKA; Subkey: "{code:GetSubKey}"; \
     ValueType: string; ValueName: "ZENOVA_DATA"; ValueData: "{code:GetDataDir}"; \
     Flags: uninsdeletevalue
 
@@ -75,6 +80,14 @@ var
 function GetDataDir(Value: string): string;
 begin
   Result := DataDirPage.Values[0];
+end;
+
+function GetSubKey(Value: string): string;
+begin
+  if IsAdminInstallMode then
+    Result := 'SYSTEM\CurrentControlSet\Control\Session Manager\Environment'
+  else
+    Result := 'Environment';
 end;
 
 procedure InitializeWizard;

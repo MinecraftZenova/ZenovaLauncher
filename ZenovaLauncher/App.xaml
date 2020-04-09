@@ -5,7 +5,8 @@
              xmlns:ui="http://schemas.modernwpf.com/2019"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              StartupUri="MainWindow.xaml"
-             Startup="AppStart">
+             Startup="AppStart"
+             Exit="AppExit">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

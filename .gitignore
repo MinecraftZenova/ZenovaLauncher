@@ -22,6 +22,7 @@ mono_crash.*
 [Rr]elease/
 [Rr]eleases/
 [Oo]utput/
+Inno/
 x64/
 x86/
 [Aa][Rr][Mm]/

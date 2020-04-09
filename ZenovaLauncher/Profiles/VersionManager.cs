@@ -16,11 +16,12 @@ namespace ZenovaLauncher
     {
         public static VersionManager instance;
 
-        private readonly string _cacheFile = "versions.json";
+        private readonly string _cacheFile;
         private readonly HttpClient _client = new HttpClient();
 
-        public VersionManager()
+        public VersionManager(string cacheFile)
         {
+            _cacheFile = cacheFile;
         }
 
         public MinecraftVersion LatestRelease

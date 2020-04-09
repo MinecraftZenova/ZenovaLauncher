@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,7 +12,12 @@ namespace ZenovaLauncher
     {
         public static ProfileManager instance;
 
-        public ProfileManager() { }
+        private readonly string _cacheFile;
+
+        public ProfileManager(string cacheFile)
+        {
+            _cacheFile = cacheFile;
+        }
 
         public void AddProfiles()
         {
@@ -22,6 +28,11 @@ namespace ZenovaLauncher
         {
             Add(new Profile("Latest release", VersionManager.instance.LatestRelease, type: Profile.ProfileType.LatestRelease));
             Add(new Profile("Latest beta", VersionManager.instance.LatestBeta, type: Profile.ProfileType.LatestBeta));
+        }
+
+        public void SaveProfiles()
+        {
+
         }
     }
 }
