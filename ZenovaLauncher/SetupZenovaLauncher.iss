@@ -6,6 +6,7 @@
 #define MyAppPublisher "MinecraftZenova"
 #define MyAppURL "https://www.github.com/MinecraftZenova"
 #define MyAppExeName "ZenovaLauncher.exe"
+#define MyAppDataDir "Zenova"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -19,12 +20,18 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf}\{#MyAppName}
-DisableProgramGroupPage=yes
+DefaultDirName={autopf}\{#MyAppName}      
+DisableWelcomePage=no
+DisableProgramGroupPage=yes       
+PrivilegesRequiredOverridesAllowed=dialog
 OutputBaseFilename=ZenovaLauncher
-SetupIconFile=Assets\zenova_icon.ico
+SetupIconFile=Assets\zenova_icon.ico 
+UninstallDisplayIcon={app}\{#MyAppExeName} 
+WizardSmallImageFile=Assets\zenova_icon.bmp   
+WizardStyle=modern
 Compression=lzma
-SolidCompression=yes
+SolidCompression=yes   
+ChangesEnvironment=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -33,25 +40,54 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ZenovaLauncher.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ControlzEx.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ControlzEx.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\MahApps.Metro.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\MahApps.Metro.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\Microsoft.Xaml.Behaviors.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\Microsoft.Xaml.Behaviors.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ModernWpf.Controls.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ModernWpf.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ModernWpf.MahApps.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ZenovaLauncher.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\bin\Release\ZenovaLauncher.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\ZenovaLauncher.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\ControlzEx.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\ControlzEx.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\MahApps.Metro.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\MahApps.Metro.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\Microsoft.Xaml.Behaviors.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\Microsoft.Xaml.Behaviors.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\ModernWpf.Controls.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\ModernWpf.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\ModernWpf.MahApps.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\ZenovaLauncher.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\ZenovaLauncher.pdb"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
+[Registry]
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; \
+    ValueType: string; ValueName: "ZENOVA_DATA"; ValueData: "{code:GetDataDir}"; \
+    Flags: uninsdeletevalue
+
+[Code]
+var       
+  DataDirPage: TInputDirWizardPage;
+
+function GetDataDir(Value: string): string;
+begin
+  Result := DataDirPage.Values[0];
+end;
+
+procedure InitializeWizard;
+var
+  AfterID: Integer;
+begin
+  AfterID := wpSelectDir;
+
+  DataDirPage := CreateInputDirPage(AfterID, 'Select App Data Location', 'Where should {#MyAppName} store Application Data?', 
+  'Profile and Version files will be stored in the following folder.'#13#10#13#10 +
+  'To continue, click Next. If you would like to select a different folder, click Browse.',
+  False, 'New Folder');
+  DataDirPage.Add('');
+  DataDirPage.Values[0] := ExpandConstant('{userappdata}\{#MyAppDataDir}');;
+  AfterID := DataDirPage.ID;
+end;
