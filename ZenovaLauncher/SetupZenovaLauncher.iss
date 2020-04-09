@@ -22,7 +22,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputBaseFilename=ZenovaLauncher
-SetupIconFile=C:\Users\Andy-PC\source\repos\ZenovaLauncher\ZenovaLauncher\zenova_icon.ico
+SetupIconFile=Assets\zenova_icon.ico
 Compression=lzma
 SolidCompression=yes
 
