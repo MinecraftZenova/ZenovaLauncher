@@ -26,6 +26,10 @@ namespace ZenovaLauncher
 
         public MinecraftVersion GetVersionFromString(string versionName)
         {
+            if (versionName == "latest-release")
+                return LatestRelease;
+            if (versionName == "latest-beta")
+                return LatestBeta;
             return this.SingleOrDefault(v => v.Name == versionName);
         }
 

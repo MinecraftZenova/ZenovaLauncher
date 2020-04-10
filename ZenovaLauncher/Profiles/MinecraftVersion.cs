@@ -33,9 +33,9 @@ namespace ZenovaLauncher
         {
             get
             {
-                if (this == VersionManager.instance.LatestRelease)
+                if (LatestRelease)
                     return 0;
-                else if (this == VersionManager.instance.LatestBeta)
+                if (LatestBeta)
                     return 1;
                 return 2;
             }
@@ -44,11 +44,22 @@ namespace ZenovaLauncher
         {
             get
             {
-                if (this == VersionManager.instance.LatestRelease)
+                if (LatestRelease)
                     return "Latest release (" + Name + ")";
-                else if (this == VersionManager.instance.LatestBeta)
+                if (LatestBeta)
                     return "Latest beta (" + Name + ")";
                 return (Release ? "release " : (Beta ? "beta " : "old_beta ")) + Name;
+            }
+        }
+        public string InternalName
+        {
+            get
+            {
+                if (LatestRelease)
+                    return "latest-release";
+                if (LatestBeta)
+                    return "latest-beta";
+                return Name;
             }
         }
         public string Name { get { return Version.ToString(); } }
@@ -56,5 +67,7 @@ namespace ZenovaLauncher
         public bool Beta { get; set; }
         public bool Historical { get { return Version.Major < 1; } }
         public bool Release { get { return !Beta && !Historical; } }
+        public bool LatestRelease { get { return this == VersionManager.instance.LatestRelease; } }
+        public bool LatestBeta { get { return this == VersionManager.instance.LatestBeta; } }
     }
 }

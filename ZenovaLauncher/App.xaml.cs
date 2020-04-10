@@ -27,7 +27,7 @@ namespace ZenovaLauncher
         {
             SetupEnvironment();
             VersionManager.instance = new VersionManager(Path.Combine(VersionsDirectory, "versions.json"));
-            ProfileManager.instance = new ProfileManager(Path.Combine(ProfilesDirectory, "profiles.json"));
+            ProfileManager.instance = new ProfileManager(ProfilesDirectory);
             Dispatcher.Invoke(async () =>
             {
                 await VersionManager.instance.LoadMinecraftVersions();
