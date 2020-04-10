@@ -28,6 +28,7 @@ namespace ZenovaLauncher
             SetupEnvironment();
             VersionManager.instance = new VersionManager(Path.Combine(VersionsDirectory, "versions.json"));
             ProfileManager.instance = new ProfileManager(ProfilesDirectory);
+            Preferences.LoadPreferences(DataDirectory);
             Dispatcher.Invoke(async () =>
             {
                 await VersionManager.instance.LoadMinecraftVersions();
@@ -38,6 +39,7 @@ namespace ZenovaLauncher
         public void AppExit(object sender, ExitEventArgs e)
         {
             ProfileManager.instance.SaveProfiles();
+            Preferences.SavePreferences();
         }
 
         private void SetupEnvironment()

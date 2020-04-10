@@ -90,7 +90,7 @@ namespace ZenovaLauncher
             DirectoryInfo di = new DirectoryInfo(_profilesDir);
             foreach (FileInfo file in di.EnumerateFiles()) file.Delete();
             foreach (DirectoryInfo dir in di.EnumerateDirectories()) dir.Delete(true);
-            File.WriteAllText(Path.Combine(_profilesDir, _profilesFile), JsonConvert.SerializeObject(this));
+            File.WriteAllText(Path.Combine(_profilesDir, _profilesFile), JsonConvert.SerializeObject(this, Formatting.Indented));
         }
     }
 }

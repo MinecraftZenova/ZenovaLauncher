@@ -42,7 +42,7 @@
                             <ComboBox
                                 x:Name="SortProfileBox"
                                 Style="{DynamicResource StandardComboBoxStyle}"
-                                SelectedIndex="0"
+                                SelectedIndex="{Binding Path=ProfileSortingId}"
                                 MinWidth="120"
                                 HorizontalContentAlignment="Left"
                                 Background="Transparent"
@@ -58,9 +58,9 @@
                         <ui:SimpleStackPanel Margin="15,0,0,0">
                             <TextBlock Margin="0,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Versions" />
                             <ui:SimpleStackPanel Orientation="Horizontal" Spacing="13">
-                                <CheckBox x:Name="ReleasesBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Releases" Click="CheckBoxClick" IsChecked="True" />
-                                <CheckBox x:Name="BetasBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Beta Builds" Click="CheckBoxClick" />
-                                <CheckBox x:Name="HistoricalBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Historical" Click="CheckBoxClick" />
+                                <CheckBox x:Name="ReleasesBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Releases" Click="CheckBoxClick" IsChecked="{Binding Path=EnableReleases}" />
+                                <CheckBox x:Name="BetasBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Beta Builds" Click="CheckBoxClick" IsChecked="{Binding Path=EnableBetas}" />
+                                <CheckBox x:Name="HistoricalBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Historical" Click="CheckBoxClick" IsChecked="{Binding Path=EnableHistorical}" />
                             </ui:SimpleStackPanel>
                         </ui:SimpleStackPanel>
                     </ui:SimpleStackPanel>

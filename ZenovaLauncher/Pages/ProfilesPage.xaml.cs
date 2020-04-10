@@ -24,8 +24,12 @@ namespace ZenovaLauncher
         public ProfilesPage() {
             InitializeComponent();
             ProfileListBox.ItemsSource = ProfileManager.instance;
+            SortProfileBox.DataContext = Preferences.instance;
+            ReleasesBox.DataContext = Preferences.instance;
+            BetasBox.DataContext = Preferences.instance;
+            HistoricalBox.DataContext = Preferences.instance;
 
-            SortProfileList(true);
+            SortProfileList(Preferences.instance.ProfileSorting);
             FilterProfileList();
         }
 
@@ -56,7 +60,7 @@ namespace ZenovaLauncher
                 index++;
             newProfile.Name += " (" + index + ")";
             ProfileManager.instance.Add(newProfile);
-            SortProfileList(SortProfileBox.SelectedIndex == 0);
+            SortProfileList(Preferences.instance.ProfileSorting);
         }
 
         private void DeleteProfileClick(object sender, RoutedEventArgs e)
@@ -72,7 +76,7 @@ namespace ZenovaLauncher
 
         private void SortChanged(object sender, SelectionChangedEventArgs e)
         {
-            SortProfileList((sender as ComboBox).SelectedIndex == 0);
+            SortProfileList(Preferences.instance.ProfileSorting);
         }
 
         private void CheckBoxClick(object sender, RoutedEventArgs e)
@@ -83,20 +87,20 @@ namespace ZenovaLauncher
         protected void FilterProfileList()
         {
             List<Predicate<object>> predicates = new List<Predicate<object>>();
-            if (ReleasesBox.IsChecked == true)
+            if (Preferences.instance.EnableReleases)
                 predicates.Add(Profile.releaseFilter);
-            if (BetasBox.IsChecked == true)
+            if (Preferences.instance.EnableBetas)
                 predicates.Add(Profile.betaFilter);
-            if (HistoricalBox.IsChecked == true)
+            if (Preferences.instance.EnableHistorical)
                 predicates.Add(Profile.historicalFilter);
             if(ProfileListBox != null)
                 ProfileListBox.Items.Filter = o => predicates.Any(predicate => predicate(o));
         }
 
-        protected void SortProfileList(bool sortType)
+        protected void SortProfileList(Profile.ProfileSortType sortType)
         {
-            string sortTypeString = sortType ? "LastPlayed" : "Name";
-            ListSortDirection sortDirection = sortType ? ListSortDirection.Descending : ListSortDirection.Ascending;
+            string sortTypeString = sortType == Profile.ProfileSortType.ByLastPlayed ? "LastPlayed" : "Name";
+            ListSortDirection sortDirection = sortType == Profile.ProfileSortType.ByLastPlayed ? ListSortDirection.Descending : ListSortDirection.Ascending;
             if (ProfileListBox != null)
             {
                 ProfileListBox.Items.SortDescriptions.Clear();
