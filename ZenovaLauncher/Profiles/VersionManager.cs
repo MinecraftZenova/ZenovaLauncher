@@ -24,6 +24,11 @@ namespace ZenovaLauncher
             _cacheFile = cacheFile;
         }
 
+        public MinecraftVersion GetVersionFromString(string versionName)
+        {
+            return this.SingleOrDefault(v => v.Name == versionName);
+        }
+
         public MinecraftVersion LatestRelease
         {
             get 
