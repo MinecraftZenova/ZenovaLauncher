@@ -35,7 +35,7 @@ namespace ZenovaLauncher
 
         private async void AddProfileClick(object sender, RoutedEventArgs e)
         {
-            AddProfileDialog newProfile = new AddProfileDialog(ReleasesBox.IsChecked == true, BetasBox.IsChecked == true, HistoricalBox.IsChecked == true);
+            AddProfileDialog newProfile = new AddProfileDialog();
             var result = await newProfile.ShowAsync();
             if (result == ModernWpf.Controls.ContentDialogResult.Primary)
                 ProfileListBox.Items.Refresh();
@@ -110,7 +110,7 @@ namespace ZenovaLauncher
 
         protected async void EditProfile(Profile profile)
         {
-            EditProfileDialog editProfile = new EditProfileDialog(profile, ReleasesBox.IsChecked == true, BetasBox.IsChecked == true, HistoricalBox.IsChecked == true);
+            EditProfileDialog editProfile = new EditProfileDialog(profile);
             var result = await editProfile.ShowAsync();
             if (result == ModernWpf.Controls.ContentDialogResult.Primary)
                 ProfileListBox.Items.Refresh();

@@ -11,7 +11,7 @@ namespace ZenovaLauncher
     /// </summary>
     public partial class EditProfileDialog : ContentDialog
     {
-        public EditProfileDialog(Profile profile, bool showReleases, bool showBetas, bool showHistorical)
+        public EditProfileDialog(Profile profile)
         {
             InitializeComponent();
             EditedProfile = profile;
@@ -22,11 +22,11 @@ namespace ZenovaLauncher
             VersionBox.Items.SortDescriptions.Add(new SortDescription("SortOrder", ListSortDirection.Ascending));
             VersionBox.Items.SortDescriptions.Add(new SortDescription("Version", ListSortDirection.Descending));
             List<Predicate<object>> predicates = new List<Predicate<object>>();
-            if (showReleases)
+            if (Preferences.instance.EnableReleases)
                 predicates.Add(MinecraftVersion.releaseFilter);
-            if (showBetas)
+            if (Preferences.instance.EnableBetas)
                 predicates.Add(MinecraftVersion.betaFilter);
-            if (showHistorical)
+            if (Preferences.instance.EnableHistorical)
                 predicates.Add(MinecraftVersion.historicalFilter);
             VersionBox.Items.Filter = o => predicates.Any(predicate => predicate(o));
             VersionBox.SelectedItem = profile.Version;

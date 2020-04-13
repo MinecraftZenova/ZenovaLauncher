@@ -5,7 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ZenovaLauncher"
       xmlns:ui="http://schemas.modernwpf.com/2019"
-      xmlns:tz="http://schemas.abtsoftware.co.uk/transitionz"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
       xmlns:comment="Comments"
       mc:Ignorable="d comment">
 
@@ -96,7 +97,7 @@
                                             </ui:SimpleStackPanel>
                                         </ui:SimpleStackPanel>
                                         <ui:SimpleStackPanel x:Name="InteractButtons" Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="8" Visibility="Hidden">
-                                            <Button Content="Play" Style="{DynamicResource LauncherAccentButtonStyle}" Click="PlayButtonClick" />
+                                            <Button Content="Play" Style="{DynamicResource LauncherAccentButtonStyle}" Click="PlayButtonClick" IsEnabled="{Binding Path=DataContext.IsNotDownloading, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" />
                                             <Button Padding="5,5,6,6"  Style="{DynamicResource LauncherDefaultButtonStyle}">
                                                 <Button.Content>
                                                     <ui:SymbolIcon Symbol="More" />
@@ -127,9 +128,45 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Grid>
-                <Grid Grid.Row="2" HorizontalAlignment="Stretch" Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}">
+                <Grid 
+                    x:Name="ProgressGrid"
+                    Grid.Row="2"
+                    HorizontalAlignment="Stretch"
+                    Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}"
+                    Visibility="{Binding Path=IsDownloading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid.RenderTransform>
+                        <TranslateTransform />
+                    </Grid.RenderTransform>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Loaded">
+                            <i:Interaction.Behaviors>
+                                <ei:ConditionBehavior>
+                                    <ei:ConditionalExpression>
+                                        <ei:ComparisonCondition LeftOperand="{Binding Path=IsDownloading}" RightOperand="True"/>
+                                    </ei:ConditionalExpression>
+                                </ei:ConditionBehavior>
+                            </i:Interaction.Behaviors>
+                            <ei:ControlStoryboardAction ControlStoryboardOption="Play">
+                                <ei:ControlStoryboardAction.Storyboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="RenderTransform.Y" From="20" To="0" Duration="0:0:0.2" />
+                                        <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </ei:ControlStoryboardAction.Storyboard>
+                            </ei:ControlStoryboardAction>
+                        </i:EventTrigger>
+                        <ei:DataTrigger Binding="{Binding Path=IsDownloading}" Value="True">
+                            <ei:ControlStoryboardAction ControlStoryboardOption="Play">
+                                <ei:ControlStoryboardAction.Storyboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="RenderTransform.Y" From="20" To="0" Duration="0:0:0.2" />
+                                        <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2" />
+                                    </Storyboard>
+                                </ei:ControlStoryboardAction.Storyboard>
+                            </ei:ControlStoryboardAction>
+                        </ei:DataTrigger>
+                    </i:Interaction.Triggers>
                     <ProgressBar
-                        x:Name="LoadingProgressBar"
                         Margin="10,9,10,9"
                         MinHeight="32"
                         HorizontalAlignment="Stretch"
@@ -138,8 +175,7 @@
                         Minimum="0"
                         Maximum="{Binding Path=DownloadInfo.TotalSize}"
                         local:ProgressBarSmoother.SmoothValue="{Binding Path=DownloadInfo.DownloadedBytes}"
-                        IsIndeterminate="{Binding Path=DownloadInfo.IsProgressIndeterminate}"
-                        Visibility="{Binding Path=IsDownloading, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        IsIndeterminate="{Binding Path=DownloadInfo.IsProgressIndeterminate}" />
                 </Grid>
             </Grid>
         </ui:ScrollViewerEx>

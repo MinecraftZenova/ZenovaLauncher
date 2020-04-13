@@ -12,6 +12,7 @@
     <Color x:Key="LauncherListLowColor">#10FFFFFF</Color>
     <Color x:Key="LauncherListMediumColor">#19FFFFFF</Color>
     <Color x:Key="LauncherAccentHoverColor">#FF0DD166</Color>
+    <Color x:Key="LauncherAccentDisabledColor">#FF236544</Color>
     <Color x:Key="LauncherChromeMediumColor">#FF282828</Color>
     <Color x:Key="LauncherChromeMedium2Color">#FF262626</Color>
     <Color x:Key="LauncherChromeMediumLowColor">#FF131313</Color>
@@ -27,6 +28,7 @@
     <SolidColorBrush x:Key="LauncherControlHighlightListMediumBrush" Color="{ui:StaticColor LauncherListMediumColor}" />
     <SolidColorBrush x:Key="LauncherControlHighlightListLowBrush" Color="{ui:StaticColor LauncherListLowColor}" />
     <SolidColorBrush x:Key="LauncherControlAccentHoverBrush" Color="{ui:StaticColor LauncherAccentHoverColor}" />
+    <SolidColorBrush x:Key="LauncherControlAccentDisabledBrush" Color="{ui:StaticColor LauncherAccentDisabledColor}" />
     <SolidColorBrush x:Key="LauncherControlTransientBackgroundBrush" Color="{ui:StaticColor LauncherChromeMediumLowColor}" />
     <SolidColorBrush x:Key="LauncherControlTransientLowBackgroundBrush" Color="{ui:StaticColor LauncherChromeLowColor}" />
 
@@ -78,6 +80,7 @@
     <ui:StaticResource x:Key="TextControlPlaceholderForegroundFocused" ResourceKey="LauncherControlDisabledBaseMediumHighBrush" />
 
     <ui:StaticResource x:Key="AccentButtonBackgroundPointerOver" ResourceKey="LauncherControlAccentHoverBrush" />
+    <ui:StaticResource x:Key="AccentButtonBackgroundDisabled" ResourceKey="LauncherControlAccentDisabledBrush" />
 
     <sys:Boolean x:Key="AutoHideScrollBars">True</sys:Boolean>
 </ResourceDictionary>

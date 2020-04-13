@@ -5,6 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ZenovaLauncher"
       xmlns:ui="http://schemas.modernwpf.com/2019"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
       mc:Ignorable="d">
     <Page.Resources>
         <ImageBrush x:Key="ImageBackground" ImageSource="/Assets/zenova_background.png" Stretch="UniformToFill" />
@@ -13,6 +15,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -46,7 +49,7 @@
         <Button 
             x:Name="PlayButton"
             Grid.Column="1"
-            Grid.RowSpan="2"
+            Grid.RowSpan="3"
             Panel.ZIndex="2"
             Content="Launch Minecraft"
             HorizontalAlignment="Center" 
@@ -60,8 +63,58 @@
             Style="{DynamicResource LauncherAccentButtonStyle}"
             Click="PlayButtonClick"
             IsEnabled="{Binding Path=IsNotDownloading}"/>
-        <Grid Grid.Row="1" Grid.ColumnSpan="3" Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}" />
-        <Grid Grid.Row="1" Grid.Column="0">
+        <Grid 
+            x:Name="ProgressGrid"
+            Grid.Row="1"
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Stretch"
+            Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}"
+            Visibility="{Binding Path=IsDownloading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.RenderTransform>
+                <TranslateTransform />
+            </Grid.RenderTransform>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Loaded">
+                    <i:Interaction.Behaviors>
+                        <ei:ConditionBehavior>
+                            <ei:ConditionalExpression>
+                                <ei:ComparisonCondition LeftOperand="{Binding Path=IsDownloading}" RightOperand="True"/>
+                            </ei:ConditionalExpression>
+                        </ei:ConditionBehavior>
+                    </i:Interaction.Behaviors>
+                    <ei:ControlStoryboardAction ControlStoryboardOption="Play">
+                        <ei:ControlStoryboardAction.Storyboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="RenderTransform.Y" From="20" To="0" Duration="0:0:0.2" />
+                                <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </ei:ControlStoryboardAction.Storyboard>
+                    </ei:ControlStoryboardAction>
+                </i:EventTrigger>
+                <ei:DataTrigger Binding="{Binding Path=IsDownloading}" Value="True">
+                    <ei:ControlStoryboardAction ControlStoryboardOption="Play">
+                        <ei:ControlStoryboardAction.Storyboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="RenderTransform.Y" From="20" To="0" Duration="0:0:0.2" />
+                                <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </ei:ControlStoryboardAction.Storyboard>
+                    </ei:ControlStoryboardAction>
+                </ei:DataTrigger>
+            </i:Interaction.Triggers>
+            <ProgressBar
+                Margin="10,9,10,29"
+                MinHeight="32"
+                HorizontalAlignment="Stretch"
+                ui:ControlHelper.CornerRadius="0"
+                Background="{DynamicResource LauncherControlTransientLowBackgroundBrush}"
+                Minimum="0"
+                Maximum="{Binding Path=DownloadInfo.TotalSize}"
+                local:ProgressBarSmoother.SmoothValue="{Binding Path=DownloadInfo.DownloadedBytes}"
+                IsIndeterminate="{Binding Path=DownloadInfo.IsProgressIndeterminate}" />
+        </Grid>
+        <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}" />
+        <Grid Grid.Row="2" Grid.Column="0">
             <ComboBox
                 Style="{StaticResource ProfileBoxStyle}"
                 x:Name="ProfileBox"
