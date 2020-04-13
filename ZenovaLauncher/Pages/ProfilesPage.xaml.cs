@@ -2,17 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ZenovaLauncher
 {
@@ -21,8 +13,10 @@ namespace ZenovaLauncher
     /// </summary>
     public partial class ProfilesPage : Page
     {
-        public ProfilesPage() {
+        public ProfilesPage()
+        {
             InitializeComponent();
+            DataContext = ProfileLauncher.instance;
             ProfileListBox.ItemsSource = ProfileManager.instance;
             SortProfileBox.DataContext = Preferences.instance;
             ReleasesBox.DataContext = Preferences.instance;
@@ -74,6 +68,11 @@ namespace ZenovaLauncher
             EditProfile((sender as FrameworkElement).DataContext as Profile);
         }
 
+        private void PlayButtonClick(object sender, RoutedEventArgs e)
+        {
+            ProfileLauncher.instance.LaunchProfile((sender as FrameworkElement).DataContext as Profile);
+        }
+
         private void SortChanged(object sender, SelectionChangedEventArgs e)
         {
             SortProfileList(Preferences.instance.ProfileSorting);
@@ -93,7 +92,7 @@ namespace ZenovaLauncher
                 predicates.Add(Profile.betaFilter);
             if (Preferences.instance.EnableHistorical)
                 predicates.Add(Profile.historicalFilter);
-            if(ProfileListBox != null)
+            if (ProfileListBox != null)
                 ProfileListBox.Items.Filter = o => predicates.Any(predicate => predicate(o));
         }
 

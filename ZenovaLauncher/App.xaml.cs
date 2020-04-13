@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ZenovaLauncher
@@ -20,14 +14,15 @@ namespace ZenovaLauncher
         private readonly string _directoryProfiles = "Profiles";
         private readonly string _directoryVersions = "Versions";
         private string _dataDirectory;
-        private EnvironmentVariableTarget _environmentType;
-
 
         public void AppStart(object sender, StartupEventArgs e)
         {
             SetupEnvironment();
-            VersionManager.instance = new VersionManager(Path.Combine(VersionsDirectory, "versions.json"));
+            VersionDownloader.standard = new VersionDownloader();
+            VersionDownloader.user = new VersionDownloader();
+            VersionManager.instance = new VersionManager(VersionsDirectory);
             ProfileManager.instance = new ProfileManager(ProfilesDirectory);
+            ProfileLauncher.instance = new ProfileLauncher();
             Preferences.LoadPreferences(DataDirectory);
             Dispatcher.Invoke(async () =>
             {
@@ -49,7 +44,6 @@ namespace ZenovaLauncher
             if (value != null)
             {
                 _dataDirectory = value;
-                _environmentType = EnvironmentVariableTarget.User;
             }
             else
             {
@@ -57,13 +51,11 @@ namespace ZenovaLauncher
                 if (value != null)
                 {
                     _dataDirectory = value;
-                    _environmentType = EnvironmentVariableTarget.Machine;
                 }
                 else
                 {
                     // if not, create user environment variable at default location
                     Environment.SetEnvironmentVariable(_environmentKey, DataDirectory, EnvironmentVariableTarget.User);
-                    _environmentType = EnvironmentVariableTarget.User;
                 }
             }
         }

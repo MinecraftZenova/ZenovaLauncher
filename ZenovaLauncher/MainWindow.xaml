@@ -71,7 +71,7 @@
                             <ui:SymbolIcon Symbol="Home" />
                         </mah:HamburgerMenuIconItem.Icon>
                     </mah:HamburgerMenuIconItem>
-                    
+
                     <mah:HamburgerMenuIconItem
                         Label="News"
                         Tag="Pages/NewsPage.xaml">

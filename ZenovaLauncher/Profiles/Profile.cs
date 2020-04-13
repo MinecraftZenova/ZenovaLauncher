@@ -1,13 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
 
 namespace ZenovaLauncher
 {
@@ -38,8 +31,9 @@ namespace ZenovaLauncher
         public Profile(Profile profile) : this(profile.Name, profile.Version, profile.LastPlayed) { }
 
         [JsonConstructor]
-        public Profile(string name, DateTime lastPlayed, ProfileType type, string versionId) : 
-            this(name, VersionManager.instance.GetVersionFromString(versionId), lastPlayed, type) { }
+        public Profile(string name, DateTime lastPlayed, ProfileType type, string versionId) :
+            this(name, VersionManager.instance.GetVersionFromString(versionId), lastPlayed, type)
+        { }
 
         [JsonProperty]
         public string Name { get; set; }
@@ -50,12 +44,12 @@ namespace ZenovaLauncher
         public ProfileType Type { get; set; }
         public MinecraftVersion Version { get; set; }
         [JsonProperty]
-        public string VersionId { get { return Version.InternalName; } }
-        public string VersionName { get { return Version.Name; } }
-        public bool Beta { get { return Version.Beta; } }
-        public bool Historical { get { return Version.Historical; } }
-        public bool Release { get { return Version.Release; } }
-        public bool Editable { get { return Type == ProfileType.Custom; } }
+        public string VersionId => Version.InternalName;
+        public string VersionName => Version.Name;
+        public bool Beta => Version.Beta;
+        public bool Historical => Version.Historical;
+        public bool Release => Version.Release;
+        public bool Editable => Type == ProfileType.Custom;
 
         public enum ProfileType
         {

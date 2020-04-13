@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace ZenovaLauncher
 {
-    public class MinecraftVersion
+    public class MinecraftVersion : NotifyPropertyChangedBase
     {
         public static Predicate<object> releaseFilter = (object item) =>
         {
@@ -21,12 +18,10 @@ namespace ZenovaLauncher
             return (item as MinecraftVersion).Historical == true;
         };
 
-        private string _uuid;
-
         public MinecraftVersion(Version version, string uuid, bool isBeta = false)
         {
             Version = version;
-            _uuid = uuid;
+            UUID = uuid;
             Beta = isBeta;
         }
         public int SortOrder
@@ -62,12 +57,20 @@ namespace ZenovaLauncher
                 return Name;
             }
         }
-        public string Name { get { return Version.ToString(); } }
         public Version Version { get; set; }
+        public string UUID { get; set; }
         public bool Beta { get; set; }
-        public bool Historical { get { return Version.Major < 1; } }
-        public bool Release { get { return !Beta && !Historical; } }
-        public bool LatestRelease { get { return this == VersionManager.instance.LatestRelease; } }
-        public bool LatestBeta { get { return this == VersionManager.instance.LatestBeta; } }
+        public string Name => Version.ToString();
+        public bool Historical => Version.Major < 1;
+        public bool Release => !Beta && !Historical;
+        public bool LatestRelease => this == VersionManager.instance.LatestRelease;
+        public bool LatestBeta => this == VersionManager.instance.LatestBeta;
+        public string GameDirectory => Path.Combine(VersionManager.instance.VersionsDirectory, "Minecraft-" + Name);
+        public bool IsInstalled => Directory.Exists(GameDirectory);
+        public void UpdateInstallStatus()
+        {
+            OnPropertyChanged("IsInstalled");
+        }
+
     }
 }

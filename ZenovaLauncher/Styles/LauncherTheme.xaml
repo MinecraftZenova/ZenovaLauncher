@@ -13,6 +13,7 @@
     <Color x:Key="LauncherListMediumColor">#19FFFFFF</Color>
     <Color x:Key="LauncherAccentHoverColor">#FF0DD166</Color>
     <Color x:Key="LauncherChromeMediumColor">#FF282828</Color>
+    <Color x:Key="LauncherChromeMedium2Color">#FF262626</Color>
     <Color x:Key="LauncherChromeMediumLowColor">#FF131313</Color>
     <Color x:Key="LauncherChromeLowColor">#FF0E0E0E</Color>
 
@@ -22,6 +23,7 @@
     <SolidColorBrush x:Key="LauncherControlForegroundBaseLowBrush" Color="{ui:StaticColor LauncherBaseLowColor}" />
     <SolidColorBrush x:Key="LauncherControlDisabledBaseMediumHighBrush" Color="{ui:StaticColor LauncherBaseMediumHighColor}" />
     <SolidColorBrush x:Key="LauncherControlPageBackgroundAltMediumBrush" Color="{ui:StaticColor LauncherAltMediumColor}" />
+    <SolidColorBrush x:Key="LauncherControlPageBackgroundChromeMediumBrush" Color="{ui:StaticColor LauncherChromeMedium2Color}" />
     <SolidColorBrush x:Key="LauncherControlHighlightListMediumBrush" Color="{ui:StaticColor LauncherListMediumColor}" />
     <SolidColorBrush x:Key="LauncherControlHighlightListLowBrush" Color="{ui:StaticColor LauncherListLowColor}" />
     <SolidColorBrush x:Key="LauncherControlAccentHoverBrush" Color="{ui:StaticColor LauncherAccentHoverColor}" />

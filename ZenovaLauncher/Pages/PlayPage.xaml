@@ -37,7 +37,7 @@
                     <BeginStoryboard>
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Y" From="-20" To="0" Duration="0:0:0.2" />
-                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.1" To="1.0" Duration="0:0:0.2" />
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2" />
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger>
@@ -51,11 +51,16 @@
             Content="Launch Minecraft"
             HorizontalAlignment="Center" 
             VerticalAlignment="Bottom" 
-            Width="200"
+            Width="240"
             Height="50"
             Margin="0,0,0,20"
-            Style="{DynamicResource AccentButtonStyle}" />
-        <Grid Grid.Row="1" Grid.ColumnSpan="3"  Background="#FF262626" />
+            ui:ControlHelper.CornerRadius="4"
+            FontWeight="Normal"
+            FontSize="14"
+            Style="{DynamicResource LauncherAccentButtonStyle}"
+            Click="PlayButtonClick"
+            IsEnabled="{Binding Path=IsNotDownloading}"/>
+        <Grid Grid.Row="1" Grid.ColumnSpan="3" Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}" />
         <Grid Grid.Row="1" Grid.Column="0">
             <ComboBox
                 Style="{StaticResource ProfileBoxStyle}"

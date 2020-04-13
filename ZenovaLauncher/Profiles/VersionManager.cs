@@ -1,14 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace ZenovaLauncher
 {
@@ -16,12 +13,13 @@ namespace ZenovaLauncher
     {
         public static VersionManager instance;
 
-        private readonly string _cacheFile;
+        private readonly string _cacheFile = "versions.json";
         private readonly HttpClient _client = new HttpClient();
 
-        public VersionManager(string cacheFile)
+        public VersionManager(string versionsDir)
         {
-            _cacheFile = cacheFile;
+            _cacheFile = Path.Combine(versionsDir, _cacheFile);
+            VersionsDirectory = versionsDir;
         }
 
         public MinecraftVersion GetVersionFromString(string versionName)
@@ -33,21 +31,9 @@ namespace ZenovaLauncher
             return this.SingleOrDefault(v => v.Name == versionName);
         }
 
-        public MinecraftVersion LatestRelease
-        {
-            get 
-            {
-                return this.FirstOrDefault(v => v.Release);
-            }
-        }
-
-        public MinecraftVersion LatestBeta
-        {
-            get
-            {
-                return this.FirstOrDefault(v => v.Beta);
-            }
-        }
+        public string VersionsDirectory { get; }
+        public MinecraftVersion LatestRelease => this.FirstOrDefault(v => v.Release);
+        public MinecraftVersion LatestBeta => this.FirstOrDefault(v => v.Beta);
 
         private void ParseList(JArray data)
         {

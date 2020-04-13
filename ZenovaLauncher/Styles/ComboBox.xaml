@@ -104,7 +104,7 @@
     </Style>
 
     <Style TargetType="ComboBoxItem" BasedOn="{StaticResource DefaultComboBoxItemStyle}" />
-    
+
     <Style x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
         <Setter Property="OverridesDefaultStyle" Value="true" />
         <Setter Property="IsTabStop" Value="false" />
@@ -120,7 +120,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style x:Key="ComboBoxTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
         <Setter Property="Template">
             <Setter.Value>

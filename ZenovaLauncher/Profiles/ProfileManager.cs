@@ -1,11 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ZenovaLauncher
 {
@@ -64,12 +61,12 @@ namespace ZenovaLauncher
         public void LoadProfiles()
         {
             string[] profileFiles = Directory.GetFiles(_profilesDir, "*.json", SearchOption.AllDirectories);
-            foreach(string file in profileFiles)
+            foreach (string file in profileFiles)
             {
                 List<Profile> profileList = JsonConvert.DeserializeObject<List<Profile>>(File.ReadAllText(file));
                 foreach (Profile p in profileList)
                 {
-                    switch(p.Type)
+                    switch (p.Type)
                     {
                         case Profile.ProfileType.Custom:
                             Add(p);
