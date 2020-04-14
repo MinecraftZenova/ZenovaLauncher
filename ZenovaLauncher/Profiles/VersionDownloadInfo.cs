@@ -47,7 +47,7 @@ namespace ZenovaLauncher
                     return "Downloading...";
                 if (IsExtracting)
                     return "Extracting...";
-                return "Downloading... " + (DownloadedBytes / 1024 / 1024) + "MiB/" + (TotalSize / 1024 / 1024) + "MiB";
+                return "Downloading " + ((double)DownloadedBytes / 1024 / 1024).ToString("N2") + " MB / " + ((double)TotalSize / 1024 / 1024).ToString("N2") + " MB";
             }
         }
 

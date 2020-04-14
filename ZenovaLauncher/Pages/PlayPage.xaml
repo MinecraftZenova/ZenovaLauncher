@@ -112,6 +112,11 @@
                 Maximum="{Binding Path=DownloadInfo.TotalSize}"
                 local:ProgressBarSmoother.SmoothValue="{Binding Path=DownloadInfo.DownloadedBytes}"
                 IsIndeterminate="{Binding Path=DownloadInfo.IsProgressIndeterminate}" />
+            <TextBlock
+                Margin="25,0,0,20"
+                VerticalAlignment="Center"
+                Text="{Binding Path=DownloadInfo.DisplayStatus}"
+                FontSize="12" />
         </Grid>
         <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}" />
         <Grid Grid.Row="2" Grid.Column="0">
