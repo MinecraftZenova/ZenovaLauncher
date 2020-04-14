@@ -22,14 +22,21 @@ namespace ZenovaLauncher
             set { _downloadInfo = value; OnPropertyChanged("DownloadInfo"); OnPropertyChanged("IsDownloading"); OnPropertyChanged("IsNotDownloading"); }
         }
 
+        public Profile LaunchedProfile { get; set; }
+
         public void LaunchProfile(Profile p)
         {
             if (!IsDownloading && !p.Version.IsInstalled)
-                DownloadVersion(p.Version);
+            {
+                Download(p);
+            }
         }
 
-        public void DownloadVersion(MinecraftVersion v)
+        public void Download(Profile p)
         {
+            LaunchedProfile = p;
+            p.UpdateLaunchStatus();
+            MinecraftVersion v = p.Version;
             if (v.Beta)
                 return;
 
@@ -95,7 +102,9 @@ namespace ZenovaLauncher
                     return;
                 }
                 DownloadInfo = null;
+                LaunchedProfile = null;
                 v.UpdateInstallStatus();
+                p.UpdateLaunchStatus();
             });
         }
     }

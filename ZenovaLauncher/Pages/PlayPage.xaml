@@ -10,6 +10,30 @@
       mc:Ignorable="d">
     <Page.Resources>
         <ImageBrush x:Key="ImageBackground" ImageSource="/Assets/zenova_background.png" Stretch="UniformToFill" />
+        <Grid x:Key="LaunchText">
+            <TextBlock Text="Launch Minecraft" FontSize="14"/>
+        </Grid>
+        <Grid x:Key="LoadingDots">
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="Grid.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard RepeatBehavior="Forever">
+                            <DoubleAnimation Storyboard.Target="{Binding Source={x:Reference point1}}" BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From=".1" To=".5" AutoReverse="True" Duration="0:0:0.5"/>
+                            <DoubleAnimation Storyboard.Target="{Binding Source={x:Reference point2}}" BeginTime="0:0:0.25" Storyboard.TargetProperty="Opacity" From=".1" To=".5" AutoReverse="True" Duration="0:0:0.5"/>
+                            <DoubleAnimation Storyboard.Target="{Binding Source={x:Reference point3}}" BeginTime="0:0:0.5" Storyboard.TargetProperty="Opacity" From=".1" To=".5" AutoReverse="True" Duration="0:0:0.5"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Grid.Triggers>
+            <ui:SimpleStackPanel Margin="0,8,0,0" Orientation="Horizontal" Spacing="2">
+                <Rectangle x:Name="point1" Fill="White" Width="4" Height="4" Opacity="0.1" SnapsToDevicePixels="True"/>
+                <Rectangle x:Name="point2" Fill="White" Width="4" Height="4" Opacity="0.1" SnapsToDevicePixels="True"/>
+                <Rectangle x:Name="point3" Fill="White" Width="4" Height="4" Opacity="0.1" SnapsToDevicePixels="True"/>
+            </ui:SimpleStackPanel>
+        </Grid>
+        <local:BooleanValueConverter x:Key="PlayButtonContent"
+            TrueValue="{StaticResource LaunchText}"
+            FalseValue="{StaticResource LoadingDots}" />
     </Page.Resources>
 
     <Grid>
@@ -51,7 +75,6 @@
             Grid.Column="1"
             Grid.RowSpan="3"
             Panel.ZIndex="2"
-            Content="Launch Minecraft"
             HorizontalAlignment="Center" 
             VerticalAlignment="Bottom" 
             Width="240"
@@ -62,7 +85,9 @@
             FontSize="14"
             Style="{DynamicResource LauncherAccentButtonStyle}"
             Click="PlayButtonClick"
-            IsEnabled="{Binding Path=IsNotDownloading}"/>
+            Content="{Binding Path=IsNotDownloading, Converter={StaticResource PlayButtonContent}}"
+            IsEnabled="{Binding Path=IsNotDownloading}">
+        </Button>
         <Grid 
             x:Name="ProgressGrid"
             Grid.Row="1"
@@ -109,13 +134,13 @@
                 ui:ControlHelper.CornerRadius="0"
                 Background="{DynamicResource LauncherControlTransientLowBackgroundBrush}"
                 Minimum="0"
-                Maximum="{Binding Path=DownloadInfo.TotalSize}"
-                local:ProgressBarSmoother.SmoothValue="{Binding Path=DownloadInfo.DownloadedBytes}"
-                IsIndeterminate="{Binding Path=DownloadInfo.IsProgressIndeterminate}" />
+                Maximum="{Binding DownloadInfo.TotalSize}"
+                Value="{Binding DownloadInfo.DownloadedBytes}"
+                IsIndeterminate="{Binding DownloadInfo.IsProgressIndeterminate}" />
             <TextBlock
                 Margin="25,0,0,20"
                 VerticalAlignment="Center"
-                Text="{Binding Path=DownloadInfo.DisplayStatus}"
+                Text="{Binding DownloadInfo.DisplayStatus}"
                 FontSize="12" />
         </Grid>
         <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}" />

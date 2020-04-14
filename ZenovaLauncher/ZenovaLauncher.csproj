@@ -67,7 +67,7 @@
     <Compile Include="Controls\LauncherSideMenu.cs" />
     <Compile Include="Controls\LauncherSideMenuArgs.cs" />
     <Compile Include="Controls\LauncherTabControl.cs" />
-    <Compile Include="Utils\ProgressBarSmoother.cs" />
+    <Compile Include="Utils\BooleanValueConverter.cs" />
     <Compile Include="Dialogs\EditProfileDialog.xaml.cs">
       <DependentUpon>EditProfileDialog.xaml</DependentUpon>
     </Compile>

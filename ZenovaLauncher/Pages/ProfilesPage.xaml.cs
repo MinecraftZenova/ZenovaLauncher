@@ -22,6 +22,7 @@ namespace ZenovaLauncher
             ReleasesBox.DataContext = Preferences.instance;
             BetasBox.DataContext = Preferences.instance;
             HistoricalBox.DataContext = Preferences.instance;
+            ProgressGrid.ToString();
 
             SortProfileList(Preferences.instance.ProfileSorting);
             FilterProfileList();

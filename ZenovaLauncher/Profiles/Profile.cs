@@ -5,7 +5,7 @@ using System;
 namespace ZenovaLauncher
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class Profile
+    public class Profile : NotifyPropertyChangedBase
     {
         public static Predicate<object> releaseFilter = (object item) =>
         {
@@ -50,6 +50,12 @@ namespace ZenovaLauncher
         public bool Historical => Version.Historical;
         public bool Release => Version.Release;
         public bool Editable => Type == ProfileType.Custom;
+        public bool Launching => ProfileLauncher.instance.LaunchedProfile == this;
+
+        public void UpdateLaunchStatus()
+        {
+            OnPropertyChanged("Launching");
+        }
 
         public enum ProfileType
         {
