@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Management.Core;
 using Windows.Management.Deployment;
@@ -20,27 +21,29 @@ namespace ZenovaLauncher
 
         private volatile bool _hasLaunchTask = false;
 
-        public bool IsDownloading => DownloadInfo != null;
-        public bool IsNotDownloading => !IsDownloading;
+        public bool IsLaunching => LaunchInfo != null;
+        public bool IsNotLaunching => !IsLaunching;
 
-        private VersionDownloadInfo _downloadInfo;
-        public VersionDownloadInfo DownloadInfo
+        private ProfileLaunchInfo _launchInfo;
+        public ProfileLaunchInfo LaunchInfo
         {
-            get { return _downloadInfo; }
-            set { _downloadInfo = value; OnPropertyChanged("DownloadInfo"); OnPropertyChanged("IsDownloading"); OnPropertyChanged("IsNotDownloading"); }
+            get { return _launchInfo; }
+            set { _launchInfo = value; OnPropertyChanged("LaunchInfo"); OnPropertyChanged("IsLaunching"); OnPropertyChanged("IsNotLaunching"); }
         }
 
         public Profile LaunchedProfile { get; set; }
 
         public void LaunchProfile(Profile p)
         {
-            if (!IsDownloading)
+            if (!IsLaunching)
             {
+                LaunchedProfile = p;
+                p.UpdateLaunchStatus();
                 if (!p.Version.IsInstalled)
                 {
                     Task.Run(async () =>
                     {
-                        Download(p);
+                        await Download(p);
                         Launch(p);
                     });
                 }
@@ -193,16 +196,14 @@ namespace ZenovaLauncher
             RestoreMinecraftDataFromReinstall();
         }
 
-        private async void Download(Profile p)
+        private async Task Download(Profile p)
         {
-            LaunchedProfile = p;
-            p.UpdateLaunchStatus();
             MinecraftVersion v = p.Version;
             if (v.Beta)
                 return;
 
             CancellationTokenSource cancelSource = new CancellationTokenSource();
-            DownloadInfo = new VersionDownloadInfo
+            LaunchInfo = new ProfileLaunchInfo()
             {
                 IsInitializing = true,
                 CancelCommand = new RelayCommand((o) => cancelSource.Cancel())
@@ -224,14 +225,14 @@ namespace ZenovaLauncher
             {
                 await downloader.Download(v.UUID, "1", dlPath, (current, total) =>
                 {
-                    if (DownloadInfo.IsInitializing)
+                    if (LaunchInfo.IsInitializing)
                     {
                         Debug.WriteLine("Actual download started");
-                        DownloadInfo.IsInitializing = false;
+                        LaunchInfo.IsInitializing = false;
                         if (total.HasValue)
-                            DownloadInfo.TotalSize = total.Value;
+                            LaunchInfo.TotalSize = total.Value;
                     }
-                    DownloadInfo.DownloadedBytes = current;
+                    LaunchInfo.DownloadedBytes = current;
                 }, cancelSource.Token);
                 Debug.WriteLine("Download complete");
             }
@@ -240,30 +241,82 @@ namespace ZenovaLauncher
                 Debug.WriteLine("Download failed:\n" + e.ToString());
                 if (!(e is TaskCanceledException))
                     MessageBox.Show("Download failed:\n" + e.ToString());
-                DownloadInfo = null;
+                LaunchInfo = null;
                 return;
             }
             try
             {
-                DownloadInfo.IsExtracting = true;
+                LaunchInfo.IsExtracting = true;
                 string dirPath = v.GameDirectory;
                 if (Directory.Exists(dirPath))
                     Directory.Delete(dirPath, true);
                 ZipFile.ExtractToDirectory(dlPath, dirPath);
-                DownloadInfo = null;
+                LaunchInfo = null;
                 File.Delete(Path.Combine(dirPath, "AppxSignature.p7x"));
             }
             catch (Exception e)
             {
                 Debug.WriteLine("Extraction failed:\n" + e.ToString());
                 MessageBox.Show("Extraction failed:\n" + e.ToString());
-                DownloadInfo = null;
+                LaunchInfo = null;
                 return;
             }
-            DownloadInfo = null;
+            LaunchInfo = null;
             LaunchedProfile = null;
             v.UpdateInstallStatus();
             p.UpdateLaunchStatus();
+        }
+
+        public class ProfileLaunchInfo : NotifyPropertyChangedBase
+        {
+
+            private bool _isInitializing;
+            private bool _isExtracting;
+            private long _downloadedBytes;
+            private long _totalSize;
+
+            public bool IsInitializing
+            {
+                get { return _isInitializing; }
+                set { _isInitializing = value; OnPropertyChanged("IsProgressIndeterminate"); OnPropertyChanged("DisplayStatus"); }
+            }
+
+            public bool IsExtracting
+            {
+                get { return _isExtracting; }
+                set { _isExtracting = value; OnPropertyChanged("IsProgressIndeterminate"); OnPropertyChanged("DisplayStatus"); }
+            }
+
+            public bool IsProgressIndeterminate
+            {
+                get { return IsInitializing || IsExtracting; }
+            }
+
+            public long DownloadedBytes
+            {
+                get { return _downloadedBytes; }
+                set { _downloadedBytes = value; OnPropertyChanged("DownloadedBytes"); OnPropertyChanged("DisplayStatus"); }
+            }
+
+            public long TotalSize
+            {
+                get { return _totalSize; }
+                set { _totalSize = value; OnPropertyChanged("TotalSize"); OnPropertyChanged("DisplayStatus"); }
+            }
+
+            public string DisplayStatus
+            {
+                get
+                {
+                    if (IsInitializing)
+                        return "Preparing...";
+                    if (IsExtracting)
+                        return "Extracting...";
+                    return "Downloading " + ((double)DownloadedBytes / 1024 / 1024).ToString("N2") + " MB / " + ((double)TotalSize / 1024 / 1024).ToString("N2") + " MB";
+                }
+            }
+
+            public ICommand CancelCommand { get; set; }
         }
     }
 }

@@ -75,7 +75,6 @@
       <DependentUpon>AddProfileDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Profiles\ProfileLauncher.cs" />
-    <Compile Include="Profiles\VersionDownloadInfo.cs" />
     <Compile Include="Utils\NotifyPropertyChangedBase.cs" />
     <Compile Include="Pages\ModsPage.xaml.cs">
       <DependentUpon>ModsPage.xaml</DependentUpon>

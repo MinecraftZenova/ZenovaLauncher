@@ -85,8 +85,8 @@
             FontSize="14"
             Style="{DynamicResource LauncherAccentButtonStyle}"
             Click="PlayButtonClick"
-            Content="{Binding Path=IsNotDownloading, Converter={StaticResource PlayButtonContent}}"
-            IsEnabled="{Binding Path=IsNotDownloading}">
+            Content="{Binding Path=IsNotLaunching, Converter={StaticResource PlayButtonContent}}"
+            IsEnabled="{Binding Path=IsNotLaunching}">
         </Button>
         <Grid 
             x:Name="ProgressGrid"
@@ -94,7 +94,7 @@
             Grid.ColumnSpan="3"
             HorizontalAlignment="Stretch"
             Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}"
-            Visibility="{Binding Path=IsDownloading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            Visibility="{Binding Path=IsLaunching, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid.RenderTransform>
                 <TranslateTransform />
             </Grid.RenderTransform>
@@ -103,7 +103,7 @@
                     <i:Interaction.Behaviors>
                         <ei:ConditionBehavior>
                             <ei:ConditionalExpression>
-                                <ei:ComparisonCondition LeftOperand="{Binding Path=IsDownloading}" RightOperand="True"/>
+                                <ei:ComparisonCondition LeftOperand="{Binding Path=IsLaunching}" RightOperand="True"/>
                             </ei:ConditionalExpression>
                         </ei:ConditionBehavior>
                     </i:Interaction.Behaviors>
@@ -116,7 +116,7 @@
                         </ei:ControlStoryboardAction.Storyboard>
                     </ei:ControlStoryboardAction>
                 </i:EventTrigger>
-                <ei:DataTrigger Binding="{Binding Path=IsDownloading}" Value="True">
+                <ei:DataTrigger Binding="{Binding Path=IsLaunching}" Value="True">
                     <ei:ControlStoryboardAction ControlStoryboardOption="Play">
                         <ei:ControlStoryboardAction.Storyboard>
                             <Storyboard>
@@ -134,13 +134,13 @@
                 ui:ControlHelper.CornerRadius="0"
                 Background="{DynamicResource LauncherControlTransientLowBackgroundBrush}"
                 Minimum="0"
-                Maximum="{Binding DownloadInfo.TotalSize}"
-                Value="{Binding DownloadInfo.DownloadedBytes}"
-                IsIndeterminate="{Binding DownloadInfo.IsProgressIndeterminate}" />
+                Maximum="{Binding LaunchInfo.TotalSize}"
+                Value="{Binding LaunchInfo.DownloadedBytes}"
+                IsIndeterminate="{Binding LaunchInfo.IsProgressIndeterminate}" />
             <TextBlock
                 Margin="25,0,0,20"
                 VerticalAlignment="Center"
-                Text="{Binding DownloadInfo.DisplayStatus}"
+                Text="{Binding LaunchInfo.DisplayStatus}"
                 FontSize="12" />
         </Grid>
         <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}" />
