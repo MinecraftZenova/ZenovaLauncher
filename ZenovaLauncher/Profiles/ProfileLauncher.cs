@@ -19,8 +19,6 @@ namespace ZenovaLauncher
 
         private static readonly string MINECRAFT_PACKAGE_FAMILY = "Microsoft.MinecraftUWP_8wekyb3d8bbwe";
 
-        private volatile bool _hasLaunchTask = false;
-
         public bool IsLaunching => LaunchInfo != null;
         public bool IsNotLaunching => !IsLaunching;
 
@@ -31,65 +29,68 @@ namespace ZenovaLauncher
             set { _launchInfo = value; OnPropertyChanged("LaunchInfo"); OnPropertyChanged("IsLaunching"); OnPropertyChanged("IsNotLaunching"); }
         }
 
-        public Profile LaunchedProfile { get; set; }
+        private Profile _launchedProfile;
+        public Profile LaunchedProfile
+        {
+            get { return _launchedProfile; }
+            set
+            {
+                Profile p = value != null ? value : _launchedProfile;
+                _launchedProfile = value;
+                OnPropertyChanged("LaunchedProfile");
+                p.UpdateLaunchStatus();
+            }
+        }
 
         public void LaunchProfile(Profile p)
         {
             if (!IsLaunching)
             {
-                LaunchedProfile = p;
-                p.UpdateLaunchStatus();
-                if (!p.Version.IsInstalled)
+                Task.Run(async () =>
                 {
-                    Task.Run(async () =>
-                    {
-                        await Download(p);
-                        Launch(p);
-                    });
-                }
-                else
-                {
-                    Launch(p);
-                }
+                    LaunchInfo = new ProfileLaunchInfo { Status = LaunchStatus.InitializingDownload };
+                    LaunchedProfile = p;
+                    bool installStatus = true;
+
+                    if (!p.Version.IsInstalled)
+                        installStatus = await Download(p);
+
+                    if (installStatus)
+                        await Launch(p);
+
+                    LaunchInfo = null;
+                    LaunchedProfile = null;
+                });
             }
         }
 
-        private void Launch(Profile p)
+        private async Task Launch(Profile p)
         {
-            if (_hasLaunchTask)
-                return;
-            _hasLaunchTask = true;
-            Task.Run(async () =>
+            string gameDir = Path.GetFullPath(p.Version.GameDirectory);
+            try
             {
-                string gameDir = Path.GetFullPath(p.Version.GameDirectory);
-                try
-                {
-                    await ReRegisterPackage(gameDir);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("App re-register failed:\n" + e.ToString());
-                    MessageBox.Show("App re-register failed:\n" + e.ToString());
-                    _hasLaunchTask = false;
-                    return;
-                }
+                await ReRegisterPackage(gameDir);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("App re-register failed:\n" + e.ToString());
+                MessageBox.Show("App re-register failed:\n" + e.ToString());
+                return;
+            }
 
-                try
-                {
-                    var pkg = await AppDiagnosticInfo.RequestInfoForPackageAsync(MINECRAFT_PACKAGE_FAMILY);
-                    if (pkg.Count > 0)
-                        await pkg[0].LaunchAsync();
-                    Debug.WriteLine("App launch finished!");
-                    _hasLaunchTask = false;
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("App launch failed:\n" + e.ToString());
-                    MessageBox.Show("App launch failed:\n" + e.ToString());
-                    _hasLaunchTask = false;
-                    return;
-                }
-            });
+            try
+            {
+                var pkg = await AppDiagnosticInfo.RequestInfoForPackageAsync(MINECRAFT_PACKAGE_FAMILY);
+                if (pkg.Count > 0)
+                    await pkg[0].LaunchAsync();
+                Debug.WriteLine("App launch finished!");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("App launch failed:\n" + e.ToString());
+                MessageBox.Show("App launch failed:\n" + e.ToString());
+                return;
+            }
         }
 
         private async Task DeploymentProgressWrapper(IAsyncOperationWithProgress<DeploymentResult, DeploymentProgress> t)
@@ -196,18 +197,15 @@ namespace ZenovaLauncher
             RestoreMinecraftDataFromReinstall();
         }
 
-        private async Task Download(Profile p)
+        private async Task<bool> Download(Profile p)
         {
             MinecraftVersion v = p.Version;
+            // TODO remove this once Beta Downloading is implemented!
             if (v.Beta)
-                return;
+                return false;
 
             CancellationTokenSource cancelSource = new CancellationTokenSource();
-            LaunchInfo = new ProfileLaunchInfo()
-            {
-                IsInitializing = true,
-                CancelCommand = new RelayCommand((o) => cancelSource.Cancel())
-            };
+            LaunchInfo.CancelCommand = new RelayCommand((o) => cancelSource.Cancel());
 
             Debug.WriteLine("Download start");
             string dlPath = Path.Combine(VersionManager.instance.VersionsDirectory, "Minecraft-" + v.Name + ".Appx");
@@ -225,12 +223,12 @@ namespace ZenovaLauncher
             {
                 await downloader.Download(v.UUID, "1", dlPath, (current, total) =>
                 {
-                    if (LaunchInfo.IsInitializing)
+                    if (LaunchInfo.Status == LaunchStatus.InitializingDownload)
                     {
                         Debug.WriteLine("Actual download started");
-                        LaunchInfo.IsInitializing = false;
+                        LaunchInfo.Status = LaunchStatus.Downloading;
                         if (total.HasValue)
-                            LaunchInfo.TotalSize = total.Value;
+                            LaunchInfo.DownloadSize = total.Value;
                     }
                     LaunchInfo.DownloadedBytes = current;
                 }, cancelSource.Token);
@@ -241,82 +239,140 @@ namespace ZenovaLauncher
                 Debug.WriteLine("Download failed:\n" + e.ToString());
                 if (!(e is TaskCanceledException))
                     MessageBox.Show("Download failed:\n" + e.ToString());
-                LaunchInfo = null;
-                return;
+                return false;
             }
             try
             {
-                LaunchInfo.IsExtracting = true;
+                LaunchInfo.Status = LaunchStatus.InitializingExtraction;
                 string dirPath = v.GameDirectory;
                 if (Directory.Exists(dirPath))
                     Directory.Delete(dirPath, true);
-                ZipFile.ExtractToDirectory(dlPath, dirPath);
-                LaunchInfo = null;
+                Progress<ZipProgress> progress = new Progress<ZipProgress>();
+                progress.ProgressChanged += (sender, zipProgress) =>
+                {
+                    if (LaunchInfo.Status == LaunchStatus.InitializingExtraction)
+                    {
+                        Debug.WriteLine("Extraction started");
+                        LaunchInfo.Status = LaunchStatus.Extracting;
+                        LaunchInfo.ZipTotal = zipProgress.Total;
+                    }
+                    LaunchInfo.ZipProcessed = zipProgress.Processed;
+                    LaunchInfo.ZipCurrentItem = zipProgress.CurrentItem;
+                };
+                ZipArchive zipFile = new ZipArchive(new FileStream(dlPath, FileMode.Open));
+                zipFile.ExtractToDirectory(dirPath, progress);
                 File.Delete(Path.Combine(dirPath, "AppxSignature.p7x"));
             }
             catch (Exception e)
             {
                 Debug.WriteLine("Extraction failed:\n" + e.ToString());
                 MessageBox.Show("Extraction failed:\n" + e.ToString());
-                LaunchInfo = null;
-                return;
+                return false;
             }
-            LaunchInfo = null;
-            LaunchedProfile = null;
             v.UpdateInstallStatus();
-            p.UpdateLaunchStatus();
+            return true;
         }
 
         public class ProfileLaunchInfo : NotifyPropertyChangedBase
         {
 
-            private bool _isInitializing;
-            private bool _isExtracting;
+            private LaunchStatus _status;
             private long _downloadedBytes;
-            private long _totalSize;
+            private long _downloadSize;
+            private long _zipProcessed;
+            private long _zipTotal;
+            private string _zipCurrentItem;
 
-            public bool IsInitializing
+            public LaunchStatus Status
             {
-                get { return _isInitializing; }
-                set { _isInitializing = value; OnPropertyChanged("IsProgressIndeterminate"); OnPropertyChanged("DisplayStatus"); }
-            }
-
-            public bool IsExtracting
-            {
-                get { return _isExtracting; }
-                set { _isExtracting = value; OnPropertyChanged("IsProgressIndeterminate"); OnPropertyChanged("DisplayStatus"); }
+                get { return _status; }
+                set { _status = value; OnPropertyChanged("Status"); OnPropertyChanged("IsProgressIndeterminate"); OnPropertyChanged("DisplayStatus"); }
             }
 
             public bool IsProgressIndeterminate
             {
-                get { return IsInitializing || IsExtracting; }
+                get { return Status == LaunchStatus.InitializingDownload || Status == LaunchStatus.InitializingExtraction; }
             }
 
             public long DownloadedBytes
             {
                 get { return _downloadedBytes; }
-                set { _downloadedBytes = value; OnPropertyChanged("DownloadedBytes"); OnPropertyChanged("DisplayStatus"); }
+                set { _downloadedBytes = value; OnPropertyChanged("DownloadedBytes"); OnPropertyChanged("DisplayStatus"); OnPropertyChanged("ProgressCurrent"); }
             }
 
-            public long TotalSize
+            public long DownloadSize
             {
-                get { return _totalSize; }
-                set { _totalSize = value; OnPropertyChanged("TotalSize"); OnPropertyChanged("DisplayStatus"); }
+                get { return _downloadSize; }
+                set { _downloadSize = value; OnPropertyChanged("DownloadSize"); OnPropertyChanged("DisplayStatus"); OnPropertyChanged("ProgressMax"); }
+            }
+
+            public long ZipProcessed
+            {
+                get { return _zipProcessed; }
+                set { _zipProcessed = value; OnPropertyChanged("ZipProcessed"); OnPropertyChanged("DisplayStatus"); OnPropertyChanged("ProgressCurrent"); }
+            }
+
+            public long ZipTotal
+            {
+                get { return _zipTotal; }
+                set { _zipTotal = value; OnPropertyChanged("ZipTotal"); OnPropertyChanged("DisplayStatus"); OnPropertyChanged("ProgressMax"); }
+            }
+
+            public string ZipCurrentItem
+            {
+                get { return _zipCurrentItem; }
+                set { _zipCurrentItem = value; OnPropertyChanged("ZipCurrentItem"); OnPropertyChanged("DisplayStatus"); }
+            }
+
+            public long ProgressCurrent
+            {
+                get
+                {
+                    if (Status == LaunchStatus.Extracting)
+                        return ZipProcessed;
+                    if (Status == LaunchStatus.Downloading)
+                        return DownloadedBytes;
+                    return 0;
+                }
+            }
+
+            public long ProgressMax
+            {
+                get
+                {
+                    if (Status == LaunchStatus.Extracting)
+                        return ZipTotal;
+                    if (Status == LaunchStatus.Downloading)
+                        return DownloadSize;
+                    return 1;
+                }
             }
 
             public string DisplayStatus
             {
                 get
                 {
-                    if (IsInitializing)
+                    if (Status == LaunchStatus.InitializingDownload)
                         return "Preparing...";
-                    if (IsExtracting)
+                    if (Status == LaunchStatus.Downloading)
+                        return "Downloading " + ((double)DownloadedBytes / 1024 / 1024).ToString("N2") + " MB / " + ((double)DownloadSize / 1024 / 1024).ToString("N2") + " MB";
+                    if (Status == LaunchStatus.InitializingExtraction)
                         return "Extracting...";
-                    return "Downloading " + ((double)DownloadedBytes / 1024 / 1024).ToString("N2") + " MB / " + ((double)TotalSize / 1024 / 1024).ToString("N2") + " MB";
+                    if (Status == LaunchStatus.Extracting)
+                        return "Extracting " + ZipCurrentItem;
+                    return "";
                 }
             }
 
             public ICommand CancelCommand { get; set; }
+        }
+
+        public enum LaunchStatus
+        {
+            InitializingDownload,
+            Downloading,
+            InitializingExtraction,
+            Extracting
         }
     }
 }

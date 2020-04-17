@@ -134,8 +134,8 @@
                 ui:ControlHelper.CornerRadius="0"
                 Background="{DynamicResource LauncherControlTransientLowBackgroundBrush}"
                 Minimum="0"
-                Maximum="{Binding LaunchInfo.TotalSize}"
-                Value="{Binding LaunchInfo.DownloadedBytes}"
+                Maximum="{Binding LaunchInfo.ProgressMax, Mode=OneWay}"
+                Value="{Binding LaunchInfo.ProgressCurrent, Mode=OneWay}"
                 IsIndeterminate="{Binding LaunchInfo.IsProgressIndeterminate}" />
             <TextBlock
                 Margin="25,0,0,20"

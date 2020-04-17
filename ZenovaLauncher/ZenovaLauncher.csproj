@@ -44,6 +44,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -94,6 +95,7 @@
     <Compile Include="Profiles\ProfileManager.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Utils\WUProtocol.cs" />
+    <Compile Include="Utils\ZipProgress.cs" />
     <Page Include="Dialogs\EditProfileDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
