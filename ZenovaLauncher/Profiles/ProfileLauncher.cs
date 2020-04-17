@@ -66,10 +66,9 @@ namespace ZenovaLauncher
 
         private async Task Launch(Profile p)
         {
-            string gameDir = Path.GetFullPath(p.Version.GameDirectory);
             try
             {
-                await ReRegisterPackage(gameDir);
+                await ReRegisterPackage(Path.GetFullPath(p.Version.GameDirectory));
             }
             catch (Exception e)
             {

@@ -135,7 +135,7 @@
                 Background="{DynamicResource LauncherControlTransientLowBackgroundBrush}"
                 Minimum="0"
                 Maximum="{Binding LaunchInfo.ProgressMax, Mode=OneWay}"
-                Value="{Binding LaunchInfo.ProgressCurrent, Mode=OneWay}"
+                local:ProgressBarSmoother.SmoothValue="{Binding LaunchInfo.ProgressCurrent, Mode=OneWay}"
                 IsIndeterminate="{Binding LaunchInfo.IsProgressIndeterminate}" />
             <TextBlock
                 Margin="25,0,0,20"

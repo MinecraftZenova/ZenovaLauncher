@@ -93,6 +93,7 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Profiles\ProfileManager.cs" />
+    <Compile Include="Utils\ProgressBarSmoother.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Utils\WUProtocol.cs" />
     <Compile Include="Utils\ZipProgress.cs" />
