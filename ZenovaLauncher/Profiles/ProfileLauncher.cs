@@ -55,6 +55,7 @@ namespace ZenovaLauncher
                     if (!p.Version.IsInstalled)
                         installStatus = await Download(p);
 
+                    LaunchInfo.Status = LaunchStatus.InitializingLaunch;
                     if (installStatus)
                         await Launch(p);
 
@@ -79,6 +80,7 @@ namespace ZenovaLauncher
 
             try
             {
+                LaunchInfo.Status = LaunchStatus.Launching;
                 var pkg = await AppDiagnosticInfo.RequestInfoForPackageAsync(MINECRAFT_PACKAGE_FAMILY);
                 if (pkg.Count > 0)
                     await pkg[0].LaunchAsync();
@@ -92,11 +94,14 @@ namespace ZenovaLauncher
             }
         }
 
-        private async Task DeploymentProgressWrapper(IAsyncOperationWithProgress<DeploymentResult, DeploymentProgress> t)
+        private async Task DeploymentProgressWrapper(IAsyncOperationWithProgress<DeploymentResult, DeploymentProgress> t, LaunchStatus status)
         {
             TaskCompletionSource<int> src = new TaskCompletionSource<int>();
             t.Progress += (v, p) =>
             {
+                if (LaunchInfo.Status != status)
+                    LaunchInfo.Status = status;
+                LaunchInfo.LaunchCurrent = p.percentage;
                 Debug.WriteLine("Deployment progress: " + p.state + " " + p.percentage + "%");
             };
             t.Completed += (v, p) =>
@@ -179,19 +184,19 @@ namespace ZenovaLauncher
                 if (!pkg.IsDevelopmentMode)
                 {
                     BackupMinecraftDataForRemoval();
-                    await DeploymentProgressWrapper(new PackageManager().RemovePackageAsync(pkg.Id.FullName, 0));
+                    await DeploymentProgressWrapper(new PackageManager().RemovePackageAsync(pkg.Id.FullName, 0), LaunchStatus.LaunchRemovePackage);
                 }
                 else
                 {
                     Debug.WriteLine("Package is in development mode");
-                    await DeploymentProgressWrapper(new PackageManager().RemovePackageAsync(pkg.Id.FullName, RemovalOptions.PreserveApplicationData));
+                    await DeploymentProgressWrapper(new PackageManager().RemovePackageAsync(pkg.Id.FullName, RemovalOptions.PreserveApplicationData), LaunchStatus.LaunchRemovePackage);
                 }
                 Debug.WriteLine("Removal of package done: " + pkg.Id.FullName);
                 break;
             }
             Debug.WriteLine("Registering package");
             string manifestPath = Path.Combine(gameDir, "AppxManifest.xml");
-            await DeploymentProgressWrapper(new PackageManager().RegisterPackageAsync(new Uri(manifestPath), null, DeploymentOptions.DevelopmentMode));
+            await DeploymentProgressWrapper(new PackageManager().RegisterPackageAsync(new Uri(manifestPath), null, DeploymentOptions.DevelopmentMode), LaunchStatus.LaunchRegisterPackage);
             Debug.WriteLine("App re-register done!");
             RestoreMinecraftDataFromReinstall();
         }
@@ -229,7 +234,7 @@ namespace ZenovaLauncher
                         if (total.HasValue)
                             LaunchInfo.DownloadSize = total.Value;
                     }
-                    LaunchInfo.DownloadedBytes = current;
+                    LaunchInfo.DownloadedBytes += current;
                 }, cancelSource.Token);
                 Debug.WriteLine("Download complete");
             }
@@ -281,16 +286,17 @@ namespace ZenovaLauncher
             private long _zipProcessed;
             private long _zipTotal;
             private string _zipCurrentItem;
+            private long _launchCurrent;
 
             public LaunchStatus Status
             {
                 get { return _status; }
-                set { _status = value; OnPropertyChanged("Status"); OnPropertyChanged("IsProgressIndeterminate"); OnPropertyChanged("DisplayStatus"); }
+                set { _status = value; OnPropertyChanged("Status"); OnPropertyChanged("IsProgressIndeterminate"); OnPropertyChanged("DisplayStatus"); OnPropertyChanged("AnimateTime"); OnPropertyChanged("ProgressMax"); }
             }
 
             public bool IsProgressIndeterminate
             {
-                get { return Status == LaunchStatus.InitializingDownload || Status == LaunchStatus.InitializingExtraction; }
+                get { return Status == LaunchStatus.InitializingDownload || Status == LaunchStatus.InitializingExtraction || Status == LaunchStatus.InitializingLaunch || Status == LaunchStatus.Launching; }
             }
 
             public long DownloadedBytes
@@ -323,6 +329,14 @@ namespace ZenovaLauncher
                 set { _zipCurrentItem = value; OnPropertyChanged("ZipCurrentItem"); OnPropertyChanged("DisplayStatus"); }
             }
 
+            public long LaunchCurrent
+            {
+                get { return _launchCurrent; }
+                set { _launchCurrent = value; OnPropertyChanged("LaunchCurrent"); OnPropertyChanged("DisplayStatus"); OnPropertyChanged("ProgressCurrent"); }
+            }
+
+            public long LaunchTotal => 100 * 2;
+
             public long ProgressCurrent
             {
                 get
@@ -331,6 +345,10 @@ namespace ZenovaLauncher
                         return ZipProcessed;
                     if (Status == LaunchStatus.Downloading)
                         return DownloadedBytes;
+                    if (Status == LaunchStatus.LaunchRemovePackage)
+                        return LaunchCurrent;
+                    if (Status == LaunchStatus.LaunchRegisterPackage)
+                        return 100 + LaunchCurrent;
                     return 0;
                 }
             }
@@ -343,6 +361,8 @@ namespace ZenovaLauncher
                         return ZipTotal;
                     if (Status == LaunchStatus.Downloading)
                         return DownloadSize;
+                    if (Status == LaunchStatus.LaunchRegisterPackage || Status == LaunchStatus.LaunchRemovePackage)
+                        return LaunchTotal;
                     return 1;
                 }
             }
@@ -351,15 +371,25 @@ namespace ZenovaLauncher
             {
                 get
                 {
-                    if (Status == LaunchStatus.InitializingDownload)
-                        return "Preparing...";
                     if (Status == LaunchStatus.Downloading)
                         return "Downloading " + ((double)DownloadedBytes / 1024 / 1024).ToString("N2") + " MB / " + ((double)DownloadSize / 1024 / 1024).ToString("N2") + " MB";
                     if (Status == LaunchStatus.InitializingExtraction)
-                        return "Extracting...";
+                        return "Extracting";
                     if (Status == LaunchStatus.Extracting)
                         return "Extracting " + ZipCurrentItem;
-                    return "";
+                    if (Status == LaunchStatus.Launching)
+                        return "Finalizing";
+                    return "Preparing";
+                }
+            }
+
+            public TimeSpan AnimateTime
+            {
+                get
+                {
+                    if (Status == LaunchStatus.LaunchRemovePackage || Status == LaunchStatus.LaunchRegisterPackage || Status == LaunchStatus.Launching)
+                        return new TimeSpan(0, 0, 0, 0, 500);
+                    return new TimeSpan(0, 0, 0, 0, 100);
                 }
             }
 
@@ -371,7 +401,11 @@ namespace ZenovaLauncher
             InitializingDownload,
             Downloading,
             InitializingExtraction,
-            Extracting
+            Extracting,
+            InitializingLaunch,
+            LaunchRemovePackage,
+            LaunchRegisterPackage,
+            Launching
         }
     }
 }

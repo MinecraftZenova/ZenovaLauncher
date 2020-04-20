@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,26 +40,78 @@ namespace ZenovaLauncher
             }
         }
 
-        private async Task DownloadFile(string url, string to, DownloadProgress progress, CancellationToken cancellationToken)
+        private async Task DownloadFileChunk(string url, DownloadProgress progress, long transferred, long? totalSize, CancellationToken cancellationToken, Tuple<long, long> readRange, int index, ConcurrentDictionary<int, String> tempFilesDictionary)
         {
-            using (var resp = await _client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+            httpRequestMessage.Headers.Range = new RangeHeaderValue(readRange.Item1, readRange.Item2);
+            using (var resp = await _client.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
+                string tempFilePath = Path.GetTempFileName();
+                Debug.WriteLine("DownloadChunk" + index + ": " + tempFilePath);
+                using (var fileStream = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.Write))
                 using (var inStream = await resp.Content.ReadAsStreamAsync())
-                using (var outStream = new FileStream(to, FileMode.Create))
                 {
-                    long? totalSize = resp.Content.Headers.ContentLength;
-                    progress(0, totalSize);
-                    long transferred = 0;
                     byte[] buf = new byte[1024 * 1024];
                     while (true)
                     {
                         int n = await inStream.ReadAsync(buf, 0, buf.Length, cancellationToken);
                         if (n == 0)
                             break;
-                        await outStream.WriteAsync(buf, 0, n, cancellationToken);
-                        transferred += n;
-                        progress(transferred, totalSize);
+                        await fileStream.WriteAsync(buf, 0, n, cancellationToken);
+                        progress(n, totalSize);
                     }
+                    tempFilesDictionary.TryAdd((int)index, tempFilePath);
+                }
+            }
+        }
+
+        private async Task DownloadFile(string url, string to, DownloadProgress progress, CancellationToken cancellationToken, int parallelDownloads = 0)
+        {
+            if (parallelDownloads <= 0)
+                parallelDownloads = Environment.ProcessorCount;
+            long? totalSize;
+            long transferred = 0;
+            using (var resp = await _client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+            {
+                totalSize = resp.Content.Headers.ContentLength;
+                Debug.WriteLine("TotalSize of Download: " + totalSize);
+                progress(0, totalSize);
+            }
+            using (var outStream = new FileStream(to, FileMode.Create))
+            {
+                ConcurrentDictionary<int, String> tempFilesDictionary = new ConcurrentDictionary<int, String>();
+
+                List<Tuple<long, long>> readRanges = new List<Tuple<long, long>>();
+                for (int chunk = 0; chunk < parallelDownloads - 1; chunk++)
+                {
+                    var range = new Tuple<long, long>
+                    (   
+                        chunk * (totalSize.GetValueOrDefault() / parallelDownloads),
+                        ((chunk + 1) * (totalSize.GetValueOrDefault() / parallelDownloads)) - 1
+                    );
+                    readRanges.Add(range);
+                }
+
+                readRanges.Add(new Tuple<long, long>
+                (
+                    readRanges.Any() ? readRanges.Last().Item2 + 1 : 0,
+                    totalSize.GetValueOrDefault() - 1
+                ));
+
+                int index = 0;
+                var DownloadTasks = readRanges.Select(readRange =>
+                {
+                    var task = DownloadFileChunk(url, progress, transferred, totalSize, cancellationToken, readRange, index, tempFilesDictionary);
+                    index++;
+                    return task;
+                });
+                await Task.WhenAll(DownloadTasks);
+
+                foreach (var tempFile in tempFilesDictionary.OrderBy(b => b.Key))
+                {
+                    byte[] tempFileBytes = File.ReadAllBytes(tempFile.Value);
+                    await outStream.WriteAsync(tempFileBytes, 0, tempFileBytes.Length, cancellationToken);
+                    File.Delete(tempFile.Value);
                 }
             }
         }
