@@ -19,6 +19,11 @@ namespace ZenovaLauncher
 
         private static readonly string MINECRAFT_PACKAGE_FAMILY = "Microsoft.MinecraftUWP_8wekyb3d8bbwe";
 
+        private Task UserLoginTask = new Task(() => 
+        {
+            VersionDownloader.user.EnableUserAuthorization();
+        });
+
         public bool IsLaunching => LaunchInfo != null;
         public bool IsNotLaunching => !IsLaunching;
 
@@ -204,10 +209,6 @@ namespace ZenovaLauncher
         private async Task<bool> Download(Profile p)
         {
             MinecraftVersion v = p.Version;
-            // TODO remove this once Beta Downloading is implemented!
-            if (v.Beta)
-                return false;
-
             CancellationTokenSource cancelSource = new CancellationTokenSource();
             LaunchInfo.CancelCommand = new RelayCommand((o) => cancelSource.Cancel());
 
@@ -216,12 +217,10 @@ namespace ZenovaLauncher
             VersionDownloader downloader = VersionDownloader.standard;
             if (v.Beta)
             {
-                /*downloader = VersionDownloader.user;
-                if (Interlocked.CompareExchange(ref _userVersionDownloaderLoginTaskStarted, 1, 0) == 0)
-                {
-                    _userVersionDownloaderLoginTask.Start();
-                }
-                await _userVersionDownloaderLoginTask;*/
+                downloader = VersionDownloader.user;
+                if (UserLoginTask.Status == TaskStatus.Created)
+                    UserLoginTask.Start();
+                await UserLoginTask;
             }
             try
             {

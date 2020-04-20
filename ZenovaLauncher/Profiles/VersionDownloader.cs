@@ -40,7 +40,7 @@ namespace ZenovaLauncher
             }
         }
 
-        private async Task DownloadFileChunk(string url, DownloadProgress progress, long transferred, long? totalSize, CancellationToken cancellationToken, Tuple<long, long> readRange, int index, ConcurrentDictionary<int, String> tempFilesDictionary)
+        private async Task DownloadFileChunk(string url, DownloadProgress progress, long? totalSize, CancellationToken cancellationToken, Tuple<long, long> readRange, int index, ConcurrentDictionary<int, String> tempFilesDictionary)
         {
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, url);
             httpRequestMessage.Headers.Range = new RangeHeaderValue(readRange.Item1, readRange.Item2);
@@ -70,7 +70,6 @@ namespace ZenovaLauncher
             if (parallelDownloads <= 0)
                 parallelDownloads = Environment.ProcessorCount;
             long? totalSize;
-            long transferred = 0;
             using (var resp = await _client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
                 totalSize = resp.Content.Headers.ContentLength;
@@ -79,7 +78,7 @@ namespace ZenovaLauncher
             }
             using (var outStream = new FileStream(to, FileMode.Create))
             {
-                ConcurrentDictionary<int, String> tempFilesDictionary = new ConcurrentDictionary<int, String>();
+                ConcurrentDictionary<int, string> tempFilesDictionary = new ConcurrentDictionary<int, string>();
 
                 List<Tuple<long, long>> readRanges = new List<Tuple<long, long>>();
                 for (int chunk = 0; chunk < parallelDownloads - 1; chunk++)
@@ -101,7 +100,7 @@ namespace ZenovaLauncher
                 int index = 0;
                 var DownloadTasks = readRanges.Select(readRange =>
                 {
-                    var task = DownloadFileChunk(url, progress, transferred, totalSize, cancellationToken, readRange, index, tempFilesDictionary);
+                    var task = DownloadFileChunk(url, progress, totalSize, cancellationToken, readRange, index, tempFilesDictionary);
                     index++;
                     return task;
                 });
@@ -130,7 +129,7 @@ namespace ZenovaLauncher
 
         public void EnableUserAuthorization()
         {
-            //_protocol.SetMSAUserToken(WUTokenHelper.GetWUToken());
+            _protocol.SetMSAUserToken(WUTokenHelper.GetWUToken());
         }
 
         public async Task Download(string updateIdentity, string revisionNumber, string destination, DownloadProgress progress, CancellationToken cancellationToken)

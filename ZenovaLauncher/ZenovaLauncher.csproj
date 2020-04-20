@@ -56,6 +56,10 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="UIAutomationProvider" />
+    <Reference Include="Windows.Internal.Security.Authentication.Web, Version=255.255.255.255, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Windows.Internal.Security.Authentication.Web.winmd</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -96,6 +100,7 @@
     <Compile Include="Utils\ProgressBarSmoother.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Utils\WUProtocol.cs" />
+    <Compile Include="Utils\WUTokenHelper.cs" />
     <Compile Include="Utils\ZipProgress.cs" />
     <Page Include="Dialogs\EditProfileDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
