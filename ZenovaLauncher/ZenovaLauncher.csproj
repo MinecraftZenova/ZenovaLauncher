@@ -96,6 +96,7 @@
     <Compile Include="Profiles\ProfileManager.cs" />
     <Compile Include="Utils\ProgressBarSmoother.cs" />
     <Compile Include="Utils\RelayCommand.cs" />
+    <Compile Include="Utils\Utils.cs" />
     <Compile Include="Utils\WUProtocol.cs" />
     <Compile Include="Utils\WUTokenHelper.cs" />
     <Compile Include="Utils\ZipProgress.cs" />

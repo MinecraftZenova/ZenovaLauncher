@@ -56,9 +56,8 @@ Source: "bin\Release\Windows.Internal.Security.Authentication.Web.winmd"; DestDi
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Dirs]
-Name: "{code:GetDataDir}\Versions"
-Name: "{code:GetDataDir}\Profiles"
-Name: "{code:GetDataDir}\Mods"
+Name: "{code:GetDataDir}\versions"
+Name: "{code:GetDataDir}\mods"
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -100,6 +99,6 @@ begin
   'To continue, click Next. If you would like to select a different folder, click Browse.',
   False, 'New Folder');
   DataDirPage.Add('');
-  DataDirPage.Values[0] := ExpandConstant('{userappdata}\{#MyAppDataDir}');;
+  DataDirPage.Values[0] := ExpandConstant('{%ZENOVA_DATA|{userappdata}\{#MyAppDataDir}}');;
   AfterID := DataDirPage.ID;
 end;

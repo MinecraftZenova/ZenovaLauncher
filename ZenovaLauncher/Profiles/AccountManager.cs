@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace ZenovaLauncher
@@ -12,9 +13,11 @@ namespace ZenovaLauncher
         {
             await Task.Run(async () =>
             {
+                Trace.WriteLine("AddAccounts");
                 var accounts = await WUTokenHelper.GetMSAccounts();
                 foreach (Tuple<string, string> account in accounts)
                     Add(new MSAccount(account.Item1, account.Item2));
+                Trace.WriteLine("AddAccounts finished");
             });
         }
     }

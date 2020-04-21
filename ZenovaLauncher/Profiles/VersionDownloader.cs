@@ -47,7 +47,7 @@ namespace ZenovaLauncher
             using (var resp = await _client.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
                 string tempFilePath = Path.GetTempFileName();
-                Debug.WriteLine("DownloadChunk" + index + ": " + tempFilePath);
+                Trace.WriteLine("DownloadChunk" + index + ": " + tempFilePath);
                 using (var fileStream = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.Write))
                 using (var inStream = await resp.Content.ReadAsStreamAsync())
                 {
@@ -73,7 +73,7 @@ namespace ZenovaLauncher
             using (var resp = await _client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
                 totalSize = resp.Content.Headers.ContentLength;
-                Debug.WriteLine("TotalSize of Download: " + totalSize);
+                Trace.WriteLine("TotalSize of Download: " + totalSize);
                 progress(0, totalSize);
             }
             using (var outStream = new FileStream(to, FileMode.Create))
@@ -138,7 +138,7 @@ namespace ZenovaLauncher
             string link = await GetDownloadUrl(updateIdentity, revisionNumber);
             if (link == null)
                 throw new ArgumentException("Bad updateIdentity");
-            Debug.WriteLine("Resolved download link: " + link);
+            Trace.WriteLine("Resolved download link: " + link);
             await DownloadFile(link, destination, progress, cancellationToken);
         }
 

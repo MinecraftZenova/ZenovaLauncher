@@ -74,7 +74,7 @@ namespace ZenovaLauncher
             }
             catch (Exception e)
             {
-                Debug.WriteLine("App re-register failed:\n" + e.ToString());
+                Trace.WriteLine("App re-register failed:\n" + e.ToString());
                 MessageBox.Show("App re-register failed:\n" + e.ToString());
                 return;
             }
@@ -85,11 +85,11 @@ namespace ZenovaLauncher
                 var pkg = await AppDiagnosticInfo.RequestInfoForPackageAsync(MINECRAFT_PACKAGE_FAMILY);
                 if (pkg.Count > 0)
                     await pkg[0].LaunchAsync();
-                Debug.WriteLine("App launch finished!");
+                Trace.WriteLine("App launch finished!");
             }
             catch (Exception e)
             {
-                Debug.WriteLine("App launch failed:\n" + e.ToString());
+                Trace.WriteLine("App launch failed:\n" + e.ToString());
                 MessageBox.Show("App launch failed:\n" + e.ToString());
                 return;
             }
@@ -103,11 +103,11 @@ namespace ZenovaLauncher
                 if (LaunchInfo.Status != status)
                     LaunchInfo.Status = status;
                 LaunchInfo.LaunchCurrent = p.percentage;
-                Debug.WriteLine("Deployment progress: " + p.state + " " + p.percentage + "%");
+                Trace.WriteLine("Deployment progress: " + p.state + " " + p.percentage + "%");
             };
             t.Completed += (v, p) =>
             {
-                Debug.WriteLine("Deployment done: " + p);
+                Trace.WriteLine("Deployment done: " + p);
                 src.SetResult(1);
             };
             await src.Task;
@@ -126,12 +126,12 @@ namespace ZenovaLauncher
             string tmpDir = GetBackupMinecraftDataDir();
             if (Directory.Exists(tmpDir))
             {
-                Debug.WriteLine("BackupMinecraftDataForRemoval error: " + tmpDir + " already exists");
+                Trace.WriteLine("BackupMinecraftDataForRemoval error: " + tmpDir + " already exists");
                 Process.Start("explorer.exe", tmpDir);
                 MessageBox.Show("The temporary directory for backing up MC data already exists. This probably means that we failed last time backing up the data. Please back the directory up manually.");
                 throw new Exception("Temporary dir exists");
             }
-            Debug.WriteLine("Moving Minecraft data to: " + tmpDir);
+            Trace.WriteLine("Moving Minecraft data to: " + tmpDir);
             Directory.Move(data.LocalFolder.Path, tmpDir);
         }
 
@@ -167,21 +167,22 @@ namespace ZenovaLauncher
             if (!Directory.Exists(tmpDir))
                 return;
             var data = ApplicationDataManager.CreateForPackageFamily(MINECRAFT_PACKAGE_FAMILY);
-            Debug.WriteLine("Moving backup Minecraft data to: " + data.LocalFolder.Path);
+            Trace.WriteLine("Moving backup Minecraft data to: " + data.LocalFolder.Path);
             RestoreMove(tmpDir, data.LocalFolder.Path);
             Directory.Delete(tmpDir, true);
         }
 
         private async Task ReRegisterPackage(string gameDir)
         {
-            foreach (var pkg in new PackageManager().FindPackages(MINECRAFT_PACKAGE_FAMILY))
+            var pkgs = Utils.IsElevated ? new PackageManager().FindPackages(MINECRAFT_PACKAGE_FAMILY) : new PackageManager().FindPackagesForUser(string.Empty, MINECRAFT_PACKAGE_FAMILY);
+            foreach (var pkg in pkgs)
             {
                 if (pkg.InstalledLocation.Path == gameDir)
                 {
-                    Debug.WriteLine("Skipping package removal - same path: " + pkg.Id.FullName + " " + pkg.InstalledLocation.Path);
+                    Trace.WriteLine("Skipping package removal - same path: " + pkg.Id.FullName + " " + pkg.InstalledLocation.Path);
                     return;
                 }
-                Debug.WriteLine("Removing package: " + pkg.Id.FullName + " " + pkg.InstalledLocation.Path);
+                Trace.WriteLine("Removing package: " + pkg.Id.FullName + " " + pkg.InstalledLocation.Path);
                 if (!pkg.IsDevelopmentMode)
                 {
                     BackupMinecraftDataForRemoval();
@@ -189,16 +190,16 @@ namespace ZenovaLauncher
                 }
                 else
                 {
-                    Debug.WriteLine("Package is in development mode");
+                    Trace.WriteLine("Package is in development mode");
                     await DeploymentProgressWrapper(new PackageManager().RemovePackageAsync(pkg.Id.FullName, RemovalOptions.PreserveApplicationData), LaunchStatus.LaunchRemovePackage);
                 }
-                Debug.WriteLine("Removal of package done: " + pkg.Id.FullName);
+                Trace.WriteLine("Removal of package done: " + pkg.Id.FullName);
                 break;
             }
-            Debug.WriteLine("Registering package");
+            Trace.WriteLine("Registering package");
             string manifestPath = Path.Combine(gameDir, "AppxManifest.xml");
             await DeploymentProgressWrapper(new PackageManager().RegisterPackageAsync(new Uri(manifestPath), null, DeploymentOptions.DevelopmentMode), LaunchStatus.LaunchRegisterPackage);
-            Debug.WriteLine("App re-register done!");
+            Trace.WriteLine("App re-register done!");
             RestoreMinecraftDataFromReinstall();
         }
 
@@ -208,35 +209,35 @@ namespace ZenovaLauncher
             CancellationTokenSource cancelSource = new CancellationTokenSource();
             LaunchInfo.CancelCommand = new RelayCommand((o) => cancelSource.Cancel());
 
-            Debug.WriteLine("Download start");
+            Trace.WriteLine("Download start");
             string dlPath = Path.Combine(VersionManager.instance.VersionsDirectory, "Minecraft-" + v.Name + ".Appx");
             VersionDownloader downloader = VersionDownloader.standard;
             if (v.Beta)
             {
                 downloader = VersionDownloader.user;
-                Debug.WriteLine("UserLoginStarted");
+                Trace.WriteLine("UserLoginStarted");
                 await downloader.EnableUserAuthorization();
-                Debug.WriteLine("UserLogin Completed");
+                Trace.WriteLine("UserLogin Completed");
             }
             try
             {
-                Debug.WriteLine("Initializing Download");
+                Trace.WriteLine("Initializing Download");
                 await downloader.Download(v.UUID, "1", dlPath, (current, total) =>
                 {
                     if (LaunchInfo.Status == LaunchStatus.InitializingDownload)
                     {
-                        Debug.WriteLine("Actual download started");
+                        Trace.WriteLine("Actual download started");
                         LaunchInfo.Status = LaunchStatus.Downloading;
                         if (total.HasValue)
                             LaunchInfo.DownloadSize = total.Value;
                     }
                     LaunchInfo.DownloadedBytes += current;
                 }, cancelSource.Token);
-                Debug.WriteLine("Download complete");
+                Trace.WriteLine("Download complete");
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Download failed:\n" + e.ToString());
+                Trace.WriteLine("Download failed:\n" + e.ToString());
                 if (!(e is TaskCanceledException))
                     MessageBox.Show("Download failed:\n" + e.ToString());
                 return false;
@@ -252,7 +253,7 @@ namespace ZenovaLauncher
                 {
                     if (LaunchInfo.Status == LaunchStatus.InitializingExtraction)
                     {
-                        Debug.WriteLine("Extraction started");
+                        Trace.WriteLine("Extraction started");
                         LaunchInfo.Status = LaunchStatus.Extracting;
                         LaunchInfo.ZipTotal = zipProgress.Total;
                     }
@@ -265,7 +266,7 @@ namespace ZenovaLauncher
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Extraction failed:\n" + e.ToString());
+                Trace.WriteLine("Extraction failed:\n" + e.ToString());
                 MessageBox.Show("Extraction failed:\n" + e.ToString());
                 return false;
             }

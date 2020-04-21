@@ -60,10 +60,12 @@ namespace ZenovaLauncher
 
         public void LoadProfiles()
         {
-            string[] profileFiles = Directory.GetFiles(_profilesDir, "*.json", SearchOption.AllDirectories);
-            foreach (string file in profileFiles)
+            //string[] profileFiles = Directory.GetFiles(_profilesDir, "*.json", SearchOption.AllDirectories);
+            //foreach (string file in profileFiles)
+            //{
+            if (File.Exists(Path.Combine(_profilesDir, _profilesFile)))
             {
-                List<Profile> profileList = JsonConvert.DeserializeObject<List<Profile>>(File.ReadAllText(file));
+                List<Profile> profileList = JsonConvert.DeserializeObject<List<Profile>>(File.ReadAllText(Path.Combine(_profilesDir, _profilesFile)));
                 foreach (Profile p in profileList)
                 {
                     switch (p.Type)
@@ -80,13 +82,14 @@ namespace ZenovaLauncher
                     }
                 }
             }
+            //}
         }
 
         public void SaveProfiles()
         {
-            DirectoryInfo di = new DirectoryInfo(_profilesDir);
-            foreach (FileInfo file in di.EnumerateFiles()) file.Delete();
-            foreach (DirectoryInfo dir in di.EnumerateDirectories()) dir.Delete(true);
+            //DirectoryInfo di = new DirectoryInfo(_profilesDir);
+            //foreach (FileInfo file in di.EnumerateFiles()) file.Delete();
+            //foreach (DirectoryInfo dir in di.EnumerateDirectories()) dir.Delete(true);
             File.WriteAllText(Path.Combine(_profilesDir, _profilesFile), JsonConvert.SerializeObject(this, Formatting.Indented));
         }
     }

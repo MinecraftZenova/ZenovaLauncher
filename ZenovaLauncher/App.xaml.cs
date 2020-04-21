@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,18 +12,20 @@ namespace ZenovaLauncher
     public partial class App : Application
     {
         private readonly string _environmentKey = "ZENOVA_DATA";
-        private readonly string _directoryMods = "Mods";
-        private readonly string _directoryProfiles = "Profiles";
-        private readonly string _directoryVersions = "Versions";
+        private readonly string _directoryMods = "mods";
+        private readonly string _directoryVersions = "versions";
         private string _dataDirectory;
 
         public void AppStart(object sender, StartupEventArgs e)
         {
             SetupEnvironment();
+            Trace.Listeners.Add(new TextWriterTraceListener(new FileStream(Path.Combine(DataDirectory, "log.txt"), FileMode.Create)));
+            Trace.AutoFlush = true;
+            Trace.WriteLine("AppStart");
             VersionDownloader.standard = new VersionDownloader();
             VersionDownloader.user = new VersionDownloader();
             VersionManager.instance = new VersionManager(VersionsDirectory);
-            ProfileManager.instance = new ProfileManager(ProfilesDirectory);
+            ProfileManager.instance = new ProfileManager(DataDirectory);
             ProfileLauncher.instance = new ProfileLauncher();
             AccountManager.instance = new AccountManager();
             Task loadTask = Task.Run(async () =>
@@ -33,12 +36,14 @@ namespace ZenovaLauncher
                 ProfileManager.instance.AddProfiles();
             });
             loadTask.Wait();
+            Trace.WriteLine("AppStart Finished");
         }
 
         public void AppExit(object sender, ExitEventArgs e)
         {
             ProfileManager.instance.SaveProfiles();
             Preferences.SavePreferences();
+            Trace.Flush();
         }
 
         private void SetupEnvironment()
@@ -79,17 +84,6 @@ namespace ZenovaLauncher
             get
             {
                 string path = Path.Combine(DataDirectory, _directoryMods);
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
-                return path;
-            }
-        }
-
-        public string ProfilesDirectory
-        {
-            get
-            {
-                string path = Path.Combine(DataDirectory, _directoryProfiles);
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
                 return path;

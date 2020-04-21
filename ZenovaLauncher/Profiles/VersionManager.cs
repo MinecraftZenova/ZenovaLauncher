@@ -54,7 +54,7 @@ namespace ZenovaLauncher
             catch (Exception e)
             {
                 if (!(e is FileNotFoundException))
-                    Debug.WriteLine("List cache load failed:\n" + e.ToString());
+                    Trace.WriteLine("List cache load failed:\n" + e.ToString());
             }
             try
             {
@@ -62,7 +62,7 @@ namespace ZenovaLauncher
             }
             catch (Exception e2)
             {
-                Debug.WriteLine("List download failed:\n" + e2.ToString());
+                Trace.WriteLine("List download failed:\n" + e2.ToString());
             }
         }
 

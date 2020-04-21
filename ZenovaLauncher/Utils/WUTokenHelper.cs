@@ -23,8 +23,8 @@ namespace ZenovaLauncher
             string token = result.ResponseData[0].Token;
             var tokenBinary = CryptographicBuffer.ConvertStringToBinary(token, BinaryStringEncoding.Utf16LE);
             var tokenBase64 = CryptographicBuffer.EncodeToBase64String(tokenBinary);
-            Debug.WriteLine("Token = " + token);
-            Debug.WriteLine("TokenBase64 = " + tokenBase64);
+            Trace.WriteLine("Token = " + token);
+            Trace.WriteLine("TokenBase64 = " + tokenBase64);
             return tokenBase64;
         }
 

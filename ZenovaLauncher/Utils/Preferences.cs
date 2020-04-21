@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -35,12 +36,14 @@ namespace ZenovaLauncher
 
         public static void LoadPreferences(string dataDir)
         {
+            Trace.WriteLine("Loading Preferences");
             _preferencesFile = Path.Combine(dataDir, _preferencesFile);
             camelCaseSerialization = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             if (File.Exists(_preferencesFile))
                 instance = JsonConvert.DeserializeObject<Preferences>(File.ReadAllText(_preferencesFile), camelCaseSerialization);
             else
                 instance = new Preferences();
+            Trace.WriteLine("Loaded Preferences");
         }
 
         public static void SavePreferences()
