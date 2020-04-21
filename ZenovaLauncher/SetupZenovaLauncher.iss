@@ -41,21 +41,18 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "bin\Release\ZenovaLauncher.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\WUTokenHelper.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\ControlzEx.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\Release\ControlzEx.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\MahApps.Metro.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\Release\MahApps.Metro.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\Microsoft.Expression.Interactions.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\Microsoft.Xaml.Behaviors.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\Release\Microsoft.Xaml.Behaviors.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\ModernWpf.Controls.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\ModernWpf.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\ModernWpf.MahApps.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\Release\ZenovaLauncher.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\Release\ZenovaLauncher.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\Windows.Internal.Security.Authentication.Web.winmd"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Dirs]

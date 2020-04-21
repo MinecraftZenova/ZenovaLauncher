@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ZenovaLauncher
@@ -11,11 +8,14 @@ namespace ZenovaLauncher
     {
         public static AccountManager instance;
 
-        public void AddAccounts()
+        public async Task AddAccounts()
         {
-            var accounts = WUTokenHelper.GetMSAccounts();
-            foreach (Tuple<string, string> account in accounts)
-                Add(new MSAccount(account.Item1, account.Item2));
+            await Task.Run(async () =>
+            {
+                var accounts = await WUTokenHelper.GetMSAccounts();
+                foreach (Tuple<string, string> account in accounts)
+                    Add(new MSAccount(account.Item1, account.Item2));
+            });
         }
     }
 

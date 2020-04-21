@@ -127,9 +127,10 @@ namespace ZenovaLauncher
             return null;
         }
 
-        public void EnableUserAuthorization()
+        public async Task EnableUserAuthorization()
         {
-            _protocol.SetMSAUserToken(WUTokenHelper.GetWUToken(Preferences.instance.SelectedAccount.AccountId));
+            if (_protocol.MSAUserToken == null)
+                _protocol.MSAUserToken = await WUTokenHelper.GetWUToken(Preferences.instance.SelectedAccount.AccountId);
         }
 
         public async Task Download(string updateIdentity, string revisionNumber, string destination, DownloadProgress progress, CancellationToken cancellationToken)

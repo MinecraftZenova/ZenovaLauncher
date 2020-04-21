@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace ZenovaLauncher
@@ -24,13 +25,14 @@ namespace ZenovaLauncher
             ProfileManager.instance = new ProfileManager(ProfilesDirectory);
             ProfileLauncher.instance = new ProfileLauncher();
             AccountManager.instance = new AccountManager();
-            AccountManager.instance.AddAccounts();
-            Preferences.LoadPreferences(DataDirectory);
-            Dispatcher.Invoke(async () =>
+            Task loadTask = Task.Run(async () =>
             {
+                await AccountManager.instance.AddAccounts();
+                Preferences.LoadPreferences(DataDirectory);
                 await VersionManager.instance.LoadMinecraftVersions();
                 ProfileManager.instance.AddProfiles();
             });
+            loadTask.Wait();
         }
 
         public void AppExit(object sender, ExitEventArgs e)

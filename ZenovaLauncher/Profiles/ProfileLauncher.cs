@@ -19,11 +19,6 @@ namespace ZenovaLauncher
 
         private static readonly string MINECRAFT_PACKAGE_FAMILY = "Microsoft.MinecraftUWP_8wekyb3d8bbwe";
 
-        private Task UserLoginTask = new Task(() => 
-        {
-            VersionDownloader.user.EnableUserAuthorization();
-        });
-
         public bool IsLaunching => LaunchInfo != null;
         public bool IsNotLaunching => !IsLaunching;
 
@@ -219,12 +214,13 @@ namespace ZenovaLauncher
             if (v.Beta)
             {
                 downloader = VersionDownloader.user;
-                if (UserLoginTask.Status == TaskStatus.Created)
-                    UserLoginTask.Start();
-                await UserLoginTask;
+                Debug.WriteLine("UserLoginStarted");
+                await downloader.EnableUserAuthorization();
+                Debug.WriteLine("UserLogin Completed");
             }
             try
             {
+                Debug.WriteLine("Initializing Download");
                 await downloader.Download(v.UUID, "1", dlPath, (current, total) =>
                 {
                     if (LaunchInfo.Status == LaunchStatus.InitializingDownload)

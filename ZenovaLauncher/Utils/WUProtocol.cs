@@ -18,12 +18,7 @@ namespace ZenovaLauncher
         private static XNamespace wuws = "http://schemas.microsoft.com/msus/2014/10/WindowsUpdateAuthorization";
         private static XNamespace wuclient = "http://www.microsoft.com/SoftwareDistribution/Server/ClientWebService";
 
-        private string _msaUserToken;
-
-        public void SetMSAUserToken(string token)
-        {
-            _msaUserToken = token;
-        }
+        public string MSAUserToken { get; set; }
 
         private XElement BuildWUTickets()
         {
@@ -31,13 +26,13 @@ namespace ZenovaLauncher
                         new XAttribute(secutil + "id", "ClientMSA"),
                         new XAttribute(XNamespace.Xmlns + "wsu", secutil),
                         new XAttribute(XNamespace.Xmlns + "wuws", wuws));
-            if (_msaUserToken != null)
+            if (MSAUserToken != null)
             {
                 tickets.Add(new XElement("TicketType",
                     new XAttribute("Name", "MSA"),
                     new XAttribute("Version", "1.0"),
                     new XAttribute("Policy", "MBI_SSL"),
-                    new XElement("User", _msaUserToken)));
+                    new XElement("User", MSAUserToken)));
             }
             tickets.Add(new XElement("TicketType", "",
                 new XAttribute("Name", "AAD"),
