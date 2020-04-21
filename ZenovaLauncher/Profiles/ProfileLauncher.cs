@@ -65,6 +65,7 @@ namespace ZenovaLauncher
                         await Launch(p);
 
                     LaunchInfo = null;
+                    LaunchedProfile.LastPlayed = DateTime.Now;
                     LaunchedProfile = null;
                 });
             }

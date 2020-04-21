@@ -15,6 +15,9 @@ namespace ZenovaLauncher
         {
             InitializeComponent();
 
+            DataContext = Preferences.instance;
+
+            AccountBox.ItemsSource = AccountManager.instance;
             NavView.SelectedItem = NavViewItems.OfType<HamburgerMenuItem>().First();
             Navigate(NavView.SelectedItem);
         }

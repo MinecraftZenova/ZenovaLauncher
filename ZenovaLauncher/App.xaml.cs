@@ -23,6 +23,8 @@ namespace ZenovaLauncher
             VersionManager.instance = new VersionManager(VersionsDirectory);
             ProfileManager.instance = new ProfileManager(ProfilesDirectory);
             ProfileLauncher.instance = new ProfileLauncher();
+            AccountManager.instance = new AccountManager();
+            AccountManager.instance.AddAccounts();
             Preferences.LoadPreferences(DataDirectory);
             Dispatcher.Invoke(async () =>
             {

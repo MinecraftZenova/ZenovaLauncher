@@ -33,24 +33,24 @@
             Background="{DynamicResource NavigationViewDefaultPaneBackground}" />
 
         <Grid Grid.Row="0" Grid.Column="0">
-            <ui:DropDownButton
+            <TextBlock FontSize="14" Text="Account" Margin="12,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+            <ComboBox
+                x:Name="AccountBox"
+                Style="{DynamicResource StandardComboBoxStyle}"
+                Background="Transparent"
+                BorderThickness="0"
                 HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                CornerRadius="0,0,0,0">
-                <ui:DropDownButton.Content>
-                    <StackPanel>
-                        <TextBlock Text="Account" />
-                        <TextBlock FontSize="10" Text="fiddleandrew@hotmail.com" />
-                    </StackPanel>
-                </ui:DropDownButton.Content>
-                <ui:DropDownButton.Flyout>
-                    <ui:MenuFlyout Placement="BottomEdgeAlignedLeft">
-                        <MenuItem FontSize="12" Header="andrew.miller2@mavs.uta.edu" />
-                        <MenuItem FontSize="12" Header="fiddleandrew@hotmail.com" />
-                        <MenuItem FontSize="12" Header="micahlusk@gmail.com" />
-                    </ui:MenuFlyout>
-                </ui:DropDownButton.Flyout>
-            </ui:DropDownButton>
+                HorizontalContentAlignment="Left"
+                VerticalAlignment="Center"
+                ui:ControlHelper.CornerRadius="0,0,0,0"
+                SelectedItem="{Binding SelectedAccount}"
+                Padding="12,25,0,10">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock FontSize="11" Text="{Binding AccountName}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </Grid>
 
 

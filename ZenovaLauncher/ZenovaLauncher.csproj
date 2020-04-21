@@ -56,10 +56,6 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="UIAutomationProvider" />
-    <Reference Include="Windows.Internal.Security.Authentication.Web, Version=255.255.255.255, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Windows.Internal.Security.Authentication.Web.winmd</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -72,6 +68,7 @@
     <Compile Include="Controls\LauncherSideMenu.cs" />
     <Compile Include="Controls\LauncherSideMenuArgs.cs" />
     <Compile Include="Controls\LauncherTabControl.cs" />
+    <Compile Include="Profiles\AccountManager.cs" />
     <Compile Include="Utils\BooleanValueConverter.cs" />
     <Compile Include="Dialogs\EditProfileDialog.xaml.cs">
       <DependentUpon>EditProfileDialog.xaml</DependentUpon>

@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System.IO;
+using System.Linq;
 
 namespace ZenovaLauncher
 {
@@ -23,6 +24,13 @@ namespace ZenovaLauncher
             get { return (int)ProfileSorting; }
             set { ProfileSorting = (Profile.ProfileSortType)value; }
         }
+        public string SelectedAccountName 
+        { 
+            get { return SelectedAccount.AccountName; }
+            set { SelectedAccount = AccountManager.instance.FirstOrDefault(a => a.AccountName == value); }
+        }
+        [JsonIgnore]
+        public MSAccount SelectedAccount { get; set; } = AccountManager.instance.First();
 
 
         public static void LoadPreferences(string dataDir)
