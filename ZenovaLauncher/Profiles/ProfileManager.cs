@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -9,6 +11,7 @@ namespace ZenovaLauncher
     public class ProfileManager : ObservableCollection<Profile>
     {
         public static ProfileManager instance;
+        private static JsonSerializerSettings camelCaseSerialization;
 
         private readonly string _profilesFile = "profiles.json";
         private readonly string _profilesDir;
@@ -17,6 +20,8 @@ namespace ZenovaLauncher
         {
             _profilesDir = profileDir;
         }
+
+        public Profile SelectedProfile { get; set; }
 
         public Profile LatestRelease
         {
@@ -55,7 +60,8 @@ namespace ZenovaLauncher
         public void AddDefaultProfiles()
         {
             LatestRelease = new Profile("Latest release", VersionManager.instance.LatestRelease, type: Profile.ProfileType.LatestRelease);
-            LatestBeta = new Profile("Latest beta", VersionManager.instance.LatestBeta, type: Profile.ProfileType.LatestBeta); ;
+            LatestBeta = new Profile("Latest beta", VersionManager.instance.LatestBeta, type: Profile.ProfileType.LatestBeta);
+            SelectedProfile = this.First();
         }
 
         public void LoadProfiles()
@@ -63,22 +69,30 @@ namespace ZenovaLauncher
             //string[] profileFiles = Directory.GetFiles(_profilesDir, "*.json", SearchOption.AllDirectories);
             //foreach (string file in profileFiles)
             //{
+            camelCaseSerialization = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             if (File.Exists(Path.Combine(_profilesDir, _profilesFile)))
             {
-                List<Profile> profileList = JsonConvert.DeserializeObject<List<Profile>>(File.ReadAllText(Path.Combine(_profilesDir, _profilesFile)));
-                foreach (Profile p in profileList)
+                Dictionary<string, Profile> profileList = JsonConvert.DeserializeObject<Dictionary<string, Profile>>(File.ReadAllText(Path.Combine(_profilesDir, _profilesFile)), camelCaseSerialization);
+                foreach (var p in profileList)
                 {
-                    switch (p.Type)
+                    if (p.Key == p.Value.Hash)
                     {
-                        case Profile.ProfileType.Custom:
-                            Add(p);
-                            break;
-                        case Profile.ProfileType.LatestBeta:
-                            LatestBeta = p;
-                            break;
-                        case Profile.ProfileType.LatestRelease:
-                            LatestRelease = p;
-                            break;
+                        switch (p.Value.Type)
+                        {
+                            case Profile.ProfileType.Custom:
+                                Add(p.Value);
+                                break;
+                            case Profile.ProfileType.LatestBeta:
+                                LatestBeta = p.Value;
+                                break;
+                            case Profile.ProfileType.LatestRelease:
+                                LatestRelease = p.Value;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        Trace.WriteLine("Failed to load profile due to incorrect hash: " + p.Key);
                     }
                 }
             }
@@ -90,7 +104,8 @@ namespace ZenovaLauncher
             //DirectoryInfo di = new DirectoryInfo(_profilesDir);
             //foreach (FileInfo file in di.EnumerateFiles()) file.Delete();
             //foreach (DirectoryInfo dir in di.EnumerateDirectories()) dir.Delete(true);
-            File.WriteAllText(Path.Combine(_profilesDir, _profilesFile), JsonConvert.SerializeObject(this, Formatting.Indented));
+            Dictionary<string, Profile> profilesDic = this.ToDictionary(x => x.Hash, x => x);
+            File.WriteAllText(Path.Combine(_profilesDir, _profilesFile), JsonConvert.SerializeObject(profilesDic, Formatting.Indented, camelCaseSerialization));
         }
     }
 }

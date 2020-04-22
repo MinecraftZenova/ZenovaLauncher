@@ -99,7 +99,7 @@ namespace ZenovaLauncher
 
         protected void SortProfileList(Profile.ProfileSortType sortType)
         {
-            string sortTypeString = sortType == Profile.ProfileSortType.ByLastPlayed ? "LastPlayed" : "Name";
+            string sortTypeString = sortType == Profile.ProfileSortType.ByLastPlayed ? "LastUsed" : "Name";
             ListSortDirection sortDirection = sortType == Profile.ProfileSortType.ByLastPlayed ? ListSortDirection.Descending : ListSortDirection.Ascending;
             if (ProfileListBox != null)
             {

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using System.Diagnostics;
 
 namespace ZenovaLauncher
 {
@@ -20,31 +21,35 @@ namespace ZenovaLauncher
             return (item as Profile).Historical == true;
         };
 
-        public Profile(string name, MinecraftVersion version, DateTime lastPlayed = default, ProfileType type = ProfileType.Custom)
+        public Profile(string name, MinecraftVersion version, DateTime lastUsed = default, DateTime created = default, ProfileType type = ProfileType.Custom)
         {
             Name = string.IsNullOrEmpty(name) ? "<unnamed profile>" : name;
             Version = version;
-            LastPlayed = lastPlayed;
+            LastUsed = lastUsed;
+            Created = created;
             Type = type;
         }
 
-        public Profile(Profile profile) : this(profile.Name, profile.Version, profile.LastPlayed) { }
+        public Profile(Profile profile) : this(profile.Name, profile.Version, profile.LastUsed, profile.Created, profile.Type) { }
 
         [JsonConstructor]
-        public Profile(string name, DateTime lastPlayed, ProfileType type, string versionId) :
-            this(name, VersionManager.instance.GetVersionFromString(versionId), lastPlayed, type)
+        public Profile(DateTime created, DateTime lastUsed, string versionId, string name, ProfileType type) :
+            this(name, VersionManager.instance.GetVersionFromString(versionId), lastUsed, created, type)
         { }
 
         [JsonProperty]
-        public string Name { get; set; }
+        public DateTime Created { get; set; }
         [JsonProperty]
-        public DateTime LastPlayed { get; set; }
+        public DateTime LastUsed { get; set; }
+        [JsonProperty]
+        public string VersionId => Version.InternalName;
+        [JsonProperty]
+        public string Name { get; set; }
         [JsonProperty]
         [JsonConverter(typeof(StringEnumConverter))]
         public ProfileType Type { get; set; }
         public MinecraftVersion Version { get; set; }
-        [JsonProperty]
-        public string VersionId => Version.InternalName;
+        public string Hash => Utils.ComputeHash(this);
         public string VersionName => Version.Name;
         public bool Beta => Version.Beta;
         public bool Historical => Version.Historical;
