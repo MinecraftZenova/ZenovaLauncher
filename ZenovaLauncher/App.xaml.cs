@@ -34,6 +34,7 @@ namespace ZenovaLauncher
                 await VersionManager.instance.LoadMinecraftVersions();
                 ProfileManager.instance.AddProfiles();
                 Preferences.LoadPreferences(DataDirectory);
+                VersionManager.instance.RemoveUnusedVersions();
             });
             loadTask.Wait();
             Trace.WriteLine("AppStart Finished");

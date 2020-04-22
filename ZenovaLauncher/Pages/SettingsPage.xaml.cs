@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace ZenovaLauncher
 {
@@ -10,6 +11,14 @@ namespace ZenovaLauncher
         public SettingsPage()
         {
             InitializeComponent();
+
+            KeepOpenBox.DataContext = Preferences.instance;
+            FreeSpaceBox.DataContext = Preferences.instance;
+        }
+
+        private void FreeSpaceClick(object sender, RoutedEventArgs e)
+        {
+            VersionManager.instance.RemoveUnusedVersions();
         }
     }
 }

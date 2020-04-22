@@ -29,7 +29,13 @@
             Style="{StaticResource LauncherTabControl}"
             MinHeight="400">
             <TabItem Header="General">
-                <TextBlock Text="General Settings" />
+                <Grid Margin="86,63,0,0">
+                    <ui:SimpleStackPanel Spacing="7">
+                        <TextBlock Margin="0,-8,0,4" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Launcher Settings" />
+                        <CheckBox x:Name="KeepOpenBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Keep the Launcher open while games are running" IsChecked="{Binding Path=KeepLauncherOpen}" />
+                        <CheckBox x:Name="FreeSpaceBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Automatically remove downloaded Versions not used in a Profile" Click="FreeSpaceClick" IsChecked="{Binding Path=RemoveUnusedVersions}" />
+                    </ui:SimpleStackPanel>
+                </Grid>
             </TabItem>
             <TabItem Header="Accounts">
                 <TextBlock Text="Accounts Settings" />

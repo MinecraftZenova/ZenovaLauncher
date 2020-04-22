@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Windows.Foundation;
 using Windows.Management.Core;
 using Windows.Management.Deployment;
@@ -66,6 +67,8 @@ namespace ZenovaLauncher
                     LaunchInfo = null;
                     LaunchedProfile.LastUsed = DateTime.Now;
                     LaunchedProfile = null;
+                    if (!Preferences.instance.KeepLauncherOpen)
+                        Application.Current.Dispatcher.BeginInvokeShutdown(DispatcherPriority.Normal);
                 });
             }
         }
@@ -180,15 +183,19 @@ namespace ZenovaLauncher
         private async Task ReRegisterPackage(string gameDir)
         {
             var pkgs = Utils.IsElevated ? new PackageManager().FindPackages(MINECRAFT_PACKAGE_FAMILY) : new PackageManager().FindPackagesForUser(string.Empty, MINECRAFT_PACKAGE_FAMILY);
-            DeploymentResult results = null;
+            DeploymentResult results;
             foreach (var pkg in pkgs)
             {
-                if (pkg.InstalledLocation.Path == gameDir)
+                try
                 {
-                    Trace.WriteLine("Skipping package removal - same path: " + pkg.Id.FullName + " " + pkg.InstalledLocation.Path);
-                    return;
+                    if (pkg.InstalledLocation.Path == gameDir)
+                    {
+                        Trace.WriteLine("Skipping package removal - same path: " + pkg.Id.FullName + " " + pkg.InstalledLocation.Path);
+                        return;
+                    }
+                    Trace.WriteLine("Removing package: " + pkg.Id.FullName + " " + pkg.InstalledLocation.Path);
                 }
-                Trace.WriteLine("Removing package: " + pkg.Id.FullName + " " + pkg.InstalledLocation.Path);
+                catch (FileNotFoundException) { } // This will throw if the InstalledLocation no longer exists. In this case, continue as normal, and remove previous package
                 if (!pkg.IsDevelopmentMode)
                 {
                     BackupMinecraftDataForRemoval();

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -20,6 +21,22 @@ namespace ZenovaLauncher
         {
             _cacheFile = Path.Combine(versionsDir, _cacheFile);
             VersionsDirectory = versionsDir;
+        }
+
+        public void RemoveUnusedVersions()
+        {
+            if(Preferences.instance.RemoveUnusedVersions)
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        Parallel.ForEach(Directory.GetDirectories(VersionsDirectory).Except(ProfileManager.instance.Select(p => p.Version.GameDirectory).Distinct()), (dir => Directory.Delete(dir, true)));
+                    }
+                    catch (Exception)
+                    {
+                        return;
+                    }
+                });
         }
 
         public MinecraftVersion GetVersionFromString(string versionName)

@@ -61,6 +61,7 @@ namespace ZenovaLauncher
         private void DeleteProfileClick(object sender, RoutedEventArgs e)
         {
             ProfileManager.instance.Remove((sender as FrameworkElement).DataContext as Profile);
+            VersionManager.instance.RemoveUnusedVersions();
             ProfileListBox.Items.Refresh();
         }
 
