@@ -99,7 +99,7 @@ namespace ZenovaLauncher
             }
         }
 
-        private async Task DeploymentProgressWrapper(IAsyncOperationWithProgress<DeploymentResult, DeploymentProgress> t, LaunchStatus status)
+        private async Task<DeploymentResult> DeploymentProgressWrapper(IAsyncOperationWithProgress<DeploymentResult, DeploymentProgress> t, LaunchStatus status)
         {
             TaskCompletionSource<int> src = new TaskCompletionSource<int>();
             t.Progress += (v, p) =>
@@ -115,6 +115,7 @@ namespace ZenovaLauncher
                 src.SetResult(1);
             };
             await src.Task;
+            return t.GetResults();
         }
 
         private string GetBackupMinecraftDataDir()
@@ -179,6 +180,7 @@ namespace ZenovaLauncher
         private async Task ReRegisterPackage(string gameDir)
         {
             var pkgs = Utils.IsElevated ? new PackageManager().FindPackages(MINECRAFT_PACKAGE_FAMILY) : new PackageManager().FindPackagesForUser(string.Empty, MINECRAFT_PACKAGE_FAMILY);
+            DeploymentResult results = null;
             foreach (var pkg in pkgs)
             {
                 if (pkg.InstalledLocation.Path == gameDir)
@@ -190,19 +192,25 @@ namespace ZenovaLauncher
                 if (!pkg.IsDevelopmentMode)
                 {
                     BackupMinecraftDataForRemoval();
-                    await DeploymentProgressWrapper(new PackageManager().RemovePackageAsync(pkg.Id.FullName, 0), LaunchStatus.LaunchRemovePackage);
+                    results = await DeploymentProgressWrapper(new PackageManager().RemovePackageAsync(pkg.Id.FullName, 0), LaunchStatus.LaunchRemovePackage);
+                    if (!string.IsNullOrEmpty(results.ErrorText))
+                        throw new Exception("Unable to remove original package:\n" + results.ErrorText + "\n");
                 }
                 else
                 {
                     Trace.WriteLine("Package is in development mode");
-                    await DeploymentProgressWrapper(new PackageManager().RemovePackageAsync(pkg.Id.FullName, RemovalOptions.PreserveApplicationData), LaunchStatus.LaunchRemovePackage);
+                    results = await DeploymentProgressWrapper(new PackageManager().RemovePackageAsync(pkg.Id.FullName, RemovalOptions.PreserveApplicationData), LaunchStatus.LaunchRemovePackage);
+                    if (!string.IsNullOrEmpty(results.ErrorText))
+                        throw new Exception("Unable to remove development package:\n" + results.ErrorText + "\n");
                 }
                 Trace.WriteLine("Removal of package done: " + pkg.Id.FullName);
                 break;
             }
             Trace.WriteLine("Registering package");
             string manifestPath = Path.Combine(gameDir, "AppxManifest.xml");
-            await DeploymentProgressWrapper(new PackageManager().RegisterPackageAsync(new Uri(manifestPath), null, DeploymentOptions.DevelopmentMode), LaunchStatus.LaunchRegisterPackage);
+            results = await DeploymentProgressWrapper(new PackageManager().RegisterPackageAsync(new Uri(manifestPath), null, DeploymentOptions.DevelopmentMode), LaunchStatus.LaunchRegisterPackage);
+            if (!string.IsNullOrEmpty(results.ErrorText))
+                throw new Exception("Unable to re-register package:\n" + results.ErrorText + "\n");
             Trace.WriteLine("App re-register done!");
             RestoreMinecraftDataFromReinstall();
         }
@@ -256,8 +264,10 @@ namespace ZenovaLauncher
                     LaunchInfo.ZipProcessed = zipProgress.Processed;
                     LaunchInfo.ZipCurrentItem = zipProgress.CurrentItem;
                 };
-                ZipArchive zipFile = new ZipArchive(new FileStream(dlPath, FileMode.Open));
-                zipFile.ExtractToDirectory(dirPath, progress);
+                using (ZipArchive zipFile = new ZipArchive(new FileStream(dlPath, FileMode.Open)))
+                {
+                    zipFile.ExtractToDirectory(dirPath, progress);
+                }
                 File.Delete(Path.Combine(dirPath, "AppxSignature.p7x"));
                 File.Delete(dlPath);
             }
@@ -360,6 +370,8 @@ namespace ZenovaLauncher
             {
                 get
                 {
+                    if (Status == LaunchStatus.InitializingDownload)
+                        return "Initializing";
                     if (Status == LaunchStatus.Downloading)
                         return "Downloading " + ((double)DownloadedBytes / 1024 / 1024).ToString("N2") + " MB / " + ((double)DownloadSize / 1024 / 1024).ToString("N2") + " MB";
                     if (Status == LaunchStatus.Extracting)
