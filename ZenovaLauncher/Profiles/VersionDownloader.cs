@@ -129,8 +129,7 @@ namespace ZenovaLauncher
 
         public async Task EnableUserAuthorization()
         {
-            if (_protocol.MSAUserToken == null)
-                _protocol.MSAUserToken = await WUTokenHelper.GetWUToken(Preferences.instance.SelectedAccount.AccountId);
+            _protocol.MSAUserToken = await WUTokenHelper.GetWUToken(AccountManager.instance.SelectedAccount.AccountId);
         }
 
         public async Task Download(string updateIdentity, string revisionNumber, string destination, DownloadProgress progress, CancellationToken cancellationToken)

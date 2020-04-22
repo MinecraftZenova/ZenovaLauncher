@@ -44,6 +44,7 @@
                 VerticalAlignment="Center"
                 ui:ControlHelper.CornerRadius="0,0,0,0"
                 SelectedItem="{Binding SelectedAccount}"
+                SelectionChanged="AccountChanged"
                 Padding="12,25,0,10">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>

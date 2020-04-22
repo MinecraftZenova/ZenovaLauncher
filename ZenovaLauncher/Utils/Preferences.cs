@@ -25,13 +25,11 @@ namespace ZenovaLauncher
             get { return (int)ProfileSorting; }
             set { ProfileSorting = (Profile.ProfileSortType)value; }
         }
-        public string SelectedAccountName 
+        public string SelectedAccount
         { 
-            get { return SelectedAccount.AccountName; }
-            set { SelectedAccount = AccountManager.instance.FirstOrDefault(a => a.AccountName == value); }
+            get { return AccountManager.instance.SelectedAccount.AccountName; }
+            set { AccountManager.instance.SelectedAccount = AccountManager.instance.FirstOrDefault(a => a.AccountName == value); }
         }
-        [JsonIgnore]
-        public MSAccount SelectedAccount { get; set; } = AccountManager.instance.First();
 
 
         public static void LoadPreferences(string dataDir)

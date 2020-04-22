@@ -1,7 +1,9 @@
 ﻿using MahApps.Metro.Controls;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 
 namespace ZenovaLauncher
@@ -15,11 +17,19 @@ namespace ZenovaLauncher
         {
             InitializeComponent();
 
-            DataContext = Preferences.instance;
+            DataContext = AccountManager.instance;
 
             AccountBox.ItemsSource = AccountManager.instance;
             NavView.SelectedItem = NavViewItems.OfType<HamburgerMenuItem>().First();
             Navigate(NavView.SelectedItem);
+        }
+
+        private void AccountChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Task.Run(async () =>
+            {
+                await VersionDownloader.user.EnableUserAuthorization();
+            });
         }
 
         private void NavView_ItemInvoked(object sender, HamburgerMenuItemInvokedEventArgs e)

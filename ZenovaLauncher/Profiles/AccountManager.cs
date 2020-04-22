@@ -2,12 +2,15 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace ZenovaLauncher
 {
     public class AccountManager : ObservableCollection<MSAccount>
     {
         public static AccountManager instance;
+
+        public MSAccount SelectedAccount { get; set; }
 
         public async Task AddAccounts()
         {
@@ -17,6 +20,7 @@ namespace ZenovaLauncher
                 var accounts = await WUTokenHelper.GetMSAccounts();
                 foreach (Tuple<string, string> account in accounts)
                     Add(new MSAccount(account.Item1, account.Item2));
+                SelectedAccount = this.First();
                 Trace.WriteLine("AddAccounts finished");
             });
         }

@@ -48,14 +48,18 @@ namespace ZenovaLauncher
             {
                 Task.Run(async () =>
                 {
-                    LaunchInfo = new ProfileLaunchInfo { Status = LaunchStatus.InitializingDownload };
+                    LaunchInfo = new ProfileLaunchInfo { Status = LaunchStatus.InitializingDownload, WillDownload = false };
                     LaunchedProfile = p;
                     bool installStatus = true;
 
                     if (!p.Version.IsInstalled)
+                    {
+                        LaunchInfo.WillDownload = true;
                         installStatus = await Download(p);
+                    }
 
                     LaunchInfo.Status = LaunchStatus.InitializingLaunch;
+                    LaunchInfo.LaunchCurrent = 0;
                     if (installStatus)
                         await Launch(p);
 
@@ -211,14 +215,7 @@ namespace ZenovaLauncher
 
             Trace.WriteLine("Download start");
             string dlPath = Path.Combine(VersionManager.instance.VersionsDirectory, "Minecraft-" + v.Name + ".Appx");
-            VersionDownloader downloader = VersionDownloader.standard;
-            if (v.Beta)
-            {
-                downloader = VersionDownloader.user;
-                Trace.WriteLine("UserLoginStarted");
-                await downloader.EnableUserAuthorization();
-                Trace.WriteLine("UserLogin Completed");
-            }
+            VersionDownloader downloader = v.Beta ? VersionDownloader.user : VersionDownloader.standard;
             try
             {
                 Trace.WriteLine("Initializing Download");
@@ -244,14 +241,13 @@ namespace ZenovaLauncher
             }
             try
             {
-                LaunchInfo.Status = LaunchStatus.InitializingExtraction;
                 string dirPath = v.GameDirectory;
                 if (Directory.Exists(dirPath))
                     Directory.Delete(dirPath, true);
                 Progress<ZipProgress> progress = new Progress<ZipProgress>();
                 progress.ProgressChanged += (sender, zipProgress) =>
                 {
-                    if (LaunchInfo.Status == LaunchStatus.InitializingExtraction)
+                    if (LaunchInfo.Status != LaunchStatus.Extracting)
                     {
                         Trace.WriteLine("Extraction started");
                         LaunchInfo.Status = LaunchStatus.Extracting;
@@ -263,6 +259,7 @@ namespace ZenovaLauncher
                 ZipArchive zipFile = new ZipArchive(new FileStream(dlPath, FileMode.Open));
                 zipFile.ExtractToDirectory(dirPath, progress);
                 File.Delete(Path.Combine(dirPath, "AppxSignature.p7x"));
+                File.Delete(dlPath);
             }
             catch (Exception e)
             {
@@ -285,16 +282,15 @@ namespace ZenovaLauncher
             private string _zipCurrentItem;
             private long _launchCurrent;
 
+            public bool WillDownload { get; set; }
+
             public LaunchStatus Status
             {
                 get { return _status; }
                 set { _status = value; OnPropertyChanged("Status"); OnPropertyChanged("IsProgressIndeterminate"); OnPropertyChanged("DisplayStatus"); OnPropertyChanged("AnimateTime"); OnPropertyChanged("ProgressMax"); }
             }
 
-            public bool IsProgressIndeterminate
-            {
-                get { return Status == LaunchStatus.InitializingDownload || Status == LaunchStatus.InitializingExtraction || Status == LaunchStatus.InitializingLaunch || Status == LaunchStatus.Launching; }
-            }
+            public bool IsProgressIndeterminate => Status == LaunchStatus.InitializingDownload;
 
             public long DownloadedBytes
             {
@@ -332,37 +328,33 @@ namespace ZenovaLauncher
                 set { _launchCurrent = value; OnPropertyChanged("LaunchCurrent"); OnPropertyChanged("DisplayStatus"); OnPropertyChanged("ProgressCurrent"); }
             }
 
-            public long LaunchTotal => 100 * 2;
-
-            public long ProgressCurrent
+            public double ProgressCurrent
             {
                 get
                 {
-                    if (Status == LaunchStatus.Extracting)
-                        return ZipProcessed;
-                    if (Status == LaunchStatus.Downloading)
-                        return DownloadedBytes;
-                    if (Status == LaunchStatus.LaunchRemovePackage)
-                        return LaunchCurrent;
-                    if (Status == LaunchStatus.LaunchRegisterPackage)
-                        return 100 + LaunchCurrent;
+                    if (WillDownload)
+                    {
+                        if (Status == LaunchStatus.Downloading)
+                            return 400.0 * DownloadedBytes / DownloadSize;
+                        if (Status == LaunchStatus.Extracting)
+                            return (400.0 * ZipProcessed / ZipTotal) + 400.0;
+                        if (Status == LaunchStatus.LaunchRemovePackage || Status == LaunchStatus.InitializingLaunch)
+                            return LaunchCurrent + 800.0;
+                        if (Status == LaunchStatus.LaunchRegisterPackage || Status == LaunchStatus.Launching)
+                            return LaunchCurrent + 900.0;
+                    }
+                    else
+                    {
+                        if (Status == LaunchStatus.LaunchRemovePackage || Status == LaunchStatus.InitializingLaunch)
+                            return LaunchCurrent;
+                        if (Status == LaunchStatus.LaunchRegisterPackage || Status == LaunchStatus.Launching)
+                            return LaunchCurrent + 100.0;
+                    }
                     return 0;
                 }
             }
 
-            public long ProgressMax
-            {
-                get
-                {
-                    if (Status == LaunchStatus.Extracting)
-                        return ZipTotal;
-                    if (Status == LaunchStatus.Downloading)
-                        return DownloadSize;
-                    if (Status == LaunchStatus.LaunchRegisterPackage || Status == LaunchStatus.LaunchRemovePackage)
-                        return LaunchTotal;
-                    return 1;
-                }
-            }
+            public double ProgressMax => WillDownload ? 400 + 400 + 100 + 100 : 100 + 100;
 
             public string DisplayStatus
             {
@@ -370,8 +362,6 @@ namespace ZenovaLauncher
                 {
                     if (Status == LaunchStatus.Downloading)
                         return "Downloading " + ((double)DownloadedBytes / 1024 / 1024).ToString("N2") + " MB / " + ((double)DownloadSize / 1024 / 1024).ToString("N2") + " MB";
-                    if (Status == LaunchStatus.InitializingExtraction)
-                        return "Extracting";
                     if (Status == LaunchStatus.Extracting)
                         return "Extracting " + ZipCurrentItem;
                     if (Status == LaunchStatus.Launching)
@@ -397,7 +387,6 @@ namespace ZenovaLauncher
         {
             InitializingDownload,
             Downloading,
-            InitializingExtraction,
             Extracting,
             InitializingLaunch,
             LaunchRemovePackage,
