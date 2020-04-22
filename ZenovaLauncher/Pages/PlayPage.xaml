@@ -154,7 +154,7 @@
                 HorizontalContentAlignment="Left"
                 Background="Transparent"
                 BorderThickness="0"
-                SelectedIndex="0">
+                SelectedItem="{Binding SelectedProfile}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <ui:SimpleStackPanel Spacing="4">

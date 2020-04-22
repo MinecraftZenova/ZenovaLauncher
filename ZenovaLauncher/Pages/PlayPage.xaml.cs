@@ -11,8 +11,10 @@ namespace ZenovaLauncher
         public PlayPage()
         {
             InitializeComponent();
-            ProfileBox.ItemsSource = ProfileManager.instance;
+
             DataContext = ProfileLauncher.instance;
+            ProfileBox.ItemsSource = ProfileManager.instance;
+            ProfileBox.DataContext = ProfileManager.instance;
         }
 
         private void PlayButtonClick(object sender, RoutedEventArgs e)

@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows;
 
 namespace ZenovaLauncher
 {
@@ -30,6 +32,11 @@ namespace ZenovaLauncher
             get { return AccountManager.instance.SelectedAccount.AccountName; }
             set { AccountManager.instance.SelectedAccount = AccountManager.instance.FirstOrDefault(a => a.AccountName == value); }
         }
+        public string SelectedProfile
+        {
+            get { return ProfileManager.instance.SelectedProfile.Hash; }
+            set { ProfileManager.instance.SelectedProfile = ProfileManager.instance.FirstOrDefault(p => p.Hash == value); }
+        }
 
 
         public static void LoadPreferences(string dataDir)
@@ -38,9 +45,22 @@ namespace ZenovaLauncher
             _preferencesFile = Path.Combine(dataDir, _preferencesFile);
             camelCaseSerialization = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             if (File.Exists(_preferencesFile))
-                instance = JsonConvert.DeserializeObject<Preferences>(File.ReadAllText(_preferencesFile), camelCaseSerialization);
+            {
+                try
+                {
+                    instance = JsonConvert.DeserializeObject<Preferences>(File.ReadAllText(_preferencesFile), camelCaseSerialization);
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine("Preferences JSON Deserialize Failed: " + e.ToString());
+                    MessageBox.Show("Preferences JSON Deserialize Failed: " + e.ToString());
+                }
+            }
             else
+            {
                 instance = new Preferences();
+            }
+
             Trace.WriteLine("Loaded Preferences");
         }
 

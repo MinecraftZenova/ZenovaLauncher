@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows;
 
 namespace ZenovaLauncher
 {
@@ -72,28 +74,36 @@ namespace ZenovaLauncher
             camelCaseSerialization = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             if (File.Exists(Path.Combine(_profilesDir, _profilesFile)))
             {
-                Dictionary<string, Profile> profileList = JsonConvert.DeserializeObject<Dictionary<string, Profile>>(File.ReadAllText(Path.Combine(_profilesDir, _profilesFile)), camelCaseSerialization);
-                foreach (var p in profileList)
+                try
                 {
-                    if (p.Key == p.Value.Hash)
+                    Dictionary<string, Profile> profileList = JsonConvert.DeserializeObject<Dictionary<string, Profile>>(File.ReadAllText(Path.Combine(_profilesDir, _profilesFile)), camelCaseSerialization);
+                    foreach (var p in profileList)
                     {
-                        switch (p.Value.Type)
+                        if (p.Key == p.Value.Hash)
                         {
-                            case Profile.ProfileType.Custom:
-                                Add(p.Value);
-                                break;
-                            case Profile.ProfileType.LatestBeta:
-                                LatestBeta = p.Value;
-                                break;
-                            case Profile.ProfileType.LatestRelease:
-                                LatestRelease = p.Value;
-                                break;
+                            switch (p.Value.Type)
+                            {
+                                case Profile.ProfileType.Custom:
+                                    Add(p.Value);
+                                    break;
+                                case Profile.ProfileType.LatestBeta:
+                                    LatestBeta = p.Value;
+                                    break;
+                                case Profile.ProfileType.LatestRelease:
+                                    LatestRelease = p.Value;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            Trace.WriteLine("Failed to load profile due to incorrect hash: " + p.Key);
                         }
                     }
-                    else
-                    {
-                        Trace.WriteLine("Failed to load profile due to incorrect hash: " + p.Key);
-                    }
+                }
+                catch(Exception e)
+                {
+                    Trace.WriteLine("Profile JSON Deserialize Failed: " + e.ToString());
+                    MessageBox.Show("Profile JSON Deserialize Failed: " + e.ToString());
                 }
             }
             //}

@@ -31,9 +31,9 @@ namespace ZenovaLauncher
             Task loadTask = Task.Run(async () =>
             {
                 await AccountManager.instance.AddAccounts();
-                Preferences.LoadPreferences(DataDirectory);
                 await VersionManager.instance.LoadMinecraftVersions();
                 ProfileManager.instance.AddProfiles();
+                Preferences.LoadPreferences(DataDirectory);
             });
             loadTask.Wait();
             Trace.WriteLine("AppStart Finished");
