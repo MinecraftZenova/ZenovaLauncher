@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ZenovaLauncher
 {
@@ -21,33 +23,42 @@ namespace ZenovaLauncher
             return (item as Profile).Historical == true;
         };
 
-        public Profile(string name, MinecraftVersion version, DateTime lastUsed = default, DateTime created = default, ProfileType type = ProfileType.Custom)
+        public Profile(string name, MinecraftVersion version, DateTime lastUsed = default, DateTime created = default, ProfileType type = ProfileType.Custom, ObservableCollection<Mod> modsList = null)
         {
             Name = string.IsNullOrEmpty(name) ? "<unnamed profile>" : name;
             Version = version;
             LastUsed = lastUsed;
             Created = created;
             Type = type;
+            ModsList = modsList;
         }
 
-        public Profile(Profile profile) : this(profile.Name, profile.Version, profile.LastUsed, profile.Created, profile.Type) { }
+        public Profile(Profile profile) : this(profile.Name, profile.Version, profile.LastUsed, profile.Created, profile.Type, profile.ModsList) { }
 
-        [JsonConstructor]
-        public Profile(DateTime created, DateTime lastUsed, string versionId, string name, ProfileType type) :
-            this(name, VersionManager.instance.GetVersionFromString(versionId), lastUsed, created, type)
-        { }
+        public Profile() { }
 
         [JsonProperty]
         public DateTime Created { get; set; }
         [JsonProperty]
         public DateTime LastUsed { get; set; }
         [JsonProperty]
-        public string VersionId => Version.InternalName;
+        public string VersionId
+        {
+            get { return Version.InternalName; }
+            set { Version = VersionManager.instance.GetVersionFromString(value); }
+        }
         [JsonProperty]
         public string Name { get; set; }
         [JsonProperty]
         [JsonConverter(typeof(StringEnumConverter))]
         public ProfileType Type { get; set; }
+        [JsonProperty]
+        public List<string> Mods
+        {
+            get { return ModsList?.Select(m => m.ModDirectory).ToList(); }
+            set { ModsList = new ObservableCollection<Mod>(value?.Select(m => ModManager.instance.GetModFromDirectory(m))); }
+        }
+        public ObservableCollection<Mod> ModsList { get; set; }
         public MinecraftVersion Version { get; set; }
         public string Hash => Utils.ComputeHash(this);
         public string VersionName => Version.Name;

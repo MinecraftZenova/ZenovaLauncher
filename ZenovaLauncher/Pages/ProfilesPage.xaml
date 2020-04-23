@@ -31,8 +31,8 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <ui:SimpleStackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Button x:Name="AddProfileButton" Margin="0,0,15,0" Click="AddProfileClick">
+                    <ui:SimpleStackPanel Grid.Column="0" Orientation="Horizontal" Spacing="15">
+                        <Button x:Name="AddProfileButton" Click="AddProfileClick">
                             <Button.Content>
                                 <ui:SimpleStackPanel Orientation="Horizontal" Spacing="8" Margin="3">
                                     <ui:SymbolIcon VerticalAlignment="Center" Symbol="Add" />

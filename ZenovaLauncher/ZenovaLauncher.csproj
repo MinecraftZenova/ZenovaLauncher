@@ -68,6 +68,8 @@
     <Compile Include="Controls\LauncherSideMenu.cs" />
     <Compile Include="Controls\LauncherSideMenuArgs.cs" />
     <Compile Include="Controls\LauncherTabControl.cs" />
+    <Compile Include="Mods\Mod.cs" />
+    <Compile Include="Mods\ModManager.cs" />
     <Compile Include="Profiles\AccountManager.cs" />
     <Compile Include="Utils\BooleanValueConverter.cs" />
     <Compile Include="Dialogs\EditProfileDialog.xaml.cs">
@@ -88,7 +90,7 @@
       <DependentUpon>ProfilesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Preferences.cs" />
-    <Compile Include="Profiles\MinecraftVersion.cs" />
+    <Compile Include="Versions\MinecraftVersion.cs" />
     <Compile Include="Profiles\Profile.cs" />
     <Compile Include="Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -195,8 +197,8 @@
     <Compile Include="Pages\NewsPage.xaml.cs">
       <DependentUpon>NewsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Profiles\VersionDownloader.cs" />
-    <Compile Include="Profiles\VersionManager.cs" />
+    <Compile Include="Versions\VersionDownloader.cs" />
+    <Compile Include="Versions\VersionManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -251,6 +253,7 @@
   <ItemGroup>
     <Content Include="SetupZenovaLauncher.iss" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>$(ProjectDir)Inno\ISCC.exe $(ProjectDir)SetupZenovaLauncher.iss</PostBuildEvent>

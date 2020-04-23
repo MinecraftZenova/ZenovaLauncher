@@ -14,7 +14,7 @@ namespace ZenovaLauncher
         public static Preferences instance;
 
         private static string _preferencesFile = "preferences.json";
-        private static JsonSerializerSettings camelCaseSerialization;
+        private static JsonSerializerSettings jsonSettings;
 
         public bool EnableReleases { get; set; } = true;
         public bool EnableBetas { get; set; } = false;
@@ -23,11 +23,19 @@ namespace ZenovaLauncher
         public bool RemoveUnusedVersions { get; set; } = false;
         [JsonConverter(typeof(StringEnumConverter))]
         public Profile.ProfileSortType ProfileSorting { get; set; } = Profile.ProfileSortType.ByLastPlayed;
+        [JsonConverter(typeof(StringEnumConverter))]
+        public Mod.ModSortType ModSorting { get; set; } = Mod.ModSortType.ByLatestSupported;
         [JsonIgnore]
         public int ProfileSortingId
         {
             get { return (int)ProfileSorting; }
             set { ProfileSorting = (Profile.ProfileSortType)value; }
+        }
+        [JsonIgnore]
+        public int ModSortingId
+        {
+            get { return (int)ModSorting; }
+            set { ModSorting = (Mod.ModSortType)value; }
         }
         public string SelectedAccount
         { 
@@ -45,12 +53,12 @@ namespace ZenovaLauncher
         {
             Trace.WriteLine("Loading Preferences");
             _preferencesFile = Path.Combine(dataDir, _preferencesFile);
-            camelCaseSerialization = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            jsonSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             if (File.Exists(_preferencesFile))
             {
                 try
                 {
-                    instance = JsonConvert.DeserializeObject<Preferences>(File.ReadAllText(_preferencesFile), camelCaseSerialization);
+                    instance = JsonConvert.DeserializeObject<Preferences>(File.ReadAllText(_preferencesFile), jsonSettings);
                 }
                 catch (Exception e)
                 {
@@ -68,7 +76,7 @@ namespace ZenovaLauncher
 
         public static void SavePreferences()
         {
-            File.WriteAllText(_preferencesFile, JsonConvert.SerializeObject(instance, Formatting.Indented, camelCaseSerialization));
+            File.WriteAllText(_preferencesFile, JsonConvert.SerializeObject(instance, Formatting.Indented, jsonSettings));
         }
     }
 }

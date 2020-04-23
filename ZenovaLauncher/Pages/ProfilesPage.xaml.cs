@@ -16,13 +16,13 @@ namespace ZenovaLauncher
         public ProfilesPage()
         {
             InitializeComponent();
+
             DataContext = ProfileLauncher.instance;
             ProfileListBox.ItemsSource = ProfileManager.instance;
             SortProfileBox.DataContext = Preferences.instance;
             ReleasesBox.DataContext = Preferences.instance;
             BetasBox.DataContext = Preferences.instance;
             HistoricalBox.DataContext = Preferences.instance;
-            ProgressGrid.ToString();
 
             SortProfileList(Preferences.instance.ProfileSorting);
             FilterProfileList();

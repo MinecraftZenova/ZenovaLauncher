@@ -28,11 +28,13 @@ namespace ZenovaLauncher
             ProfileManager.instance = new ProfileManager(DataDirectory);
             ProfileLauncher.instance = new ProfileLauncher();
             AccountManager.instance = new AccountManager();
+            ModManager.instance = new ModManager(ModsDirectory);
             Task loadTask = Task.Run(async () =>
             {
                 await AccountManager.instance.AddAccounts();
                 await VersionManager.instance.LoadMinecraftVersions();
                 ProfileManager.instance.AddProfiles();
+                ModManager.instance.LoadMods();
                 Preferences.LoadPreferences(DataDirectory);
                 VersionManager.instance.RemoveUnusedVersions();
             });

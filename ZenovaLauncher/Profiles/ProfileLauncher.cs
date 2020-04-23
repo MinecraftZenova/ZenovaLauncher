@@ -61,19 +61,23 @@ namespace ZenovaLauncher
 
                     LaunchInfo.Status = LaunchStatus.InitializingLaunch;
                     LaunchInfo.LaunchCurrent = 0;
+                    bool launchStatus = true;
                     if (installStatus)
-                        await Launch(p);
+                        launchStatus = await Launch(p);
 
                     LaunchInfo = null;
                     LaunchedProfile.LastUsed = DateTime.Now;
                     LaunchedProfile = null;
-                    if (!Preferences.instance.KeepLauncherOpen)
-                        Application.Current.Dispatcher.BeginInvokeShutdown(DispatcherPriority.Normal);
+                    if (!Preferences.instance.KeepLauncherOpen && launchStatus)
+                        await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)delegate()
+                        {
+                            Application.Current.MainWindow.Close();
+                        });
                 });
             }
         }
 
-        private async Task Launch(Profile p)
+        private async Task<bool> Launch(Profile p)
         {
             try
             {
@@ -83,7 +87,7 @@ namespace ZenovaLauncher
             {
                 Trace.WriteLine("App re-register failed:\n" + e.ToString());
                 MessageBox.Show("App re-register failed:\n" + e.ToString());
-                return;
+                return false;
             }
 
             try
@@ -93,12 +97,13 @@ namespace ZenovaLauncher
                 if (pkg.Count > 0)
                     await pkg[0].LaunchAsync();
                 Trace.WriteLine("App launch finished!");
+                return true;
             }
             catch (Exception e)
             {
                 Trace.WriteLine("App launch failed:\n" + e.ToString());
                 MessageBox.Show("App launch failed:\n" + e.ToString());
-                return;
+                return false;
             }
         }
 
