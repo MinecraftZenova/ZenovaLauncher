@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.Win32;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -29,7 +30,16 @@ namespace ZenovaLauncher
 
         private void ImportModClick(object sender, RoutedEventArgs e)
         {
-
+            OpenFileDialog importDialog = new OpenFileDialog();
+            importDialog.Multiselect = true;
+            importDialog.Filter = "Zip files (*.zip)|*.zip|Zenova Mod Pack (*.zmp)|*.zmp";
+            if (importDialog.ShowDialog() == true)
+            {
+                foreach (string file in importDialog.FileNames)
+                    ModManager.instance.ImportMod(file);
+                ModsListBox.Items.Refresh();
+                
+            }
         }
 
         private void SortChanged(object sender, SelectionChangedEventArgs e)
@@ -49,7 +59,8 @@ namespace ZenovaLauncher
 
         private void DeleteModClick(object sender, RoutedEventArgs e)
         {
-
+            ModManager.instance.RemoveMod((sender as FrameworkElement).DataContext as Mod);
+            ModsListBox.Items.Refresh();
         }
 
         protected void SortModList(Mod.ModSortType sortType)

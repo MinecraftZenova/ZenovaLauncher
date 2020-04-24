@@ -33,8 +33,8 @@ namespace ZenovaLauncher
             {
                 await AccountManager.instance.AddAccounts();
                 await VersionManager.instance.LoadMinecraftVersions();
-                ProfileManager.instance.AddProfiles();
                 ModManager.instance.LoadMods();
+                ProfileManager.instance.AddProfiles();
                 Preferences.LoadPreferences(DataDirectory);
                 VersionManager.instance.RemoveUnusedVersions();
             });

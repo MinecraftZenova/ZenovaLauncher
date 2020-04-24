@@ -17,6 +17,8 @@ namespace ZenovaLauncher
 
         private readonly string _profilesFile = "profiles.json";
 
+        public Action Refresh { get; set; }
+
         public string ProfilesDir { get; }
 
         public ProfileManager(string profileDir)
@@ -109,6 +111,7 @@ namespace ZenovaLauncher
                 Trace.WriteLine("Profile JSON Deserialize Failed: " + e.ToString());
                 MessageBox.Show("Profile JSON Deserialize Failed: " + e.ToString());
             }
+            Refresh?.Invoke();
             //}
         }
 

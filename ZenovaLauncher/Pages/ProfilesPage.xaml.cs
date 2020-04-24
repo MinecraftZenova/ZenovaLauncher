@@ -24,8 +24,15 @@ namespace ZenovaLauncher
             BetasBox.DataContext = Preferences.instance;
             HistoricalBox.DataContext = Preferences.instance;
 
+            ProfileManager.instance.Refresh = RefreshProfiles;
+
             SortProfileList(Preferences.instance.ProfileSorting);
             FilterProfileList();
+        }
+
+        private void RefreshProfiles()
+        {
+            ProfileListBox.Items.Refresh();
         }
 
         private void SelectCurrentItem(object sender, KeyboardFocusChangedEventArgs e)
@@ -39,7 +46,7 @@ namespace ZenovaLauncher
             AddProfileDialog newProfile = new AddProfileDialog();
             var result = await newProfile.ShowAsync();
             if (result == ModernWpf.Controls.ContentDialogResult.Primary)
-                ProfileListBox.Items.Refresh();
+                RefreshProfiles();
         }
 
         private void EditProfileClick(object sender, RoutedEventArgs e)
@@ -62,7 +69,7 @@ namespace ZenovaLauncher
         {
             ProfileManager.instance.Remove((sender as FrameworkElement).DataContext as Profile);
             VersionManager.instance.RemoveUnusedVersions();
-            ProfileListBox.Items.Refresh();
+            RefreshProfiles();
         }
 
         private void ProfileSelected(object sender, MouseButtonEventArgs e)
@@ -115,7 +122,7 @@ namespace ZenovaLauncher
             EditProfileDialog editProfile = new EditProfileDialog(profile);
             var result = await editProfile.ShowAsync();
             if (result == ModernWpf.Controls.ContentDialogResult.Primary)
-                ProfileListBox.Items.Refresh();
+                RefreshProfiles();
         }
     }
 }
