@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Shell;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -9,12 +11,45 @@ namespace ZenovaLauncher
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : Application, ISingleInstanceApp
     {
         private readonly string _environmentKey = "ZENOVA_DATA";
         private readonly string _directoryMods = "mods";
         private readonly string _directoryVersions = "versions";
         private string _dataDirectory;
+
+        private const string AppID = "ZenovaApplicationID";
+
+        [STAThread]
+        public static void Main()
+        {
+            if (SingleInstance<App>.InitializeAsFirstInstance(AppID))
+            {
+                var application = new App();
+                application.InitializeComponent();
+                application.Run();
+                // Allow single instance code to perform cleanup operations
+                SingleInstance<App>.Cleanup();
+            }
+        }
+
+        public bool SignalExternalCommandLineArgs(IList<string> args)
+        {
+            // handle command line arguments of second instance
+            ReadCommandArgs(args);
+            return true;
+        }
+
+        public void ReadCommandArgs(IList<string> args)
+        {
+            if (args.Count > 1)
+            {
+                if (args[1].EndsWith(".zmp"))
+                {
+                    ModManager.instance.ImportMod(args[1]);
+                }
+            }
+        }
 
         public void AppStart(object sender, StartupEventArgs e)
         {
@@ -39,6 +74,7 @@ namespace ZenovaLauncher
                 VersionManager.instance.RemoveUnusedVersions();
             });
             loadTask.Wait();
+            ReadCommandArgs(Environment.GetCommandLineArgs());
             Trace.WriteLine("AppStart Finished");
         }
 

@@ -40,7 +40,7 @@ namespace ZenovaLauncher
             }
         }
 
-        private async Task DownloadFileChunk(string url, DownloadProgress progress, long? totalSize, CancellationToken cancellationToken, Tuple<long, long> readRange, int index, ConcurrentDictionary<int, String> tempFilesDictionary)
+        private async Task DownloadFileChunk(string url, DownloadProgress progress, long? totalSize, CancellationToken cancellationToken, Tuple<long, long> readRange, int index, ConcurrentDictionary<int, string> tempFilesDictionary)
         {
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, url);
             httpRequestMessage.Headers.Range = new RangeHeaderValue(readRange.Item1, readRange.Item2);

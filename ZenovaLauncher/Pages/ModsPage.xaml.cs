@@ -32,7 +32,7 @@ namespace ZenovaLauncher
         {
             OpenFileDialog importDialog = new OpenFileDialog();
             importDialog.Multiselect = true;
-            importDialog.Filter = "Zip files (*.zip)|*.zip|Zenova Mod Pack (*.zmp)|*.zmp";
+            importDialog.Filter = "Zenova Mod Package (*.zmp;*.zip)|*.zmp;*.zip";
             if (importDialog.ShowDialog() == true)
             {
                 foreach (string file in importDialog.FileNames)

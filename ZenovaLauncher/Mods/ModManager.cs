@@ -23,6 +23,7 @@ namespace ZenovaLauncher
         public ModManager(string modsDir)
         {
             ModsDirectory = modsDir;
+            jsonSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
         }
 
         public Mod GetModFromDirectory(string dir)
@@ -38,7 +39,6 @@ namespace ZenovaLauncher
 
         public void LoadMods()
         {
-            jsonSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             foreach (string dir in Directory.GetDirectories(ModsDirectory))
                 LoadMod(dir);
         }
@@ -49,6 +49,10 @@ namespace ZenovaLauncher
             {
                 if (File.Exists(Path.Combine(modDir, _modsFileName)))
                 {
+                    Mod oldMod = GetModFromDirectory(modDir);
+                    if (oldMod != null)
+                        Remove(oldMod);
+
                     Mod mod = JsonConvert.DeserializeObject<Mod>(File.ReadAllText(Path.Combine(modDir, _modsFileName)), jsonSettings);
                     mod.ModDirectory = modDir;
                     Add(mod);
@@ -67,7 +71,7 @@ namespace ZenovaLauncher
             if (File.Exists(modFile))
             {
                 List<string> modDirs = new List<string>();
-                string profileText;
+                string profileText = string.Empty;
                 // extract directories to mods folder
                 using (ZipArchive archive = ZipFile.OpenRead(modFile))
                 {
@@ -86,12 +90,23 @@ namespace ZenovaLauncher
                         if (entry.Name == _modsFileName)
                             modDirs.Add(Path.GetDirectoryName(path));
 
-                        entry.ExtractToFile(path);
+                        // the second parameter specifies to replace file in destination
+                        entry.ExtractToFile(path, true);
                     }
-                    ZipArchiveEntry profileFile = archive.GetEntry("profiles.json");
-                    using (StreamReader reader = new StreamReader(profileFile.Open()))
+                    try
                     {
-                        profileText = reader.ReadToEnd();
+                        ZipArchiveEntry profileFile = archive.GetEntry("profiles.json");
+                        if (profileFile != null)
+                        {
+                            using (StreamReader reader = new StreamReader(profileFile.Open()))
+                            {
+                                profileText = reader.ReadToEnd();
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Trace.WriteLine("profiles.json not found in Mod: " + e.ToString());
                     }
                 }
                 // load mod for each directory

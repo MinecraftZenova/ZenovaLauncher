@@ -18,15 +18,19 @@ namespace ZenovaLauncher
         private readonly string _profilesFile = "profiles.json";
 
         public Action Refresh { get; set; }
-
         public string ProfilesDir { get; }
+        public Profile SelectedProfile { get; set; }
+        public Dictionary<string, Profile> internalDictionary => this.ToDictionary(x => x.Hash, x => x);
 
         public ProfileManager(string profileDir)
         {
             ProfilesDir = profileDir;
+            jsonSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                NullValueHandling = NullValueHandling.Ignore
+            };
         }
-
-        public Profile SelectedProfile { get; set; }
 
         public Profile LatestRelease
         {
@@ -59,7 +63,7 @@ namespace ZenovaLauncher
         public void AddProfiles()
         {
             if (File.Exists(Path.Combine(ProfilesDir, _profilesFile)))
-            LoadProfiles(File.ReadAllText(Path.Combine(ProfilesDir, _profilesFile)));
+                LoadProfiles(File.ReadAllText(Path.Combine(ProfilesDir, _profilesFile)));
             AddDefaultProfiles();
         }
 
@@ -75,17 +79,12 @@ namespace ZenovaLauncher
             //string[] profileFiles = Directory.GetFiles(ProfilesDir, "*.json", SearchOption.AllDirectories);
             //foreach (string file in profileFiles)
             //{
-            jsonSettings = new JsonSerializerSettings
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                NullValueHandling = NullValueHandling.Ignore
-            };
             try
             {
                 Dictionary<string, Profile> profileList = JsonConvert.DeserializeObject<Dictionary<string, Profile>>(profileText, jsonSettings);
                 foreach (var p in profileList)
                 {
-                    if (p.Key == p.Value.Hash)
+                    if (!internalDictionary.ContainsKey(p.Value.Hash))
                     {
                         switch (p.Value.Type)
                         {
@@ -99,10 +98,6 @@ namespace ZenovaLauncher
                                 LatestRelease = p.Value;
                                 break;
                         }
-                    }
-                    else
-                    {
-                        Trace.WriteLine("Failed to load profile due to incorrect hash: " + p.Key);
                     }
                 }
             }
@@ -120,8 +115,7 @@ namespace ZenovaLauncher
             //DirectoryInfo di = new DirectoryInfo(_profilesDir);
             //foreach (FileInfo file in di.EnumerateFiles()) file.Delete();
             //foreach (DirectoryInfo dir in di.EnumerateDirectories()) dir.Delete(true);
-            Dictionary<string, Profile> profilesDic = this.ToDictionary(x => x.Hash, x => x);
-            File.WriteAllText(Path.Combine(ProfilesDir, _profilesFile), JsonConvert.SerializeObject(profilesDic, Formatting.Indented, jsonSettings));
+            File.WriteAllText(Path.Combine(ProfilesDir, _profilesFile), JsonConvert.SerializeObject(internalDictionary, Formatting.Indented, jsonSettings));
         }
     }
 }

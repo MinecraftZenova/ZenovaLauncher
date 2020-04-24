@@ -39,6 +39,9 @@
   <PropertyGroup>
     <ApplicationIcon>Assets\zenova_icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>ZenovaLauncher.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -46,6 +49,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -61,10 +65,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </ApplicationDefinition>
+    </Page>
     <Compile Include="Controls\LauncherSideMenu.cs" />
     <Compile Include="Controls\LauncherSideMenuArgs.cs" />
     <Compile Include="Controls\LauncherTabControl.cs" />
@@ -90,6 +94,7 @@
       <DependentUpon>ProfilesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\Preferences.cs" />
+    <Compile Include="Utils\SingleInstance.cs" />
     <Compile Include="Versions\MinecraftVersion.cs" />
     <Compile Include="Profiles\Profile.cs" />
     <Compile Include="Pages\SettingsPage.xaml.cs">
