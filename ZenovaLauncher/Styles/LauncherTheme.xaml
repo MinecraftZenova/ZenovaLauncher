@@ -79,6 +79,9 @@
     <ui:StaticResource x:Key="TextControlBorderBrushDisabled" ResourceKey="SystemControlTransparentBrush" />
     <ui:StaticResource x:Key="TextControlPlaceholderForegroundFocused" ResourceKey="LauncherControlDisabledBaseMediumHighBrush" />
 
+    <ui:StaticResource x:Key="ToggleButtonBackgroundChecked" ResourceKey="SystemControlBackgroundBaseMediumLowBrush" />
+    <ui:StaticResource x:Key="ToggleButtonBackgroundCheckedPointerOver" ResourceKey="ToggleButtonBackgroundPointerOver" />
+
     <ui:StaticResource x:Key="AccentButtonBackgroundPointerOver" ResourceKey="LauncherControlAccentHoverBrush" />
     <ui:StaticResource x:Key="AccentButtonBackgroundDisabled" ResourceKey="LauncherControlAccentDisabledBrush" />
 

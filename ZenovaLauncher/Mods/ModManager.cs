@@ -49,12 +49,12 @@ namespace ZenovaLauncher
             {
                 if (File.Exists(Path.Combine(modDir, _modsFileName)))
                 {
-                    Mod oldMod = GetModFromDirectory(modDir);
+                    Mod oldMod = GetModFromDirectory(new DirectoryInfo(modDir).Name);
                     if (oldMod != null)
                         Remove(oldMod);
 
                     Mod mod = JsonConvert.DeserializeObject<Mod>(File.ReadAllText(Path.Combine(modDir, _modsFileName)), jsonSettings);
-                    mod.ModDirectory = modDir;
+                    mod.ModDirectory = new DirectoryInfo(modDir).Name;
                     Add(mod);
                 }
             }

@@ -40,6 +40,7 @@
                 <ResourceDictionary Source="Styles/ComboBox.xaml" />
                 <ResourceDictionary Source="Styles/ContentDialog.xaml" />
                 <ResourceDictionary Source="Styles/CheckBox.xaml" />
+                <ResourceDictionary Source="Styles/Expander.xaml" />
                 <ResourceDictionary Source="Styles/ListBox.xaml" />
                 <ResourceDictionary Source="Styles/TextBox.xaml" />
                 <ResourceDictionary Source="Controls/LauncherSideMenu.xaml" />

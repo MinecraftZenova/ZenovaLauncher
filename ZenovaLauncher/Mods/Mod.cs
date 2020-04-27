@@ -28,6 +28,11 @@ namespace ZenovaLauncher
         [JsonIgnore]
         public Version LatestSupported => MaxMCVersion.Version;
 
+        public bool SupportsVersion(MinecraftVersion version)
+        {
+            return version.Version >= MinMCVersion.Version && version.Version <= MaxMCVersion.Version;
+        }
+
         public enum ModSortType
         {
             ByLatestSupported,
