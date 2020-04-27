@@ -1,0 +1,30 @@
+﻿<ui:ContentDialog x:Class="ZenovaLauncher.ModDetailsDialog"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ZenovaLauncher"
+      xmlns:ui="http://schemas.modernwpf.com/2019"
+      mc:Ignorable="d"
+      Style="{StaticResource LauncherContentDialog}"
+      HorizontalContentAlignment="Center"
+      Title="Mod Details"
+      SecondaryButtonText="Exit"
+      CloseButtonText="Close">
+
+    <Grid>
+        <ui:SimpleStackPanel VerticalAlignment="Stretch" HorizontalAlignment="Center" Spacing="10" Margin="10" Width="400">
+            <ui:SimpleStackPanel>
+                <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding SelectedMod.Name}" />
+                <TextBlock FontSize="12">
+                    v<Run Text="{Binding SelectedMod.ModVersion, Mode=OneWay}" />
+                </TextBlock>
+                <TextBlock FontSize="12">
+                    By <Run Text="{Binding SelectedMod.Author}" />
+                </TextBlock>
+            </ui:SimpleStackPanel>
+            <Separator Background="{DynamicResource AppBarSeparatorLowForeground}" />
+            <TextBlock x:Name="ModDescription" TextWrapping="Wrap"/>
+        </ui:SimpleStackPanel>
+    </Grid>
+</ui:ContentDialog>

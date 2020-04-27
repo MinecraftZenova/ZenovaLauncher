@@ -71,13 +71,13 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 Root: HKA; Subkey: "{code:GetSubKey}"; \
     ValueType: string; ValueName: "ZENOVA_DATA"; ValueData: "{code:GetDataDir}"; \
     Flags: uninsdeletevalue
-Root: HKCR; Subkey: ".zmp"; ValueData: "{#MyAppName}"; \
+Root: HKA; Subkey: "Software\Classes\.zmp"; ValueData: "{#MyAppName}"; \
     Flags: uninsdeletevalue; ValueType: string;  ValueName: ""
-Root: HKCR; Subkey: "{#MyAppName}"; ValueData: "{#MyAppName}"; \
+Root: HKA; Subkey: "Software\Classes\{#MyAppName}"; ValueData: "{#MyAppName}"; \
     Flags: uninsdeletekey;   ValueType: string;  ValueName: ""
-Root: HKCR; Subkey: "{#MyAppName}\DefaultIcon"; \
+Root: HKA; Subkey: "Software\Classes\{#MyAppName}\DefaultIcon"; \
     ValueData: "{app}\{#MyAppExeName},0"; ValueType: string;  ValueName: ""
-Root: HKCR; Subkey: "{#MyAppName}\shell\open\command"; \
+Root: HKA; Subkey: "Software\Classes\{#MyAppName}\shell\open\command"; \
     ValueData: """{app}\{#MyAppExeName}"" ""%1""";  ValueType: string;  ValueName: ""
 
 [Code]

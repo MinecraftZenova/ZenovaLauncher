@@ -1,5 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.IO;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Markup;
 
 namespace ZenovaLauncher
 {
@@ -7,7 +11,9 @@ namespace ZenovaLauncher
     {
         public string NameId { get; set; }
         public string Name { get; set; }
+        public string Author { get; set; } = "unknown";
         public string Description { get; set; }
+        public string DescriptionFile { get; set; } = null;
         public Version Version { get; set; }
         public string MinVersion
         {
@@ -27,10 +33,29 @@ namespace ZenovaLauncher
         public MinecraftVersion MaxMCVersion { get; set; }
         [JsonIgnore]
         public Version LatestSupported => MaxMCVersion.Version;
+        [JsonIgnore]
+        public string ModVersion => Version.ToString();
 
         public bool SupportsVersion(MinecraftVersion version)
         {
             return version.Version >= MinMCVersion.Version && version.Version <= MaxMCVersion.Version;
+        }
+
+        public void SetDescriptionTextBlock(TextBlock textBlock)
+        {
+            if (!string.IsNullOrEmpty(DescriptionFile))
+            {
+                string descriptionFilePath = Path.Combine(ModManager.instance.ModsDirectory, ModDirectory, DescriptionFile);
+                if (File.Exists(descriptionFilePath))
+                {
+                    textBlock.Inlines.Clear();
+                    textBlock.Inlines.Add(XamlReader.Parse(File.ReadAllText(descriptionFilePath)) as Inline);
+                }
+            }
+            else
+            {
+                textBlock.Text = Description;
+            }
         }
 
         public enum ModSortType

@@ -49,12 +49,12 @@ namespace ZenovaLauncher
 
         private void ModSelected(object sender, MouseButtonEventArgs e)
         {
-
+            ModDetails((sender as FrameworkElement).DataContext as Mod);
         }
 
         private void ModDetailsClick(object sender, RoutedEventArgs e)
         {
-
+            ModDetails((sender as FrameworkElement).DataContext as Mod);
         }
 
         private void DeleteModClick(object sender, RoutedEventArgs e)
@@ -73,6 +73,12 @@ namespace ZenovaLauncher
                 SortDescription sd = new SortDescription(sortTypeString, sortDirection);
                 ModsListBox.Items.SortDescriptions.Add(sd);
             }
+        }
+
+        protected async void ModDetails(Mod mod)
+        {
+            ModDetailsDialog modDetails = new ModDetailsDialog(mod);
+            await modDetails.ShowAsync();
         }
     }
 }

@@ -72,6 +72,9 @@
     <Compile Include="Controls\LauncherSideMenu.cs" />
     <Compile Include="Controls\LauncherSideMenuArgs.cs" />
     <Compile Include="Controls\LauncherTabControl.cs" />
+    <Compile Include="Dialogs\ModDetailsDialog.xaml.cs">
+      <DependentUpon>ModDetailsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Mods\Mod.cs" />
     <Compile Include="Mods\ModManager.cs" />
     <Compile Include="Profiles\AccountManager.cs" />
@@ -112,6 +115,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\AddProfileDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ModDetailsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
