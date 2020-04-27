@@ -33,7 +33,7 @@ namespace ZenovaLauncher
 
         public void RemoveMod(Mod mod)
         {
-            Directory.Delete(mod.ModDirectory, true);
+            Directory.Delete(Path.Combine(ModsDirectory, mod.ModDirectory), true);
             Remove(mod);
         }
 
