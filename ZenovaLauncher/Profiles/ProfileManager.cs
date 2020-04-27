@@ -19,12 +19,13 @@ namespace ZenovaLauncher
 
         public Action Refresh { get; set; }
         public string ProfilesDir { get; }
-        public Profile SelectedProfile { get; set; }
+        public ProfileSelected SelectedProfile { get; set; }
         public Dictionary<string, Profile> internalDictionary => this.ToDictionary(x => x.Hash, x => x);
 
         public ProfileManager(string profileDir)
         {
             ProfilesDir = profileDir;
+            SelectedProfile = new ProfileSelected();
             jsonSettings = new JsonSerializerSettings
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
@@ -71,7 +72,7 @@ namespace ZenovaLauncher
         {
             LatestRelease = new Profile("Latest release", VersionManager.instance.LatestRelease, type: Profile.ProfileType.LatestRelease);
             LatestBeta = new Profile("Latest beta", VersionManager.instance.LatestBeta, type: Profile.ProfileType.LatestBeta);
-            SelectedProfile = this.First();
+            SelectedProfile.SelectedProfile = this.First();
         }
 
         public void LoadProfiles(string profileText)
@@ -116,6 +117,17 @@ namespace ZenovaLauncher
             //foreach (FileInfo file in di.EnumerateFiles()) file.Delete();
             //foreach (DirectoryInfo dir in di.EnumerateDirectories()) dir.Delete(true);
             File.WriteAllText(Path.Combine(ProfilesDir, _profilesFile), JsonConvert.SerializeObject(internalDictionary, Formatting.Indented, jsonSettings));
+        }
+
+        public class ProfileSelected : NotifyPropertyChangedBase
+        {
+            private Profile _selectedProfile;
+
+            public Profile SelectedProfile
+            {
+                get { return _selectedProfile; }
+                set { _selectedProfile = value; OnPropertyChanged("SelectedProfile"); }
+            }
         }
     }
 }

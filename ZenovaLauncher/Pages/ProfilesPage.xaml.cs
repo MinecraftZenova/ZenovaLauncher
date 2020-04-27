@@ -79,6 +79,7 @@ namespace ZenovaLauncher
 
         private void PlayButtonClick(object sender, RoutedEventArgs e)
         {
+            ProfileManager.instance.SelectedProfile.SelectedProfile = (sender as FrameworkElement).DataContext as Profile;
             ProfileLauncher.instance.LaunchProfile((sender as FrameworkElement).DataContext as Profile);
         }
 

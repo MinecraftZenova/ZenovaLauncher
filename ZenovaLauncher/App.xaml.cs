@@ -80,9 +80,14 @@ namespace ZenovaLauncher
 
         public void AppExit(object sender, ExitEventArgs e)
         {
+            WriteFiles();
+            Trace.Flush();
+        }
+
+        public static void WriteFiles()
+        {
             ProfileManager.instance.SaveProfiles();
             Preferences.SavePreferences();
-            Trace.Flush();
         }
 
         private void SetupEnvironment()

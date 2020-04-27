@@ -21,5 +21,11 @@ namespace ZenovaLauncher
         {
             ProfileLauncher.instance.LaunchProfile(ProfileBox.SelectedItem as Profile);
         }
+
+        private void SelectedProfileChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ProfileBox.SelectedItem == null)
+                ProfileBox.SelectedIndex = 0;
+        }
     }
 }

@@ -44,8 +44,8 @@ namespace ZenovaLauncher
         }
         public string SelectedProfile
         {
-            get { return ProfileManager.instance.SelectedProfile.Hash; }
-            set { ProfileManager.instance.SelectedProfile = ProfileManager.instance.FirstOrDefault(p => p.Hash == value); }
+            get { return ProfileManager.instance.SelectedProfile.SelectedProfile.Hash; }
+            set { ProfileManager.instance.SelectedProfile.SelectedProfile = ProfileManager.instance.FirstOrDefault(p => p.Hash == value); }
         }
 
 

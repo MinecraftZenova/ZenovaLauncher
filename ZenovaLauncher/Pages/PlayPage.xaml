@@ -147,14 +147,15 @@
         <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}" />
         <Grid Grid.Row="2" Grid.Column="0">
             <ComboBox
-                Style="{StaticResource ProfileBoxStyle}"
                 x:Name="ProfileBox"
+                Style="{StaticResource ProfileBoxStyle}"
                 Margin="10,4,10,4"
                 MinWidth="200"
                 HorizontalContentAlignment="Left"
                 Background="Transparent"
                 BorderThickness="0"
-                SelectedItem="{Binding SelectedProfile}">
+                SelectedItem="{Binding SelectedProfile.SelectedProfile}"
+                SelectionChanged="SelectedProfileChanged">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <ui:SimpleStackPanel Spacing="4">

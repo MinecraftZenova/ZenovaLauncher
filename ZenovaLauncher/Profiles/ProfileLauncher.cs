@@ -61,18 +61,22 @@ namespace ZenovaLauncher
 
                     LaunchInfo.Status = LaunchStatus.InitializingLaunch;
                     LaunchInfo.LaunchCurrent = 0;
-                    bool launchStatus = true;
-                    if (installStatus)
+                    bool launchStatus = false;
+                    if (installStatus == true)
                         launchStatus = await Launch(p);
 
                     LaunchInfo = null;
                     LaunchedProfile.LastUsed = DateTime.Now;
                     LaunchedProfile = null;
-                    if (!Preferences.instance.KeepLauncherOpen && launchStatus)
-                        await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)delegate()
-                        {
-                            Application.Current.MainWindow.Close();
-                        });
+                    if(launchStatus == true)
+                    {
+                        App.WriteFiles();
+                        if (!Preferences.instance.KeepLauncherOpen)
+                            await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)delegate ()
+                            {
+                                Application.Current.MainWindow.Close();
+                            });
+                    }
                 });
             }
         }
