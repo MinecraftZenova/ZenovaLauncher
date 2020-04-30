@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
+using System.Windows;
 
 namespace ZenovaLauncher
 {
@@ -43,17 +44,21 @@ namespace ZenovaLauncher
             }
         }
 
-        public static async void ShowErrorDialog(string title = default, string message = default)
+        public static void ShowErrorDialog(string title = default, string message = default)
         {
             if (title != null && message != null)
                 ErrorQueue.Add(new Tuple<string, string>(title, message));
             if (WindowLoaded && ErrorQueue.Count > 0)
             {
-                foreach (var error in ErrorQueue)
+                Application.Current.Dispatcher.Invoke((Action)async delegate
                 {
-                    ErrorDialog errorDialog = new ErrorDialog(error.Item1, error.Item2);
-                    await errorDialog.ShowAsync();
-                }
+                    foreach (var error in ErrorQueue)
+                    {
+                        ErrorDialog errorDialog = new ErrorDialog(error.Item1, error.Item2);
+                        await errorDialog.ShowAsync();
+                    }
+                    ErrorQueue.Clear();
+                });
             }
         }
     }
