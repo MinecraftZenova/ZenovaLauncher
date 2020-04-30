@@ -120,4 +120,53 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="LauncherDeleteButtonStyle" TargetType="Button" BasedOn="{StaticResource LauncherAccentButtonStyle}">
+        <Setter Property="Background" Value="{DynamicResource DeleteButtonBackground}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        x:Name="Background"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="{TemplateBinding ui:ControlHelper.CornerRadius}"
+                        SnapsToDevicePixels="True">
+                        <Border
+                            x:Name="Border"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}"
+                            CornerRadius="{TemplateBinding ui:ControlHelper.CornerRadius}">
+                            <ContentPresenter
+                                MaxHeight="18"
+                                x:Name="ContentPresenter"
+                                TextElement.Foreground="{TemplateBinding Foreground}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Focusable="False"
+                                RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Background" Property="Background" Value="{DynamicResource DeleteButtonBackgroundPointerOver}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushPointerOver}" />
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource AccentButtonForegroundPointerOver}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Background" Property="Background" Value="{DynamicResource DeleteButtonBackgroundPressed}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource LauncherButtonBorderBrushPressed}" />
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource AccentButtonForegroundPressed}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Background" Property="Background" Value="{DynamicResource DeleteButtonBackgroundDisabled}" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushDisabled}" />
+                            <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource AccentButtonForegroundDisabled}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

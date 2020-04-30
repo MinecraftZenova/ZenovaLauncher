@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModernWpf.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace ZenovaLauncher
         {
             AddProfileDialog newProfile = new AddProfileDialog();
             var result = await newProfile.ShowAsync();
-            if (result == ModernWpf.Controls.ContentDialogResult.Primary)
+            if (result == ContentDialogResult.Primary)
                 RefreshProfiles();
         }
 
@@ -65,11 +66,16 @@ namespace ZenovaLauncher
             SortProfileList(Preferences.instance.ProfileSorting);
         }
 
-        private void DeleteProfileClick(object sender, RoutedEventArgs e)
+        private async void DeleteProfileClick(object sender, RoutedEventArgs e)
         {
-            ProfileManager.instance.Remove((sender as FrameworkElement).DataContext as Profile);
-            VersionManager.instance.RemoveUnusedVersions();
-            RefreshProfiles();
+            DeleteConfirmationDialog deleteProfile = new DeleteConfirmationDialog(((sender as FrameworkElement).DataContext as Profile).Name);
+            var result = await deleteProfile.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                ProfileManager.instance.Remove((sender as FrameworkElement).DataContext as Profile);
+                VersionManager.instance.RemoveUnusedVersions();
+                RefreshProfiles();
+            }
         }
 
         private void ProfileSelected(object sender, MouseButtonEventArgs e)
@@ -122,7 +128,7 @@ namespace ZenovaLauncher
         {
             EditProfileDialog editProfile = new EditProfileDialog(profile);
             var result = await editProfile.ShowAsync();
-            if (result == ModernWpf.Controls.ContentDialogResult.Primary)
+            if (result == ContentDialogResult.Primary)
                 RefreshProfiles();
         }
     }

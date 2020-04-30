@@ -11,7 +11,7 @@
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}" />
         <Setter Property="PrimaryButtonStyle" Value="{DynamicResource LauncherDefaultButtonStyle}" />
-        <Setter Property="SecondaryButtonStyle" Value="{DynamicResource LauncherDefaultButtonStyle}" />
+        <Setter Property="SecondaryButtonStyle" Value="{DynamicResource LauncherAccentButtonStyle}" />
         <Setter Property="CloseButtonStyle" Value="{DynamicResource LauncherDefaultButtonStyle}" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
@@ -396,13 +396,13 @@
                             <Setter TargetName="Shdw" Property="Visibility" Value="Collapsed" />
                         </Trigger>
                         <Trigger Property="DefaultButton" Value="Primary">
-                            <Setter TargetName="PrimaryButton" Property="Style" Value="{DynamicResource LauncherAccentButtonStyle}" />
+                            <Setter TargetName="PrimaryButton" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SecondaryButtonStyle}" />
                         </Trigger>
                         <Trigger Property="DefaultButton" Value="Secondary">
-                            <Setter TargetName="SecondaryButton" Property="Style" Value="{DynamicResource LauncherAccentButtonStyle}" />
+                            <Setter TargetName="SecondaryButton" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SecondaryButtonStyle}" />
                         </Trigger>
                         <Trigger Property="DefaultButton" Value="Close">
-                            <Setter TargetName="CloseButton" Property="Style" Value="{DynamicResource LauncherAccentButtonStyle}" />
+                            <Setter TargetName="CloseButton" Property="Style" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SecondaryButtonStyle}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

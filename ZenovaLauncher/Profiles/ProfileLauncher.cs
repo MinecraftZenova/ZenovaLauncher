@@ -90,7 +90,7 @@ namespace ZenovaLauncher
             catch (Exception e)
             {
                 Trace.WriteLine("App re-register failed:\n" + e.ToString());
-                MessageBox.Show("App re-register failed:\n" + e.ToString());
+                Utils.ShowErrorDialog("Launch failed", "An error occured which prevented Zenova from re-registering Minecraft. Ensure that Developer Mode is enabled in Windows Settings.");
                 return false;
             }
 
@@ -106,7 +106,7 @@ namespace ZenovaLauncher
             catch (Exception e)
             {
                 Trace.WriteLine("App launch failed:\n" + e.ToString());
-                MessageBox.Show("App launch failed:\n" + e.ToString());
+                Utils.ShowErrorDialog("Launch failed", "An error occured which prevented Zenova from launching Minecraft.");
                 return false;
             }
         }
@@ -260,7 +260,7 @@ namespace ZenovaLauncher
             {
                 Trace.WriteLine("Download failed:\n" + e.ToString());
                 if (!(e is TaskCanceledException))
-                    MessageBox.Show("Download failed:\n" + e.ToString());
+                    Utils.ShowErrorDialog("Download failed", string.Format("An error occured while downloading Minecraft {0}. {1}", v.Name, v.Beta ? "Ensure the selected account is the one registered for beta versions in the Xbox Insider app." : ""));
                 return false;
             }
             try
@@ -290,7 +290,7 @@ namespace ZenovaLauncher
             catch (Exception e)
             {
                 Trace.WriteLine("Extraction failed:\n" + e.ToString());
-                MessageBox.Show("Extraction failed:\n" + e.ToString());
+                Utils.ShowErrorDialog("Extraction failed", string.Format("An error occured during extraction to directory:\n{0}", v.GameDirectory));
                 return false;
             }
             v.UpdateInstallStatus();

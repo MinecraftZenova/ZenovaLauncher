@@ -1,8 +1,6 @@
 ﻿using Microsoft.Win32;
 using ModernWpf.Controls;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -63,10 +61,15 @@ namespace ZenovaLauncher
             ModDetails((sender as FrameworkElement).DataContext as Mod);
         }
 
-        private void DeleteModClick(object sender, RoutedEventArgs e)
+        private async void DeleteModClick(object sender, RoutedEventArgs e)
         {
-            ModManager.instance.RemoveMod((sender as FrameworkElement).DataContext as Mod);
-            RefreshMods();
+            DeleteConfirmationDialog deleteMod = new DeleteConfirmationDialog(((sender as FrameworkElement).DataContext as Mod).Name);
+            var result = await deleteMod.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                ModManager.instance.RemoveMod((sender as FrameworkElement).DataContext as Mod);
+                RefreshMods();
+            }
         }
 
         protected void SortModList(Mod.ModSortType sortType)

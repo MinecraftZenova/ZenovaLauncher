@@ -1,0 +1,21 @@
+﻿<ui:ContentDialog x:Class="ZenovaLauncher.ErrorDialog"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ZenovaLauncher"
+      xmlns:ui="http://schemas.modernwpf.com/2019"
+      mc:Ignorable="d"
+      Style="{StaticResource ConfirmationContentDialog}"
+      CloseButtonText="Close"
+      SecondaryButtonStyle="{DynamicResource LauncherDefaultButtonStyle}">
+
+    <ui:SimpleStackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Spacing="15">
+        <ui:SimpleStackPanel Margin="20,0,20,0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <TextBlock Text="ERROR" HorizontalAlignment="Center" FontSize="15" />
+            <TextBlock x:Name="ErrorTitle" HorizontalAlignment="Center" FontSize="22" FontWeight="Bold"/>
+        </ui:SimpleStackPanel>
+        <TextBlock Margin="20,0,20,0" x:Name="ErrorMessage" FontSize="14" TextAlignment="Center" TextWrapping="Wrap" />
+        <Separator Background="{DynamicResource AppBarSeparatorLowForeground}" />
+    </ui:SimpleStackPanel>
+</ui:ContentDialog>

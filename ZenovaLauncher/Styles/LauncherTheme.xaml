@@ -17,6 +17,10 @@
     <Color x:Key="LauncherChromeMedium2Color">#FF262626</Color>
     <Color x:Key="LauncherChromeMediumLowColor">#FF131313</Color>
     <Color x:Key="LauncherChromeLowColor">#FF0E0E0E</Color>
+    <Color x:Key="LauncherDeleteHighColor">#FFE7643C</Color>
+    <Color x:Key="LauncherDeleteMediumColor">#FFD4441A</Color>
+    <Color x:Key="LauncherDeleteLowColor">#FFC0300A</Color>
+    <Color x:Key="LauncherDeleteDisabledColor">#FFC15E49</Color>
 
     <SolidColorBrush x:Key="LauncherControlBackgroundDisabledBrush" Color="{ui:StaticColor LauncherChromeMediumColor}" />
     <SolidColorBrush x:Key="LauncherControlForegroundBaseMediumBrush" Color="{ui:StaticColor LauncherBaseMediumColor}" />
@@ -29,6 +33,10 @@
     <SolidColorBrush x:Key="LauncherControlHighlightListLowBrush" Color="{ui:StaticColor LauncherListLowColor}" />
     <SolidColorBrush x:Key="LauncherControlAccentHoverBrush" Color="{ui:StaticColor LauncherAccentHoverColor}" />
     <SolidColorBrush x:Key="LauncherControlAccentDisabledBrush" Color="{ui:StaticColor LauncherAccentDisabledColor}" />
+    <SolidColorBrush x:Key="LauncherControlDeleteBrush" Color="{ui:StaticColor LauncherDeleteMediumColor}" />
+    <SolidColorBrush x:Key="LauncherControlDeleteHoverBrush" Color="{ui:StaticColor LauncherDeleteHighColor}" />
+    <SolidColorBrush x:Key="LauncherControlDeletePressedBrush" Color="{ui:StaticColor LauncherDeleteLowColor}" />
+    <SolidColorBrush x:Key="LauncherControlDeleteDisabledBrush" Color="{ui:StaticColor LauncherDeleteDisabledColor}" />
     <SolidColorBrush x:Key="LauncherControlTransientBackgroundBrush" Color="{ui:StaticColor LauncherChromeMediumLowColor}" />
     <SolidColorBrush x:Key="LauncherControlTransientLowBackgroundBrush" Color="{ui:StaticColor LauncherChromeLowColor}" />
 
@@ -91,6 +99,11 @@
 
     <ui:StaticResource x:Key="AccentButtonBackgroundPointerOver" ResourceKey="LauncherControlAccentHoverBrush" />
     <ui:StaticResource x:Key="AccentButtonBackgroundDisabled" ResourceKey="LauncherControlAccentDisabledBrush" />
+
+    <ui:StaticResource x:Key="DeleteButtonBackground" ResourceKey="LauncherControlDeleteBrush" />
+    <ui:StaticResource x:Key="DeleteButtonBackgroundPointerOver" ResourceKey="LauncherControlDeleteHoverBrush" />
+    <ui:StaticResource x:Key="DeleteButtonBackgroundDisabled" ResourceKey="LauncherControlDeleteDisabledBrush" />
+    <ui:StaticResource x:Key="DeleteButtonBackgroundPressed" ResourceKey="LauncherControlDeletePressedBrush" />
 
     <sys:Boolean x:Key="AutoHideScrollBars">True</sys:Boolean>
 </ResourceDictionary>

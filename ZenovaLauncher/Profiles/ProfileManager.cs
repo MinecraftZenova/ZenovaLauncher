@@ -108,7 +108,7 @@ namespace ZenovaLauncher
             catch (Exception e)
             {
                 Trace.WriteLine("Profile JSON Deserialize Failed: " + e.ToString());
-                MessageBox.Show("Profile JSON Deserialize Failed: " + e.ToString());
+                Utils.ShowErrorDialog("Failed to load profile", "Error occured while parsing profiles.json. Make sure profiles.json is formatted correctly.");
             }
             return new List<Profile>();
         }

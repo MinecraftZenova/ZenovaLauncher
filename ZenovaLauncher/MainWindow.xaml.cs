@@ -80,6 +80,8 @@ namespace ZenovaLauncher
 
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
+            Utils.WindowLoaded = true;
+            Utils.ShowErrorDialog();
             ModManager.instance.WindowLoaded = true;
             ModManager.instance.TryImportMods(new List<string>());
         }

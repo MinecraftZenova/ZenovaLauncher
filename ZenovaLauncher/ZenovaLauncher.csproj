@@ -72,6 +72,12 @@
     <Compile Include="Controls\LauncherSideMenu.cs" />
     <Compile Include="Controls\LauncherSideMenuArgs.cs" />
     <Compile Include="Controls\LauncherTabControl.cs" />
+    <Compile Include="Dialogs\ErrorDialog.xaml.cs">
+      <DependentUpon>ErrorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DeleteConfirmationDialog.xaml.cs">
+      <DependentUpon>DeleteConfirmationDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\ImportModDialog.xaml.cs">
       <DependentUpon>ImportModDialog.xaml</DependentUpon>
     </Compile>
@@ -113,6 +119,14 @@
     <Compile Include="Utils\WUProtocol.cs" />
     <Compile Include="Utils\WUTokenHelper.cs" />
     <Compile Include="Utils\ZipProgress.cs" />
+    <Page Include="Dialogs\ErrorDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\DeleteConfirmationDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\EditProfileDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

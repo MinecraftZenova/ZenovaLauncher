@@ -66,7 +66,7 @@ namespace ZenovaLauncher
             catch (Exception e)
             {
                 Trace.WriteLine("Load Mod from directory Failed: " + e.ToString());
-                MessageBox.Show("Load Mod from directory Failed: " + e.ToString());
+                Utils.ShowErrorDialog("Failed to load mod", string.Format("Error occured while loading mod from directory:\n{0}\nMake sure directory exists and try again.", modDir));
             }
             return null;
         }
@@ -82,7 +82,7 @@ namespace ZenovaLauncher
             catch (Exception e)
             {
                 Trace.WriteLine("Mods JSON Deserialize Failed: " + e.ToString());
-                MessageBox.Show("Mods JSON Deserialize Failed: " + e.ToString());
+                Utils.ShowErrorDialog("Failed to load mod", string.Format("Error occured while parsing modinfo.json in directory:\n{0}\nMake sure modinfo.json exists and is formatted correctly.", dirName));
             }
             return null;
         }

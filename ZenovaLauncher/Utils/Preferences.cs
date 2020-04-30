@@ -63,7 +63,8 @@ namespace ZenovaLauncher
                 catch (Exception e)
                 {
                     Trace.WriteLine("Preferences JSON Deserialize Failed: " + e.ToString());
-                    MessageBox.Show("Preferences JSON Deserialize Failed: " + e.ToString());
+                    Utils.ShowErrorDialog("Failed to load Preferences", "An error occured when loading Preferences from preferences.json. Ensure the file is formatted correctly.");
+                    instance = new Preferences();
                 }
             }
             else
