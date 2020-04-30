@@ -1,5 +1,9 @@
 ﻿using Microsoft.Win32;
+using ModernWpf.Controls;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,7 +23,14 @@ namespace ZenovaLauncher
             ModsListBox.ItemsSource = ModManager.instance;
             SortModsBox.DataContext = Preferences.instance;
 
+            ModManager.instance.Refresh = RefreshMods;
+
             SortModList(Preferences.instance.ModSorting);
+        }
+
+        private void RefreshMods()
+        {
+            ModsListBox.Items.Refresh();
         }
 
         private void SelectCurrentItem(object sender, KeyboardFocusChangedEventArgs e)
@@ -34,12 +45,7 @@ namespace ZenovaLauncher
             importDialog.Multiselect = true;
             importDialog.Filter = "Zenova Mod Package (*.zmp;*.zip)|*.zmp;*.zip";
             if (importDialog.ShowDialog() == true)
-            {
-                foreach (string file in importDialog.FileNames)
-                    ModManager.instance.ImportMod(file);
-                ModsListBox.Items.Refresh();
-                
-            }
+                ModManager.instance.TryImportMods(importDialog.FileNames.ToList());
         }
 
         private void SortChanged(object sender, SelectionChangedEventArgs e)
@@ -60,7 +66,7 @@ namespace ZenovaLauncher
         private void DeleteModClick(object sender, RoutedEventArgs e)
         {
             ModManager.instance.RemoveMod((sender as FrameworkElement).DataContext as Mod);
-            ModsListBox.Items.Refresh();
+            RefreshMods();
         }
 
         protected void SortModList(Mod.ModSortType sortType)

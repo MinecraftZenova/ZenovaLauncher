@@ -14,7 +14,8 @@
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource LauncherControlPageBackgroundAltMediumBrush}"
         Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
-        ui:ThemeManager.IsThemeAware="True">
+        ui:ThemeManager.IsThemeAware="True"
+        Loaded="MainWindowLoaded">
 
     <Grid>
         <Grid.ColumnDefinitions>

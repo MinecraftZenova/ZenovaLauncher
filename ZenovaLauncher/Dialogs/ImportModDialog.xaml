@@ -1,0 +1,66 @@
+﻿<ui:ContentDialog x:Class="ZenovaLauncher.ImportModDialog"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ZenovaLauncher"
+      xmlns:ui="http://schemas.modernwpf.com/2019"
+      mc:Ignorable="d"
+      Style="{StaticResource ConfirmationContentDialog}"
+      Title="Import Mod Package"
+      PrimaryButtonText="Import"
+      CloseButtonText="Cancel"
+      DefaultButton="Primary">
+
+    <ui:SimpleStackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Spacing="30" Width="400">
+        <TextBlock HorizontalAlignment="Center" FontSize="13" Text="The following will be imported:" />
+        <ui:SimpleStackPanel x:Name="ModSection" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Spacing="2">
+            <TextBlock Margin="2,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Mods" />
+            <Border Background="{DynamicResource LauncherControlTransientBackgroundBrush}" CornerRadius="2" Padding="0,2,0,2">
+                <ui:ItemsRepeaterScrollHost Height="100">
+                    <ScrollViewer>
+                        <ItemsControl x:Name="ModBox">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Separator x:Name="Separator" Margin="12,0,12,0" VerticalAlignment="Top" Background="{DynamicResource AppBarSeparatorLowForeground}" />
+                                        <TextBlock Margin="12,3,12,3" FontSize="14" FontWeight="DemiBold" Text="{Binding Name}" />
+                                    </Grid>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                            <Setter Property="Visibility" TargetName="Separator" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </ui:ItemsRepeaterScrollHost>
+            </Border>
+        </ui:SimpleStackPanel>
+        <ui:SimpleStackPanel x:Name="ProfileSection" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Spacing="2">
+            <TextBlock Margin="2,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Profiles" />
+            <Border Background="{DynamicResource LauncherControlTransientBackgroundBrush}" CornerRadius="2" Padding="0,2,0,2">
+                <ui:ItemsRepeaterScrollHost Height="100">
+                    <ScrollViewer>
+                        <ItemsControl x:Name="ProfileBox">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Separator x:Name="Separator" Margin="12,0,12,0" VerticalAlignment="Top" Background="{DynamicResource AppBarSeparatorLowForeground}" />
+                                        <TextBlock Margin="12,3,12,3" FontSize="14" FontWeight="DemiBold" Text="{Binding Name}" />
+                                    </Grid>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                            <Setter Property="Visibility" TargetName="Separator" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </ui:ItemsRepeaterScrollHost>
+            </Border>
+        </ui:SimpleStackPanel>
+    </ui:SimpleStackPanel>
+</ui:ContentDialog>

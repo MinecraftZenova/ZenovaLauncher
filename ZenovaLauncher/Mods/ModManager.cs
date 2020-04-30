@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ModernWpf.Controls;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,10 @@ namespace ZenovaLauncher
 
         private readonly string _modsFileName = "modinfo.json";
 
+        public Action Refresh { get; set; }
         public string ModsDirectory { get; set; }
+        public bool WindowLoaded { get; set; }
+        public List<string> ModLoadQueue = new List<string>();
 
         public ModManager(string modsDir)
         {
@@ -31,6 +35,15 @@ namespace ZenovaLauncher
             return this.FirstOrDefault(m => m.ModDirectory == dir);
         }
 
+        public void AddMod(Mod mod)
+        {
+            Mod oldMod = GetModFromDirectory(mod.ModDirectory);
+            if (oldMod != null)
+                Remove(oldMod);
+            Add(mod);
+            Refresh?.Invoke();
+        }
+
         public void RemoveMod(Mod mod)
         {
             Directory.Delete(Path.Combine(ModsDirectory, mod.ModDirectory), true);
@@ -40,32 +53,77 @@ namespace ZenovaLauncher
         public void LoadMods()
         {
             foreach (string dir in Directory.GetDirectories(ModsDirectory))
-                LoadMod(dir);
+                AddMod(LoadModFromDir(dir));
         }
 
-        public void LoadMod(string modDir)
+        public Mod LoadModFromDir(string modDir)
         {
             try
             {
                 if (File.Exists(Path.Combine(modDir, _modsFileName)))
-                {
-                    Mod oldMod = GetModFromDirectory(new DirectoryInfo(modDir).Name);
-                    if (oldMod != null)
-                        Remove(oldMod);
+                    return LoadMod(File.ReadAllText(Path.Combine(modDir, _modsFileName)), new DirectoryInfo(modDir).Name);
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine("Load Mod from directory Failed: " + e.ToString());
+                MessageBox.Show("Load Mod from directory Failed: " + e.ToString());
+            }
+            return null;
+        }
 
-                    Mod mod = JsonConvert.DeserializeObject<Mod>(File.ReadAllText(Path.Combine(modDir, _modsFileName)), jsonSettings);
-                    mod.ModDirectory = new DirectoryInfo(modDir).Name;
-                    Add(mod);
-                }
+        public Mod LoadMod(string modText, string dirName)
+        {
+            try
+            {
+                Mod mod = JsonConvert.DeserializeObject<Mod>(modText, jsonSettings);
+                mod.ModDirectory = dirName;
+                return mod;
             }
             catch (Exception e)
             {
                 Trace.WriteLine("Mods JSON Deserialize Failed: " + e.ToString());
                 MessageBox.Show("Mods JSON Deserialize Failed: " + e.ToString());
             }
+            return null;
         }
 
-        public void ImportMod(string modFile)
+        public (List<Mod>, List<Profile>) ParseModPackage(string modFile)
+        {
+            var (modsList, profilesList) = (new List<Mod>(), new List<Profile>());
+            // make sure modFile exists
+            if (File.Exists(modFile))
+            {
+                // extract directories to mods folder
+                using (ZipArchive archive = ZipFile.OpenRead(modFile))
+                {
+                    var result = from entry in archive.Entries
+                                 where !string.IsNullOrEmpty(entry.Name)
+                                 select entry;
+
+                    foreach (ZipArchiveEntry entry in result)
+                    {
+                        if (entry.Name == _modsFileName)
+                        {
+                            using (StreamReader reader = new StreamReader(entry.Open()))
+                            {
+                                modsList.Add(LoadMod(reader.ReadToEnd(), Path.GetDirectoryName(entry.FullName)));
+                            }
+
+                        }
+                        else if (entry.Name == "profiles.json")
+                        {
+                            using (StreamReader reader = new StreamReader(entry.Open()))
+                            {
+                                profilesList.AddRange(ProfileManager.instance.LoadProfiles(reader.ReadToEnd()));
+                            }
+                        }
+                    }
+                }
+            }
+            return (modsList, profilesList);
+        }
+
+        public void ImportModPackage(string modFile)
         {
             // make sure modFile exists
             if (File.Exists(modFile))
@@ -76,7 +134,6 @@ namespace ZenovaLauncher
                 using (ZipArchive archive = ZipFile.OpenRead(modFile))
                 {
                     var result = from entry in archive.Entries
-                                 where !string.IsNullOrEmpty(Path.GetDirectoryName(entry.FullName))
                                  where !string.IsNullOrEmpty(entry.Name)
                                  select entry;
 
@@ -91,33 +148,56 @@ namespace ZenovaLauncher
                             modDirs.Add(Path.GetDirectoryName(path));
 
                         // the second parameter specifies to replace file in destination
-                        entry.ExtractToFile(path, true);
-                    }
-                    try
-                    {
-                        ZipArchiveEntry profileFile = archive.GetEntry("profiles.json");
-                        if (profileFile != null)
+                        if (entry.Name == "profiles.json")
                         {
-                            using (StreamReader reader = new StreamReader(profileFile.Open()))
+                            using (StreamReader reader = new StreamReader(entry.Open()))
                             {
                                 profileText = reader.ReadToEnd();
                             }
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        Trace.WriteLine("profiles.json not found in Mod: " + e.ToString());
+                        else
+                        {
+                            entry.ExtractToFile(path, true);
+                        }
                     }
                 }
                 // load mod for each directory
                 foreach (string dir in modDirs)
-                    LoadMod(dir);
+                    AddMod(LoadModFromDir(dir));
 
-                // load profiles.json if it exists
                 if (!string.IsNullOrEmpty(profileText))
-                    ProfileManager.instance.LoadProfiles(profileText);
+                    ProfileManager.instance.AddProfiles(ProfileManager.instance.LoadProfiles(profileText));
             }
         }
 
+        public async void ImportModsConfirmation(List<string> modsToImport)
+        {
+            Trace.WriteLine("Trying to show ImportModConfirmation");
+            List<string> modPaths = modsToImport.ToList();
+            var (modsList, profilesList) = (new List<Mod>(), new List<Profile>());
+            foreach (string file in modPaths)
+            {
+                var (mods, profiles) = ParseModPackage(file);
+                modsList.AddRange(mods);
+                profilesList.AddRange(profiles);
+            }
+            ImportModDialog confirmDialog = new ImportModDialog(modsList, profilesList);
+            var result = await confirmDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                foreach (string file in modPaths)
+                    ImportModPackage(file);
+            }
+        }
+
+        public void TryImportMods(List<string> modPaths)
+        {
+            ModLoadQueue.AddRange(modPaths);
+            if (WindowLoaded && ModLoadQueue.Count > 0)
+            {
+                ImportModsConfirmation(ModLoadQueue);
+                ModLoadQueue.Clear();
+            }
+        }
     }
 }

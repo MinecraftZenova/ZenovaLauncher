@@ -61,10 +61,33 @@ namespace ZenovaLauncher
             }
         }
 
-        public void AddProfiles()
+        public void AddProfiles(List<Profile> profiles)
+        {
+            foreach (Profile profile in profiles)
+            {
+                if (!internalDictionary.ContainsKey(profile.Hash))
+                {
+                    switch (profile.Type)
+                    {
+                        case Profile.ProfileType.Custom:
+                            Add(profile);
+                            break;
+                        case Profile.ProfileType.LatestBeta:
+                            LatestBeta = profile;
+                            break;
+                        case Profile.ProfileType.LatestRelease:
+                            LatestRelease = profile;
+                            break;
+                    }
+                }
+            }
+            Refresh?.Invoke();
+        }
+
+        public void ImportProfiles()
         {
             if (File.Exists(Path.Combine(ProfilesDir, _profilesFile)))
-                LoadProfiles(File.ReadAllText(Path.Combine(ProfilesDir, _profilesFile)));
+                AddProfiles(LoadProfiles(File.ReadAllText(Path.Combine(ProfilesDir, _profilesFile))));
             AddDefaultProfiles();
         }
 
@@ -75,40 +98,19 @@ namespace ZenovaLauncher
             SelectedProfile.SelectedProfile = this.First();
         }
 
-        public void LoadProfiles(string profileText)
+        public List<Profile> LoadProfiles(string profileText)
         {
-            //string[] profileFiles = Directory.GetFiles(ProfilesDir, "*.json", SearchOption.AllDirectories);
-            //foreach (string file in profileFiles)
-            //{
             try
             {
                 Dictionary<string, Profile> profileList = JsonConvert.DeserializeObject<Dictionary<string, Profile>>(profileText, jsonSettings);
-                foreach (var p in profileList)
-                {
-                    if (!internalDictionary.ContainsKey(p.Value.Hash))
-                    {
-                        switch (p.Value.Type)
-                        {
-                            case Profile.ProfileType.Custom:
-                                Add(p.Value);
-                                break;
-                            case Profile.ProfileType.LatestBeta:
-                                LatestBeta = p.Value;
-                                break;
-                            case Profile.ProfileType.LatestRelease:
-                                LatestRelease = p.Value;
-                                break;
-                        }
-                    }
-                }
+                return profileList.Values.ToList();
             }
             catch (Exception e)
             {
                 Trace.WriteLine("Profile JSON Deserialize Failed: " + e.ToString());
                 MessageBox.Show("Profile JSON Deserialize Failed: " + e.ToString());
             }
-            Refresh?.Invoke();
-            //}
+            return new List<Profile>();
         }
 
         public void SaveProfiles()

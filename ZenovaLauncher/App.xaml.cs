@@ -1,4 +1,5 @@
 ﻿using Microsoft.Shell;
+using ModernWpf.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,6 +37,7 @@ namespace ZenovaLauncher
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
             // handle command line arguments of second instance
+            MainWindow.Activate();
             ReadCommandArgs(args);
             return true;
         }
@@ -46,7 +48,7 @@ namespace ZenovaLauncher
             {
                 if (args[1].EndsWith(".zmp"))
                 {
-                    ModManager.instance.ImportMod(args[1]);
+                    ModManager.instance.TryImportMods(new List<string>() { args[1] });
                 }
             }
         }
@@ -69,7 +71,7 @@ namespace ZenovaLauncher
                 await AccountManager.instance.AddAccounts();
                 await VersionManager.instance.LoadMinecraftVersions();
                 ModManager.instance.LoadMods();
-                ProfileManager.instance.AddProfiles();
+                ProfileManager.instance.ImportProfiles();
                 Preferences.LoadPreferences(DataDirectory);
                 VersionManager.instance.RemoveUnusedVersions();
             });

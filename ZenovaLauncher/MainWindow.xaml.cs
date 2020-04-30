@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -75,6 +76,12 @@ namespace ZenovaLauncher
                 return uri;
             }
             return new Uri((string)item.Tag, UriKind.Relative);
+        }
+
+        private void MainWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            ModManager.instance.WindowLoaded = true;
+            ModManager.instance.TryImportMods(new List<string>());
         }
     }
 

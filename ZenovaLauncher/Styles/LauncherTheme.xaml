@@ -61,6 +61,13 @@
     <ui:StaticResource x:Key="ComboBoxItemBackgroundSelectedPressed" ResourceKey="SystemControlBackgroundAccentBrush" />
     <ui:StaticResource x:Key="ComboBoxItemBackgroundSelectedPointerOver" ResourceKey="SystemControlBackgroundAccentBrush" />
 
+    <sys:Double x:Key="ContentDialogMinWidth">514</sys:Double>
+    <sys:Double x:Key="ContentDialogMaxWidth">514</sys:Double>
+    <sys:Double x:Key="ContentDialogMinHeight">183</sys:Double>
+    <sys:Double x:Key="ContentDialogMaxHeight">756</sys:Double>
+    <Thickness x:Key="ContentDialogCommandSpaceMargin">0,20,0,0</Thickness>
+    <Thickness x:Key="ContentDialogPadding">0,18,0,20</Thickness>
+
     <Thickness x:Key="MenuFlyoutPresenterBorderThemeThickness">0</Thickness>
     <ui:StaticResource x:Key="MenuFlyoutPresenterBackground" ResourceKey="LauncherControlTransientBackgroundBrush" />
     <ui:StaticResource x:Key="MenuFlyoutItemRevealBackgroundPointerOver" ResourceKey="SystemControlBackgroundAccentBrush" />
