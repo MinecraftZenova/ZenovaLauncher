@@ -1,10 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using System.Windows;
+using Windows.ApplicationModel;
+using Windows.Management.Deployment;
 
 namespace ZenovaLauncher
 {
@@ -60,6 +64,32 @@ namespace ZenovaLauncher
                     ErrorQueue.Clear();
                 });
             }
+        }
+
+        public static IEnumerable<Package> FindPackages(string familyName)
+        {
+            return IsElevated ? new PackageManager().FindPackages(familyName) : new PackageManager().FindPackagesForUser(string.Empty, familyName);
+        }
+
+        public static void AddSecurityToFile(string filePath)
+        {
+            FileInfo fileInfo = new FileInfo(filePath);
+            FileSecurity fileSecurity = fileInfo.GetAccessControl();
+            fileSecurity.AddAccessRule(new FileSystemAccessRule("ALL APPLICATION PACKAGES", FileSystemRights.FullControl, AccessControlType.Allow));
+            fileInfo.SetAccessControl(fileSecurity);
+        }
+
+        public static void AddSecurityToDirectory(string dirPath)
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
+            DirectorySecurity dirSecurity = dirInfo.GetAccessControl();
+            dirSecurity.AddAccessRule(new FileSystemAccessRule(
+                "ALL APPLICATION PACKAGES",
+                FileSystemRights.FullControl,
+                InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
+                PropagationFlags.None,
+                AccessControlType.Allow));
+            dirInfo.SetAccessControl(dirSecurity);
         }
     }
 }

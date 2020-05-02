@@ -31,7 +31,7 @@
             Grid.Row="0" 
             Grid.RowSpan="2" 
             Grid.Column="0" 
-            Background="{DynamicResource NavigationViewDefaultPaneBackground}" />
+            Background="{DynamicResource LauncherSideBarColorBrush}" />
 
         <Grid Grid.Row="0" Grid.Column="0">
             <TextBlock FontSize="14" Text="Account" Margin="12,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />

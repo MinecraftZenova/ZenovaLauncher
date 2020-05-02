@@ -9,7 +9,7 @@ using namespace Windows::Internal::Security::Authentication::Web;
 using namespace Windows::Security::Credentials;
 using namespace Windows::Security::Cryptography;
 
-#define WU_NO_ACCOUNT MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200)
+#define ZL_NO_ACCOUNT MAKE_HRESULT(SEVERITY_ERROR, FACILITY_ITF, 0x200)
 
 extern "C" __declspec(dllexport) int  __stdcall GetMSAccounts(wchar_t*** accountNames, wchar_t*** accountIds, int* accountCount) {
 	auto tokenBrokerStatics = get_activation_factory<TokenBrokerInternal, Windows::Foundation::IUnknown>();
@@ -17,7 +17,7 @@ extern "C" __declspec(dllexport) int  __stdcall GetMSAccounts(wchar_t*** account
 	auto accounts = statics.FindAllAccountsAsync().get();
 	wprintf(L"Account count = %i\n", accounts.Size());
 	if (accounts.Size() == 0)
-		return WU_NO_ACCOUNT;
+		return ZL_NO_ACCOUNT;
 
 	*accountCount = accounts.Size();
 	size_t arrayLen = sizeof(wchar_t*) * accounts.Size();

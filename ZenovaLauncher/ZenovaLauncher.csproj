@@ -87,6 +87,8 @@
     <Compile Include="Mods\Mod.cs" />
     <Compile Include="Mods\ModManager.cs" />
     <Compile Include="Profiles\AccountManager.cs" />
+    <Compile Include="Utils\ApplicationActivationManager.cs" />
+    <Compile Include="Utils\AppUtils.cs" />
     <Compile Include="Utils\BooleanValueConverter.cs" />
     <Compile Include="Dialogs\EditProfileDialog.xaml.cs">
       <DependentUpon>EditProfileDialog.xaml</DependentUpon>
@@ -105,8 +107,11 @@
     <Compile Include="Pages\ProfilesPage.xaml.cs">
       <DependentUpon>ProfilesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\PackageStatusHelper.cs" />
     <Compile Include="Utils\Preferences.cs" />
     <Compile Include="Utils\SingleInstance.cs" />
+    <Compile Include="Utils\WUTokenHelper.cs" />
+    <Compile Include="Utils\ZenovaBackend.cs" />
     <Compile Include="Versions\MinecraftVersion.cs" />
     <Compile Include="Profiles\Profile.cs" />
     <Compile Include="Pages\SettingsPage.xaml.cs">
@@ -117,7 +122,6 @@
     <Compile Include="Utils\RelayCommand.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="Utils\WUProtocol.cs" />
-    <Compile Include="Utils\WUTokenHelper.cs" />
     <Compile Include="Utils\ZipProgress.cs" />
     <Page Include="Dialogs\ErrorDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -269,7 +273,7 @@
       <Version>1.0.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
-      <Version>10.0.19041.1-preview.vb-release</Version>
+      <Version>10.0.18362.2005</Version>
     </PackageReference>
     <PackageReference Include="ModernWpfUI">
       <Version>0.8.1</Version>

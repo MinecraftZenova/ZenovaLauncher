@@ -6,7 +6,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows;
 
 namespace ZenovaLauncher
 {
@@ -119,6 +118,7 @@ namespace ZenovaLauncher
             //foreach (FileInfo file in di.EnumerateFiles()) file.Delete();
             //foreach (DirectoryInfo dir in di.EnumerateDirectories()) dir.Delete(true);
             File.WriteAllText(Path.Combine(ProfilesDir, _profilesFile), JsonConvert.SerializeObject(internalDictionary, Formatting.Indented, jsonSettings));
+            Utils.AddSecurityToFile(Path.Combine(ProfilesDir, _profilesFile));
         }
 
         public class ProfileSelected : NotifyPropertyChangedBase

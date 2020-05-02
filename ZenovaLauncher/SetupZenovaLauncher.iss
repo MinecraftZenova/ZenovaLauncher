@@ -42,7 +42,9 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "bin\Release\ZenovaLauncher.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\Release\WUTokenHelper.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\ZenovaBackend.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\ZenovaLoader"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\ZenovaAPI.dll"; DestDir: "{code:GetDataDir}"; Flags: ignoreversion
 Source: "bin\Release\ControlzEx.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\MahApps.Metro.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\Microsoft.Expression.Interactions.dll"; DestDir: "{app}"; Flags: ignoreversion

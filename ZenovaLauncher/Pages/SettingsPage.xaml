@@ -34,6 +34,7 @@
                         <TextBlock Margin="0,-8,0,4" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Launcher Settings" />
                         <CheckBox x:Name="KeepOpenBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Keep the Launcher open while games are running" IsChecked="{Binding Path=KeepLauncherOpen}" />
                         <CheckBox x:Name="FreeSpaceBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Automatically remove downloaded Versions not used in a Profile" Click="FreeSpaceClick" IsChecked="{Binding Path=RemoveUnusedVersions}" />
+                        <CheckBox x:Name="DebugBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Launch Minecraft with Visual Studio Debugger" IsChecked="{Binding Path=DebugMode}" />
                     </ui:SimpleStackPanel>
                 </Grid>
             </TabItem>

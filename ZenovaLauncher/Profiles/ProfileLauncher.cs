@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,6 +12,7 @@ using Windows.Foundation;
 using Windows.Management.Core;
 using Windows.Management.Deployment;
 using Windows.System;
+using ZenovaLauncher.AppUtils;
 
 namespace ZenovaLauncher
 {
@@ -36,7 +38,7 @@ namespace ZenovaLauncher
             get { return _launchedProfile; }
             set
             {
-                Profile p = value != null ? value : _launchedProfile;
+                Profile p = value ?? _launchedProfile;
                 _launchedProfile = value;
                 OnPropertyChanged("LaunchedProfile");
                 p.UpdateLaunchStatus();
@@ -68,9 +70,8 @@ namespace ZenovaLauncher
                     LaunchInfo = null;
                     LaunchedProfile.LastUsed = DateTime.Now;
                     LaunchedProfile = null;
-                    if(launchStatus == true)
+                    if (launchStatus == true)
                     {
-                        App.WriteFiles();
                         if (!Preferences.instance.KeepLauncherOpen)
                             await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)delegate ()
                             {
@@ -97,9 +98,37 @@ namespace ZenovaLauncher
             try
             {
                 LaunchInfo.Status = LaunchStatus.Launching;
-                var pkg = await AppDiagnosticInfo.RequestInfoForPackageAsync(MINECRAFT_PACKAGE_FAMILY);
-                if (pkg.Count > 0)
-                    await pkg[0].LaunchAsync();
+                App.WriteFiles();
+                var pkgs = await AppDiagnosticInfo.RequestInfoForPackageAsync(MINECRAFT_PACKAGE_FAMILY);
+                var pkg = pkgs.Count > 0 ? pkgs[0] : null;
+                if (pkg == null)
+                {
+                    Utils.ShowErrorDialog("Launch failed", "An error occured which prevented Zenova from launching Minecraft. Ensure that Minecraft is installed.");
+                    return false;
+                }
+                if (p.Modded)
+                {
+                    AppDebugger app = new AppDebugger(Utils.FindPackages(MINECRAFT_PACKAGE_FAMILY).ToList()[0].Id.FullName);
+                    if (app.GetPackageExecutionState() != PACKAGE_EXECUTION_STATE.PES_UNKNOWN)
+                    {
+                        app.TerminateAllProcesses();
+                        if (app.StatusCode != 0)
+                            return false;
+                    }
+                    app.EnableDebugging(AppDomain.CurrentDomain.BaseDirectory + "ZenovaLoader -d " + (Preferences.instance.DebugMode ? "1" : "0"));
+                    if (app.StatusCode != 0)
+                        return false;
+                    app.LaunchApp(pkg.AppInfo.AppUserModelId);
+                    if (app.StatusCode != 0)
+                        return false;
+                    app.DisableDebugging();
+                    if (app.StatusCode != 0)
+                        return false;
+                }
+                else
+                {
+                    await pkg.LaunchAsync();
+                }
                 Trace.WriteLine("App launch finished!");
                 return true;
             }
@@ -191,9 +220,8 @@ namespace ZenovaLauncher
 
         private async Task ReRegisterPackage(string gameDir)
         {
-            var pkgs = Utils.IsElevated ? new PackageManager().FindPackages(MINECRAFT_PACKAGE_FAMILY) : new PackageManager().FindPackagesForUser(string.Empty, MINECRAFT_PACKAGE_FAMILY);
             DeploymentResult results;
-            foreach (var pkg in pkgs)
+            foreach (var pkg in Utils.FindPackages(MINECRAFT_PACKAGE_FAMILY))
             {
                 try
                 {

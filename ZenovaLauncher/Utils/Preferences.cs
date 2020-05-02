@@ -5,7 +5,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows;
 
 namespace ZenovaLauncher
 {
@@ -21,6 +20,7 @@ namespace ZenovaLauncher
         public bool EnableHistorical { get; set; } = false;
         public bool KeepLauncherOpen { get; set; } = false;
         public bool RemoveUnusedVersions { get; set; } = false;
+        public bool DebugMode { get; set; } = false;
         [JsonConverter(typeof(StringEnumConverter))]
         public Profile.ProfileSortType ProfileSorting { get; set; } = Profile.ProfileSortType.ByLastPlayed;
         [JsonConverter(typeof(StringEnumConverter))]
@@ -78,6 +78,7 @@ namespace ZenovaLauncher
         public static void SavePreferences()
         {
             File.WriteAllText(_preferencesFile, JsonConvert.SerializeObject(instance, Formatting.Indented, jsonSettings));
+            Utils.AddSecurityToFile(_preferencesFile);
         }
     }
 }

@@ -21,6 +21,7 @@
     <Color x:Key="LauncherDeleteMediumColor">#FFD4441A</Color>
     <Color x:Key="LauncherDeleteLowColor">#FFC0300A</Color>
     <Color x:Key="LauncherDeleteDisabledColor">#FFC15E49</Color>
+    <Color x:Key="LauncherSideBarColor">#FF1E1E1E</Color>
 
     <SolidColorBrush x:Key="LauncherControlBackgroundDisabledBrush" Color="{ui:StaticColor LauncherChromeMediumColor}" />
     <SolidColorBrush x:Key="LauncherControlForegroundBaseMediumBrush" Color="{ui:StaticColor LauncherBaseMediumColor}" />
@@ -39,6 +40,7 @@
     <SolidColorBrush x:Key="LauncherControlDeleteDisabledBrush" Color="{ui:StaticColor LauncherDeleteDisabledColor}" />
     <SolidColorBrush x:Key="LauncherControlTransientBackgroundBrush" Color="{ui:StaticColor LauncherChromeMediumLowColor}" />
     <SolidColorBrush x:Key="LauncherControlTransientLowBackgroundBrush" Color="{ui:StaticColor LauncherChromeLowColor}" />
+    <SolidColorBrush x:Key="LauncherSideBarColorBrush" Color="{ui:StaticColor LauncherSideBarColor}" />
 
     <ui:StaticResource x:Key="AppBarSeparatorForeground" ResourceKey="LauncherControlForegroundBaseMediumBrush" />
     <ui:StaticResource x:Key="AppBarSeparatorLowForeground" ResourceKey="LauncherControlForegroundBaseMediumLowBrush" />

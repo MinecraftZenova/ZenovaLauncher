@@ -131,6 +131,7 @@ namespace ZenovaLauncher
                 string path = Path.Combine(DataDirectory, _directoryMods);
                 if (!Directory.Exists(path))
                     Directory.CreateDirectory(path);
+                Utils.AddSecurityToDirectory(_dataDirectory);
                 return path;
             }
         }

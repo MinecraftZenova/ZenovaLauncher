@@ -17,7 +17,7 @@ namespace ZenovaLauncher
             await Task.Run(async () =>
             {
                 Trace.WriteLine("AddAccounts");
-                var accounts = await WUTokenHelper.GetMSAccounts();
+                var accounts = await ZenovaBackend.GetMSAccounts();
                 foreach (Tuple<string, string> account in accounts)
                     Add(new MSAccount(account.Item1, account.Item2));
                 SelectedAccount = this.First();
