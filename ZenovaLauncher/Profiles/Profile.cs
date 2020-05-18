@@ -23,17 +23,17 @@ namespace ZenovaLauncher
             return (item as Profile).Historical == true;
         };
 
-        public Profile(string name, MinecraftVersion version, DateTime lastUsed = default, DateTime created = default, ProfileType type = ProfileType.Custom, ObservableCollection<Mod> modsList = null)
+        public Profile(string name, MinecraftVersion version, DateTime lastUsed = default, DateTime created = default, ProfileType type = ProfileType.Custom, List<Mod> modsList = default)
         {
             Name = string.IsNullOrEmpty(name) ? "<unnamed profile>" : name;
             Version = version;
             LastUsed = lastUsed;
             Created = created;
             Type = type;
-            ModsList = modsList;
+            modsList?.ForEach(m => AddMod(m));
         }
 
-        public Profile(Profile profile) : this(profile.Name, profile.Version, profile.LastUsed, profile.Created, profile.Type, profile.ModsList) { }
+        public Profile(Profile profile) : this(profile.Name, profile.Version, profile.LastUsed, profile.Created, profile.Type, profile.ModsList.ToList()) { }
 
         public Profile() { }
 
@@ -55,10 +55,10 @@ namespace ZenovaLauncher
         [JsonProperty]
         public List<string> Mods
         {
-            get { return ModsList?.Select(m => m.ModDirectory).ToList(); }
-            set { ModsList = new ObservableCollection<Mod>(value?.Select(m => ModManager.instance.GetModFromDirectory(m))); }
+            get { return ModsList.Count > 0 ? ModsList.Select(m => m?.ModDirectory).ToList() : null; }
+            set { value?.ForEach(m => AddMod(ModManager.instance.GetModFromDirectory(m))); }
         }
-        public ObservableCollection<Mod> ModsList { get; set; }
+        public ObservableCollection<Mod> ModsList { get; set; } = new ObservableCollection<Mod>();
         public MinecraftVersion Version { get; set; }
         public string Hash => Utils.ComputeHash(this);
         public string VersionName => Version.Name;
@@ -72,6 +72,24 @@ namespace ZenovaLauncher
         public void UpdateLaunchStatus()
         {
             OnPropertyChanged("Launching");
+        }
+
+        public void AddMod(Mod m)
+        {
+            if (m != null)
+            {
+                ModsList.Add(m);
+                m.LinkedProfiles.Add(this);
+            }
+        }
+
+        public void RemoveMod(Mod m)
+        {
+            if (m != null)
+            {
+                ModsList.Remove(m);
+                m.LinkedProfiles.Remove(this);
+            }
         }
 
         public enum ProfileType

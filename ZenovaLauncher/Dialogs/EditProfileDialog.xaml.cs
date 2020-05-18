@@ -16,6 +16,8 @@ namespace ZenovaLauncher
     {
         public Profile EditedProfile { get; set; }
         public ObservableCollection<Mod> LoadedMods { get; set; }
+        public List<Mod> ModsToAdd = new List<Mod>();
+        public List<Mod> ModsToRemove = new List<Mod>();
 
         public EditProfileDialog(Profile profile)
         {
@@ -59,14 +61,24 @@ namespace ZenovaLauncher
 
         private void AddModClick(object sender, RoutedEventArgs e)
         {
-            LoadedMods.Add((sender as FrameworkElement).DataContext as Mod);
+            Mod m = (sender as FrameworkElement).DataContext as Mod;
+            LoadedMods.Add(m);
+            if (ModsToRemove.Contains(m))
+                ModsToRemove.Remove(m);
+            else
+                ModsToAdd.Add(m);
             FilterModsList();
             RefreshMods();
         }
 
         private void RemoveModClick(object sender, RoutedEventArgs e)
         {
-            LoadedMods.Remove((sender as FrameworkElement).DataContext as Mod);
+            Mod m = (sender as FrameworkElement).DataContext as Mod;
+            if (ModsToAdd.Contains(m))
+                ModsToAdd.Remove(m);
+            else
+                ModsToRemove.Add(m);
+            LoadedMods.Remove(m);
             FilterModsList();
             RefreshMods();
         }
@@ -97,7 +109,8 @@ namespace ZenovaLauncher
         {
             EditedProfile.Name = ProfileNameBox.Text;
             EditedProfile.Version = VersionBox.SelectedItem as MinecraftVersion;
-            EditedProfile.ModsList = LoadedMods.Count > 0 ? LoadedMods : null;
+            ModsToRemove.ForEach(m => EditedProfile.RemoveMod(m));
+            ModsToAdd.ForEach(m => EditedProfile.AddMod(m));
         }
     }
 }

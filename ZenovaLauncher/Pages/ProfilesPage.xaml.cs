@@ -72,8 +72,7 @@ namespace ZenovaLauncher
             var result = await deleteProfile.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                ProfileManager.instance.Remove((sender as FrameworkElement).DataContext as Profile);
-                VersionManager.instance.RemoveUnusedVersions();
+                ProfileManager.instance.RemoveProfile((sender as FrameworkElement).DataContext as Profile);
                 RefreshProfiles();
             }
         }

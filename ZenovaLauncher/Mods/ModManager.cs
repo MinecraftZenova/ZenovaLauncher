@@ -45,6 +45,8 @@ namespace ZenovaLauncher
 
         public void RemoveMod(Mod mod)
         {
+            foreach (Profile p in mod.LinkedProfiles)
+                p.ModsList.Remove(mod);
             Directory.Delete(Path.Combine(ModsDirectory, mod.ModDirectory), true);
             Remove(mod);
         }

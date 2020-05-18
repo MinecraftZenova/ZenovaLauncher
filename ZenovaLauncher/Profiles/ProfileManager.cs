@@ -60,6 +60,14 @@ namespace ZenovaLauncher
             }
         }
 
+        public void RemoveProfile(Profile profile)
+        {
+            foreach (Mod m in profile.ModsList)
+                m?.LinkedProfiles.Remove(profile);
+            Remove(profile);
+            VersionManager.instance.RemoveUnusedVersions();
+        }
+
         public void AddProfiles(List<Profile> profiles)
         {
             foreach (Profile profile in profiles)

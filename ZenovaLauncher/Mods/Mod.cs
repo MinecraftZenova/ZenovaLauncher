@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -35,6 +36,8 @@ namespace ZenovaLauncher
         public Version LatestSupported => MaxMCVersion.Version;
         [JsonIgnore]
         public string ModVersion => Version.ToString();
+        [JsonIgnore]
+        public List<Profile> LinkedProfiles { get; set; } = new List<Profile>();
 
         public bool SupportsVersion(MinecraftVersion version)
         {

@@ -89,7 +89,7 @@ namespace ZenovaLauncher
 
         private void CreateProfile(object sender, ContentDialogButtonClickEventArgs e)
         {
-            ProfileManager.instance.Add(new Profile(ProfileNameBox.Text, VersionBox.SelectedItem as MinecraftVersion, created: DateTime.Now, modsList: LoadedMods.Count > 0 ? LoadedMods : null));
+            ProfileManager.instance.Add(new Profile(ProfileNameBox.Text, VersionBox.SelectedItem as MinecraftVersion, created: DateTime.Now, modsList: LoadedMods.ToList()));
         }
     }
 }
