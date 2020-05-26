@@ -286,12 +286,14 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ZenovaAPI.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ZenovaLoader">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Assets\zenova_background.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\zenova_banner.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\zenova_splash.png" />
     <Content Include="SetupZenovaLauncher.iss" />
   </ItemGroup>
