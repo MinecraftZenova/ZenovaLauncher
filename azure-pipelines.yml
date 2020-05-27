@@ -36,3 +36,14 @@ steps:
   inputs:
     pathToPublish: 'ZenovaLauncher/Output/ZenovaLauncher.exe'
     artifactName: drop
+
+- task: GitHubRelease@1
+  inputs:
+    gitHubConnection: 'GitHub - TrinityDevelopers'
+    repositoryName: 'MinecraftZenova/ZenovaLauncher'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'gitTag'
+    tagPattern: 'refs/tags/release-v*'
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
