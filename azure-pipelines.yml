@@ -43,9 +43,10 @@ steps:
     repositoryName: 'MinecraftZenova/ZenovaLauncher'
     action: 'create'
     target: '$(Build.SourceVersion)'
-    tagSource: 'userSpecifiedTag'
-    tag: '$(Build.BuildNumber)'
+    tagSource: 'gitTag'
+    tag: 'release-v[0-9]*\S*'
     title: '$(Build.BuildNumber)'
     releaseNotesSource: 'inline'
     assets: 'ZenovaLauncher/Output/ZenovaLauncher.exe'
-    addChangeLog: false
+    changeLogCompareToRelease: 'lastFullRelease'
+    changeLogType: 'commitBased'
