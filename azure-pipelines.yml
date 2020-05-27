@@ -45,5 +45,6 @@ steps:
     target: '$(Build.SourceVersion)'
     tagSource: 'gitTag'
     tagPattern: 'refs/tags/release-v*'
+    assets: 'ZenovaLauncher/Output/ZenovaLauncher.exe'
     changeLogCompareToRelease: 'lastFullRelease'
     changeLogType: 'commitBased'
