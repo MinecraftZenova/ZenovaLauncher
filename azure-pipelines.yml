@@ -33,5 +33,6 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - task: PublishBuildArtifacts@1
+  inputs:
     pathToPublish: 'ZenovaLauncher/Output/ZenovaLauncher.exe'
-    displayName: 'Publish Artifact: drop'
+    artifactName: drop
