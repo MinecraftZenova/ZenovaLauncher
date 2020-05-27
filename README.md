@@ -2,4 +2,4 @@
 
 # Zenova Launcher
 
-The frontent launcher for Zenova
+The frontend launcher for Zenova
