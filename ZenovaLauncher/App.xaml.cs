@@ -64,6 +64,9 @@ namespace ZenovaLauncher
             Trace.Listeners.Add(new TextWriterTraceListener(new FileStream(Path.Combine(DataDirectory, "log.txt"), FileMode.Create)));
             Trace.AutoFlush = true;
             Trace.WriteLine("AppStart " + sw.ElapsedMilliseconds + " ms");
+            ZenovaUpdater.instance = new ZenovaUpdater();
+            ZenovaUpdater.instance.CheckUpdate();
+            Trace.WriteLine("ZenovaUpdater.instance " + sw.ElapsedMilliseconds + " ms");
             VersionDownloader.standard = new VersionDownloader();
             Trace.WriteLine("VersionDownloader.standard " + sw.ElapsedMilliseconds + " ms");
             VersionDownloader.user = new VersionDownloader();
