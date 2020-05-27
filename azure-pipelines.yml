@@ -13,8 +13,18 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-
+  NUGET_PACKAGES: $(Pipeline.Workspace)/.nuget/packages
+  
 steps:
+- task: Cache@2
+  inputs:
+    key: 'nuget | "$(Agent.OS)" | $(Build.SourcesDirectory)/ZenovaLauncher/packages.lock.json | $(Build.SourcesDirectory)/ZenovaBackend/packages.lock.json'
+    restoreKeys: |
+       nuget | "$(Agent.OS)"
+       nuget
+    path: $(NUGET_PACKAGES)
+  displayName: Cache NuGet packages
+
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
@@ -24,11 +34,6 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 

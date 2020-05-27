@@ -25,7 +25,7 @@ extern "C" __declspec(dllexport) int  __stdcall GetMSAccounts(wchar_t*** account
 	memset(*accountNames, 0, arrayLen);
 	*accountIds = (wchar_t**)::CoTaskMemAlloc(arrayLen);
 	memset(*accountIds, 0, arrayLen);
-	for (int index = 0; index < accounts.Size(); index++) {
+	for (uint32_t index = 0; index < accounts.Size(); index++) {
 		auto accountInfo = accounts.GetAt(index);
 		(*accountNames)[index] = (wchar_t*)::CoTaskMemAlloc((accountInfo.UserName().size() + 1) * sizeof(wchar_t));
 		memcpy((*accountNames)[index], accountInfo.UserName().data(), (accountInfo.UserName().size() + 1) * sizeof(wchar_t));
