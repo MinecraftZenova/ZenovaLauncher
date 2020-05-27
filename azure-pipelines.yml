@@ -44,7 +44,8 @@ steps:
     action: 'create'
     target: '$(Build.SourceVersion)'
     tagSource: 'userSpecifiedTag'
-    tag: 'release-v*'
+    tag: '$(Build.BuildNumber)'
+    title: '$(Build.BuildNumber)'
+    releaseNotesSource: 'inline'
     assets: 'ZenovaLauncher/Output/ZenovaLauncher.exe'
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'
+    addChangeLog: false
