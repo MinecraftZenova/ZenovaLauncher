@@ -19,7 +19,7 @@ namespace ZenovaLauncher
         public Action Refresh { get; set; }
         public string ProfilesDir { get; }
         public ProfileSelected SelectedProfile { get; set; }
-        public Dictionary<string, Profile> internalDictionary => this.ToDictionary(x => x.Hash, x => x);
+        public Dictionary<string, Profile> InternalDictionary => this.ToDictionary(x => x.Hash, x => x);
 
         public ProfileManager(string profileDir)
         {
@@ -72,7 +72,7 @@ namespace ZenovaLauncher
         {
             foreach (Profile profile in profiles)
             {
-                if (!internalDictionary.ContainsKey(profile.Hash))
+                if (!InternalDictionary.ContainsKey(profile.Hash))
                 {
                     switch (profile.Type)
                     {
@@ -125,7 +125,7 @@ namespace ZenovaLauncher
             //DirectoryInfo di = new DirectoryInfo(_profilesDir);
             //foreach (FileInfo file in di.EnumerateFiles()) file.Delete();
             //foreach (DirectoryInfo dir in di.EnumerateDirectories()) dir.Delete(true);
-            File.WriteAllText(Path.Combine(ProfilesDir, _profilesFile), JsonConvert.SerializeObject(internalDictionary, Formatting.Indented, jsonSettings));
+            File.WriteAllText(Path.Combine(ProfilesDir, _profilesFile), JsonConvert.SerializeObject(InternalDictionary, Formatting.Indented, jsonSettings));
             Utils.AddSecurityToFile(Path.Combine(ProfilesDir, _profilesFile));
         }
 
