@@ -35,6 +35,7 @@
                         <CheckBox x:Name="KeepOpenBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Keep the Launcher open while games are running" IsChecked="{Binding Path=KeepLauncherOpen}" />
                         <CheckBox x:Name="FreeSpaceBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Automatically remove downloaded Versions not used in a Profile" Click="FreeSpaceClick" IsChecked="{Binding Path=RemoveUnusedVersions}" />
                         <CheckBox x:Name="DebugBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Launch Minecraft with Visual Studio Debugger" IsChecked="{Binding Path=DebugMode}" />
+                        <CheckBox x:Name="UpdateBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Automatically update Zenova Launcher" IsChecked="{Binding Path=AutoUpdate}" />
                     </ui:SimpleStackPanel>
                 </Grid>
             </TabItem>

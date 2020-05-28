@@ -21,6 +21,7 @@ namespace ZenovaLauncher
         public bool KeepLauncherOpen { get; set; } = false;
         public bool RemoveUnusedVersions { get; set; } = false;
         public bool DebugMode { get; set; } = false;
+        public bool AutoUpdate { get; set; } = true;
         [JsonConverter(typeof(StringEnumConverter))]
         public Profile.ProfileSortType ProfileSorting { get; set; } = Profile.ProfileSortType.ByLastPlayed;
         [JsonConverter(typeof(StringEnumConverter))]

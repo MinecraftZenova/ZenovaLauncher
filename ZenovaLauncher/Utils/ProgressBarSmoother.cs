@@ -18,7 +18,7 @@ namespace ZenovaLauncher
         }
 
         public static readonly DependencyProperty SmoothValueProperty =
-            DependencyProperty.RegisterAttached("SmoothValue", typeof(double), typeof(ProgressBarSmoother), new PropertyMetadata(0.0, changing));
+            DependencyProperty.RegisterAttached("SmoothValue", typeof(double), typeof(ProgressBarSmoother), new PropertyMetadata(0.0, Changing));
 
         public static TimeSpan GetAnimateTime(DependencyObject obj)
         {
@@ -33,7 +33,7 @@ namespace ZenovaLauncher
         public static readonly DependencyProperty AnimateTimeProperty =
             DependencyProperty.RegisterAttached("AnimateTime", typeof(TimeSpan), typeof(ProgressBarSmoother), new PropertyMetadata(new TimeSpan(0,0,0,0,100)));
 
-        private static void changing(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void Changing(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (!(d as ProgressBar).IsIndeterminate)
             {

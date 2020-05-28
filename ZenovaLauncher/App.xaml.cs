@@ -21,7 +21,7 @@ namespace ZenovaLauncher
         private const string AppID = "ZenovaApplicationID";
 
         public static Stopwatch sw;
-        private static SplashScreen splash;
+        private SplashScreen splash;
 
         [STAThread]
         public static void Main()
@@ -29,6 +29,8 @@ namespace ZenovaLauncher
             if (SingleInstance<App>.InitializeAsFirstInstance(AppID))
             {
                 var application = new App();
+                application.splash = new SplashScreen("Assets/zenova_splash.png");
+                application.splash.Show(false);
                 application.InitializeComponent();
                 application.Run();
                 // Allow single instance code to perform cleanup operations
@@ -61,61 +63,66 @@ namespace ZenovaLauncher
 
         public void AppStart(object sender, StartupEventArgs e)
         {
-            Trace.Listeners.Add(new TextWriterTraceListener(new FileStream(Path.Combine(DataDirectory, "log.txt"), FileMode.Create)));
-            Trace.AutoFlush = true;
-            sw = Stopwatch.StartNew();
-            ZenovaUpdater.instance = new ZenovaUpdater();
-            Trace.WriteLine("ZenovaUpdater.instance " + sw.ElapsedMilliseconds + " ms");
-            bool exit = false;
-            Task updateTask = Task.Run(async () => {
-                exit = await ZenovaUpdater.instance.CheckUpdate();
-            });
-            SetupEnvironment();
-            Trace.WriteLine("AppStart " + sw.ElapsedMilliseconds + " ms");
-            VersionDownloader.standard = new VersionDownloader();
-            Trace.WriteLine("VersionDownloader.standard " + sw.ElapsedMilliseconds + " ms");
-            VersionDownloader.user = new VersionDownloader();
-            Trace.WriteLine("VersionDownloader.user " + sw.ElapsedMilliseconds + " ms");
-            VersionManager.instance = new VersionManager(VersionsDirectory);
-            Trace.WriteLine("VersionManager.instance " + sw.ElapsedMilliseconds + " ms");
-            ProfileManager.instance = new ProfileManager(DataDirectory);
-            Trace.WriteLine("ProfileManager.instance " + sw.ElapsedMilliseconds + " ms");
-            ProfileLauncher.instance = new ProfileLauncher();
-            Trace.WriteLine("ProfileLauncher.instance " + sw.ElapsedMilliseconds + " ms");
-            AccountManager.instance = new AccountManager();
-            Trace.WriteLine("AccountManager.instance " + sw.ElapsedMilliseconds + " ms");
-            ModManager.instance = new ModManager(ModsDirectory);
-            Trace.WriteLine("ModManager.instance " + sw.ElapsedMilliseconds + " ms");
-            updateTask.Wait();
-            if (!exit)
+            bool updateAvailable = false;
+            Task startTask = Task.Run(async () =>
             {
-                splash = new SplashScreen("Assets/zenova_splash.png");
-                splash.Show(false);
-                Task loadTask = Task.Run(async () =>
-                {
-                    await AccountManager.instance.AddAccounts();
-                    Trace.WriteLine("AccountManager.AddAccounts " + sw.ElapsedMilliseconds + " ms");
-                    await VersionManager.instance.LoadMinecraftVersions();
-                    Trace.WriteLine("VersionManager.LoadMinecraftVersions " + sw.ElapsedMilliseconds + " ms");
-                    ModManager.instance.LoadMods();
-                    Trace.WriteLine("ModManager.LoadMods " + sw.ElapsedMilliseconds + " ms");
-                    ProfileManager.instance.ImportProfiles();
-                    Trace.WriteLine("ProfileManager.ImportProfiles " + sw.ElapsedMilliseconds + " ms");
-                    Preferences.LoadPreferences(DataDirectory);
-                    Trace.WriteLine("Preferences.LoadPreferences " + sw.ElapsedMilliseconds + " ms");
-                    VersionManager.instance.RemoveUnusedVersions();
-                    Trace.WriteLine("VersionManager.RemoveUnusedVersions " + sw.ElapsedMilliseconds + " ms");
-                });
-                loadTask.Wait();
-                ReadCommandArgs(Environment.GetCommandLineArgs());
-                Trace.WriteLine("AppStart Finished " + sw.ElapsedMilliseconds + " ms");
-                sw.Stop();
-                splash.Close(TimeSpan.FromSeconds(1));
+                sw = Stopwatch.StartNew();
+                Trace.WriteLine("AppStart " + sw.ElapsedMilliseconds + " ms");
+                SetupEnvironment();
+                Trace.Listeners.Add(new TextWriterTraceListener(new FileStream(Path.Combine(DataDirectory, "log.txt"), FileMode.Create)));
+                Trace.AutoFlush = true;
+                ZenovaUpdater.instance = new ZenovaUpdater();
+                Trace.WriteLine("ZenovaUpdater.instance " + sw.ElapsedMilliseconds + " ms");
+                VersionDownloader.standard = new VersionDownloader();
+                Trace.WriteLine("VersionDownloader.standard " + sw.ElapsedMilliseconds + " ms");
+                VersionDownloader.user = new VersionDownloader();
+                Trace.WriteLine("VersionDownloader.user " + sw.ElapsedMilliseconds + " ms");
+                VersionManager.instance = new VersionManager(VersionsDirectory);
+                Trace.WriteLine("VersionManager.instance " + sw.ElapsedMilliseconds + " ms");
+                ProfileManager.instance = new ProfileManager(DataDirectory);
+                Trace.WriteLine("ProfileManager.instance " + sw.ElapsedMilliseconds + " ms");
+                ProfileLauncher.instance = new ProfileLauncher();
+                Trace.WriteLine("ProfileLauncher.instance " + sw.ElapsedMilliseconds + " ms");
+                AccountManager.instance = new AccountManager();
+                Trace.WriteLine("AccountManager.instance " + sw.ElapsedMilliseconds + " ms");
+                ModManager.instance = new ModManager(ModsDirectory);
+                Trace.WriteLine("ModManager.instance " + sw.ElapsedMilliseconds + " ms");
+                await AccountManager.instance.AddAccounts();
+                Trace.WriteLine("AccountManager.AddAccounts " + sw.ElapsedMilliseconds + " ms");
+                await VersionManager.instance.LoadMinecraftVersions();
+                Trace.WriteLine("VersionManager.LoadMinecraftVersions " + sw.ElapsedMilliseconds + " ms");
+                ModManager.instance.LoadMods();
+                Trace.WriteLine("ModManager.LoadMods " + sw.ElapsedMilliseconds + " ms");
+                ProfileManager.instance.ImportProfiles();
+                Trace.WriteLine("ProfileManager.ImportProfiles " + sw.ElapsedMilliseconds + " ms");
+                Preferences.LoadPreferences(DataDirectory);
+                Trace.WriteLine("Preferences.LoadPreferences " + sw.ElapsedMilliseconds + " ms");
+                VersionManager.instance.RemoveUnusedVersions();
+                Trace.WriteLine("VersionManager.RemoveUnusedVersions " + sw.ElapsedMilliseconds + " ms");
+                updateAvailable = await ZenovaUpdater.instance.CheckUpdate();
+                Trace.WriteLine("ZenovaUpdater.CheckUpdate " + sw.ElapsedMilliseconds + " ms");
+            });
+            startTask.Wait();
+            splash.Close(TimeSpan.FromSeconds(1));
+            if (updateAvailable && Preferences.instance.AutoUpdate)
+            {
+                UpdateWindow updateWindow = new UpdateWindow();
+                Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+                Current.MainWindow = updateWindow;
+                updateWindow.Show();
             }
             else
             {
-                Shutdown();
+                StartMainWindow();
             }
+        }
+
+        public void StartMainWindow()
+        {
+            var mainWindow = new MainWindow();
+            Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            Current.MainWindow = mainWindow;
+            mainWindow.Show();
         }
 
         public void AppExit(object sender, ExitEventArgs e)

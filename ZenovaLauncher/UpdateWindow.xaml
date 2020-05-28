@@ -1,0 +1,33 @@
+﻿<Window x:Class="ZenovaLauncher.UpdateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZenovaLauncher"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        ui:ThemeManager.IsThemeAware="True"
+        Background="{DynamicResource LauncherControlPageBackgroundAltMediumBrush}"
+        Foreground="{DynamicResource SystemControlPageTextBaseHighBrush}"
+        Title="Zenova Updater" Height="155" Width="400"
+        Loaded="StartUpdate"
+        Closed="CloseWindow">
+    <Grid Margin="8">
+        <ui:SimpleStackPanel VerticalAlignment="Center" Spacing="10">
+            <TextBlock Text="Updating Zenova Launcher..." />
+            <ProgressBar
+                MinHeight="26"
+                HorizontalAlignment="Stretch"
+                ui:ControlHelper.CornerRadius="0"
+                Background="{DynamicResource LauncherControlTransientLowBackgroundBrush}"
+                Minimum="0"
+                Maximum="{Binding DownloadSize, Mode=OneWay}"
+                local:ProgressBarSmoother.SmoothValue="{Binding DownloadedBytes, Mode=OneWay}"
+                IsIndeterminate="{Binding IsNotDownloading}" />
+            <TextBlock Text="Downloading Installer..." />
+        </ui:SimpleStackPanel>
+        <Button Content="Cancel" Style="{DynamicResource LauncherDefaultButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="CancelClick"/>
+    </Grid>
+</Window>

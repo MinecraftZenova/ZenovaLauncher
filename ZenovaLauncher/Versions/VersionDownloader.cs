@@ -19,8 +19,8 @@ namespace ZenovaLauncher
         public static VersionDownloader standard;
         public static VersionDownloader user;
 
-        private HttpClient _client = new HttpClient();
-        private WUProtocol _protocol = new WUProtocol();
+        private readonly HttpClient _client = new HttpClient();
+        private readonly WUProtocol _protocol = new WUProtocol();
 
         private async Task<XDocument> PostXmlAsync(string url, XDocument data)
         {

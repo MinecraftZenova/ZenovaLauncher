@@ -86,7 +86,7 @@ namespace ZenovaLauncher
         {
             using (var reader = File.OpenText(_cacheFile))
             {
-                var data = await reader.ReadToEndAsync();
+                string data = await reader.ReadToEndAsync();
                 ParseList(JArray.Parse(data));
             }
         }
@@ -95,7 +95,7 @@ namespace ZenovaLauncher
         {
             var resp = await _client.GetAsync("https://mrarm.io/r/w10-vdb");
             resp.EnsureSuccessStatusCode();
-            var data = await resp.Content.ReadAsStringAsync();
+            string data = await resp.Content.ReadAsStringAsync();
             File.WriteAllText(_cacheFile, data);
             ParseList(JArray.Parse(data));
         }

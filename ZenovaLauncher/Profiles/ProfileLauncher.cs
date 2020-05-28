@@ -288,7 +288,7 @@ namespace ZenovaLauncher
             {
                 Trace.WriteLine("Download failed:\n" + e.ToString());
                 if (!(e is TaskCanceledException))
-                    Utils.ShowErrorDialog("Download failed", string.Format("An error occured while downloading Minecraft {0}. {1}", v.Name, v.Beta ? "Ensure the selected account is the one registered for beta versions in the Xbox Insider app." : ""));
+                    Utils.ShowErrorDialog("Download failed", string.Format("An error occured while downloading Minecraft {0}.{1}", v.Name, v.Beta ? " Ensure the selected account is the one registered for beta versions in the Xbox Insider app." : ""));
                 return false;
             }
             try

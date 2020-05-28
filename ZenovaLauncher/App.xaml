@@ -4,7 +4,6 @@
              xmlns:local="clr-namespace:ZenovaLauncher"
              xmlns:ui="http://schemas.modernwpf.com/2019"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             StartupUri="MainWindow.xaml"
              Startup="AppStart"
              Exit="AppExit">
     <Application.Resources>

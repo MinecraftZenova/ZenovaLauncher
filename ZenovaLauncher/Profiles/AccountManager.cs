@@ -14,15 +14,12 @@ namespace ZenovaLauncher
 
         public async Task AddAccounts()
         {
-            await Task.Run(async () =>
-            {
-                Trace.WriteLine("AddAccounts");
-                var accounts = await ZenovaBackend.GetMSAccounts();
-                foreach (Tuple<string, string> account in accounts)
-                    Add(new MSAccount(account.Item1, account.Item2));
-                SelectedAccount = this.First();
-                Trace.WriteLine("AddAccounts finished");
-            });
+            Trace.WriteLine("AddAccounts");
+            var accounts = await ZenovaBackend.GetMSAccounts();
+            foreach (Tuple<string, string> account in accounts)
+                Add(new MSAccount(account.Item1, account.Item2));
+            SelectedAccount = this.First();
+            Trace.WriteLine("AddAccounts finished");
         }
     }
 

@@ -87,6 +87,9 @@
     <Compile Include="Mods\Mod.cs" />
     <Compile Include="Mods\ModManager.cs" />
     <Compile Include="Profiles\AccountManager.cs" />
+    <Compile Include="UpdateWindow.xaml.cs">
+      <DependentUpon>UpdateWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\ApplicationActivationManager.cs" />
     <Compile Include="Utils\AppUtils.cs" />
     <Compile Include="Utils\BooleanValueConverter.cs" />
@@ -231,6 +234,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\TextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UpdateWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -15,6 +15,7 @@ namespace ZenovaLauncher
             KeepOpenBox.DataContext = Preferences.instance;
             FreeSpaceBox.DataContext = Preferences.instance;
             DebugBox.DataContext = Preferences.instance;
+            UpdateBox.DataContext = Preferences.instance;
         }
 
         private void FreeSpaceClick(object sender, RoutedEventArgs e)
