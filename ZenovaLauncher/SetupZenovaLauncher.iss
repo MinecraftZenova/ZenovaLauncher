@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Zenova Launcher"
-#define MyAppVersion "1.0"
+#define MyAppVersion GetFileVersion("bin\release\ZenovaLauncher.exe")
 #define MyAppPublisher "MinecraftZenova"
 #define MyAppURL "https://www.github.com/MinecraftZenova"
 #define MyAppExeName "ZenovaLauncher.exe"
@@ -14,8 +14,8 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{6A9E32A1-AF57-4B44-B093-08353E6D1C9A}
 AppName={#MyAppName}
-AppVersion={#MyAppVersion}
-;AppVerName={#MyAppName} {#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppVersion}
+VersionInfoVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -53,6 +53,7 @@ Source: "bin\Release\ModernWpf.Controls.dll"; DestDir: "{app}"; Flags: ignorever
 Source: "bin\Release\ModernWpf.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\ModernWpf.MahApps.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\Octokit.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\Windows.Internal.Security.Authentication.Web.winmd"; DestDir: "{app}"; Flags: ignoreversion
