@@ -29,8 +29,6 @@ namespace ZenovaLauncher
             if (SingleInstance<App>.InitializeAsFirstInstance(AppID))
             {
                 var application = new App();
-                splash = new SplashScreen("Assets/zenova_splash.png");
-                splash.Show(false);
                 application.InitializeComponent();
                 application.Run();
                 // Allow single instance code to perform cleanup operations
@@ -63,13 +61,17 @@ namespace ZenovaLauncher
 
         public void AppStart(object sender, StartupEventArgs e)
         {
-            sw = Stopwatch.StartNew();
-            SetupEnvironment();
             Trace.Listeners.Add(new TextWriterTraceListener(new FileStream(Path.Combine(DataDirectory, "log.txt"), FileMode.Create)));
             Trace.AutoFlush = true;
-            Trace.WriteLine("AppStart " + sw.ElapsedMilliseconds + " ms");
+            sw = Stopwatch.StartNew();
             ZenovaUpdater.instance = new ZenovaUpdater();
             Trace.WriteLine("ZenovaUpdater.instance " + sw.ElapsedMilliseconds + " ms");
+            bool exit = false;
+            Task updateTask = Task.Run(async () => {
+                exit = await ZenovaUpdater.instance.CheckUpdate();
+            });
+            SetupEnvironment();
+            Trace.WriteLine("AppStart " + sw.ElapsedMilliseconds + " ms");
             VersionDownloader.standard = new VersionDownloader();
             Trace.WriteLine("VersionDownloader.standard " + sw.ElapsedMilliseconds + " ms");
             VersionDownloader.user = new VersionDownloader();
@@ -84,30 +86,36 @@ namespace ZenovaLauncher
             Trace.WriteLine("AccountManager.instance " + sw.ElapsedMilliseconds + " ms");
             ModManager.instance = new ModManager(ModsDirectory);
             Trace.WriteLine("ModManager.instance " + sw.ElapsedMilliseconds + " ms");
-            Task updateTask = Task.Run(async () => {
-                await ZenovaUpdater.instance.CheckUpdate();
-            });
-            Task loadTask = Task.Run(async () =>
-            {
-                await AccountManager.instance.AddAccounts();
-                Trace.WriteLine("AccountManager.AddAccounts " + sw.ElapsedMilliseconds + " ms");
-                await VersionManager.instance.LoadMinecraftVersions();
-                Trace.WriteLine("VersionManager.LoadMinecraftVersions " + sw.ElapsedMilliseconds + " ms");
-                ModManager.instance.LoadMods();
-                Trace.WriteLine("ModManager.LoadMods " + sw.ElapsedMilliseconds + " ms");
-                ProfileManager.instance.ImportProfiles();
-                Trace.WriteLine("ProfileManager.ImportProfiles " + sw.ElapsedMilliseconds + " ms");
-                Preferences.LoadPreferences(DataDirectory);
-                Trace.WriteLine("Preferences.LoadPreferences " + sw.ElapsedMilliseconds + " ms");
-                VersionManager.instance.RemoveUnusedVersions();
-                Trace.WriteLine("VersionManager.RemoveUnusedVersions " + sw.ElapsedMilliseconds + " ms");
-            });
-            loadTask.Wait();
             updateTask.Wait();
-            ReadCommandArgs(Environment.GetCommandLineArgs());
-            Trace.WriteLine("AppStart Finished " + sw.ElapsedMilliseconds + " ms");
-            sw.Stop();
-            splash.Close(TimeSpan.FromSeconds(1));
+            if (!exit)
+            {
+                splash = new SplashScreen("Assets/zenova_splash.png");
+                splash.Show(false);
+                Task loadTask = Task.Run(async () =>
+                {
+                    await AccountManager.instance.AddAccounts();
+                    Trace.WriteLine("AccountManager.AddAccounts " + sw.ElapsedMilliseconds + " ms");
+                    await VersionManager.instance.LoadMinecraftVersions();
+                    Trace.WriteLine("VersionManager.LoadMinecraftVersions " + sw.ElapsedMilliseconds + " ms");
+                    ModManager.instance.LoadMods();
+                    Trace.WriteLine("ModManager.LoadMods " + sw.ElapsedMilliseconds + " ms");
+                    ProfileManager.instance.ImportProfiles();
+                    Trace.WriteLine("ProfileManager.ImportProfiles " + sw.ElapsedMilliseconds + " ms");
+                    Preferences.LoadPreferences(DataDirectory);
+                    Trace.WriteLine("Preferences.LoadPreferences " + sw.ElapsedMilliseconds + " ms");
+                    VersionManager.instance.RemoveUnusedVersions();
+                    Trace.WriteLine("VersionManager.RemoveUnusedVersions " + sw.ElapsedMilliseconds + " ms");
+                });
+                loadTask.Wait();
+                ReadCommandArgs(Environment.GetCommandLineArgs());
+                Trace.WriteLine("AppStart Finished " + sw.ElapsedMilliseconds + " ms");
+                sw.Stop();
+                splash.Close(TimeSpan.FromSeconds(1));
+            }
+            else
+            {
+                Shutdown();
+            }
         }
 
         public void AppExit(object sender, ExitEventArgs e)

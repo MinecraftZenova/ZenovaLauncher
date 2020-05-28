@@ -14,7 +14,7 @@ namespace ZenovaLauncher
     {
         public static ZenovaUpdater instance;
 
-        public async Task CheckUpdate()
+        public async Task<bool> CheckUpdate()
         {
             try
             {
@@ -30,25 +30,22 @@ namespace ZenovaLauncher
                 if (latestVersion > installedVersion)
                 {
                     var response = await client.Connection.Get<object>(new Uri(latest.Assets[0].Url), new Dictionary<string, string>(), "application/octet-stream");
-                    byte[] bytes = Encoding.ASCII.GetBytes(response.HttpResponse.Body.ToString());
                     string path = Path.GetTempFileName();
                     string dlPath = path.Replace(".tmp", "_" + latest.Assets[0].Name);
                     File.Move(path, dlPath);
-                    File.WriteAllBytes(dlPath, bytes);
+                    File.WriteAllBytes(dlPath, (byte[]) response.Body);
                     ProcessStartInfo psi = new ProcessStartInfo(dlPath, "/verysilent");
                     psi.CreateNoWindow = true;
                     psi.WindowStyle = ProcessWindowStyle.Hidden;
                     Process.Start(psi);
-                    await System.Windows.Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)delegate ()
-                    {
-                        System.Windows.Application.Current.MainWindow.Close();
-                    });
+                    return true;
                 }
             }
             catch (Exception e)
             {
                 Trace.WriteLine("Check for update failed:\n" + e.ToString());
             }
+            return false;
         }
 
         public void DeleteInstaller(string path)
