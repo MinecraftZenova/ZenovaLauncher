@@ -50,6 +50,10 @@ namespace ZenovaLauncher
         {
             if (args.Count > 1)
             {
+                if (args[1] == "/delete" && args.Count > 2)
+                {
+                    ZenovaUpdater.instance.DeleteInstaller(args[2]);
+                }
                 if (args[1].EndsWith(".zmp"))
                 {
                     ModManager.instance.TryImportMods(new List<string>() { args[1] });
@@ -65,7 +69,6 @@ namespace ZenovaLauncher
             Trace.AutoFlush = true;
             Trace.WriteLine("AppStart " + sw.ElapsedMilliseconds + " ms");
             ZenovaUpdater.instance = new ZenovaUpdater();
-            ZenovaUpdater.instance.CheckUpdate();
             Trace.WriteLine("ZenovaUpdater.instance " + sw.ElapsedMilliseconds + " ms");
             VersionDownloader.standard = new VersionDownloader();
             Trace.WriteLine("VersionDownloader.standard " + sw.ElapsedMilliseconds + " ms");
@@ -81,6 +84,9 @@ namespace ZenovaLauncher
             Trace.WriteLine("AccountManager.instance " + sw.ElapsedMilliseconds + " ms");
             ModManager.instance = new ModManager(ModsDirectory);
             Trace.WriteLine("ModManager.instance " + sw.ElapsedMilliseconds + " ms");
+            Task updateTask = Task.Run(async () => {
+                await ZenovaUpdater.instance.CheckUpdate();
+            });
             Task loadTask = Task.Run(async () =>
             {
                 await AccountManager.instance.AddAccounts();
@@ -97,6 +103,7 @@ namespace ZenovaLauncher
                 Trace.WriteLine("VersionManager.RemoveUnusedVersions " + sw.ElapsedMilliseconds + " ms");
             });
             loadTask.Wait();
+            updateTask.Wait();
             ReadCommandArgs(Environment.GetCommandLineArgs());
             Trace.WriteLine("AppStart Finished " + sw.ElapsedMilliseconds + " ms");
             sw.Stop();

@@ -68,7 +68,7 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Parameters: "{code:GetRunParam}"; Flags: nowait postinstall
 
 [Registry]
 Root: HKA; Subkey: "{code:GetSubKey}"; \
@@ -100,6 +100,14 @@ begin
     Result := 'Environment';
 end;
 
+function GetRunParam(Value: string): string;
+begin
+  if WizardSilent then
+    Result := '/delete ' + ExpandConstant('{srcexe}')
+  else
+    Result := '';
+end;
+
 procedure InitializeWizard;
 var
   AfterID: Integer;
@@ -111,6 +119,6 @@ begin
   'To continue, click Next. If you would like to select a different folder, click Browse.',
   False, 'New Folder');
   DataDirPage.Add('');
-  DataDirPage.Values[0] := ExpandConstant('{%ZENOVA_DATA|{userappdata}\{#MyAppDataDir}}');;
+  DataDirPage.Values[0] := ExpandConstant('{%ZENOVA_DATA|{userappdata}\{#MyAppDataDir}}');
   AfterID := DataDirPage.ID;
 end;
