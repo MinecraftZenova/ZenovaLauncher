@@ -1,4 +1,5 @@
 ﻿using Octokit;
+using System;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -13,12 +14,10 @@ namespace ZenovaLauncher
             GitHubClient client = new GitHubClient(new ProductHeaderValue("ZenovaLauncher"));
             var releases = await client.Repository.Release.GetAll("MinecraftZenova", "ZenovaLauncher");
             var latest = releases[0];
+            Version latestVersion = new Version(latest.TagName.Trim());
             // get version from tag name, if greater than application version, start update
             Trace.WriteLine("Installed Version: " + Assembly.GetEntryAssembly().GetName().Version);
-            Trace.WriteLine(
-                string.Format("The latest release is tagged at {0} and is named {1}",
-                latest.TagName,
-                latest.Name));
+            Trace.WriteLine("Latest Available Version: " + latestVersion);
         }
     }
 }
