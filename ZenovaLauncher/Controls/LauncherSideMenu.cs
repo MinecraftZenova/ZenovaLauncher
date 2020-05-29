@@ -3,12 +3,45 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace ZenovaLauncher.Controls
 {
+    public class LauncherSideMenuListBox : ListBox
+    {
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DependencyObject obj = this.ContainerFromElement((Visual)e.OriginalSource);
+                if (obj != null)
+                {
+                    FrameworkElement element = obj as FrameworkElement;
+                    if (element != null)
+                    {
+                        ListBoxItem item = element as ListBoxItem;
+                        if (item != null)
+                        {
+                            HamburgerMenuItem menuItem = item.Content as HamburgerMenuItem;
+                            if (menuItem != null && this.Items.Contains(menuItem))
+                            {
+                                this.SelectedItem = menuItem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+    }
+
     class LauncherSideMenu : HamburgerMenu
     {
         private static readonly PropertyPath _scaleYPath = new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)");

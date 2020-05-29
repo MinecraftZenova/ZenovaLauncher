@@ -1,12 +1,32 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace ZenovaLauncher.Controls
 {
+    public class MyTabItem : TabItem
+    {
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            if (e.Source == this || !this.IsSelected)
+                return;
+
+            base.OnMouseLeftButtonDown(e);
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            if (e.Source == this || !this.IsSelected)
+                base.OnMouseLeftButtonDown(e);
+
+            base.OnMouseLeftButtonUp(e);
+        }
+    }
+
     class LauncherTabControl : TabControl
     {
         private static readonly PropertyPath _scaleXPath = new PropertyPath("(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)");

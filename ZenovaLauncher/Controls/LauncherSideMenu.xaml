@@ -232,8 +232,8 @@
                                 ContentTemplate="{TemplateBinding HamburgerMenuHeaderTemplate}"
                                 IsTabStop="False" />
                         </StackPanel>
-                        <ListBox
-                            Name="ButtonsListView"
+                        <local:LauncherSideMenuListBox
+                            x:Name="ButtonsListView"
                             Grid.Row="1"
                             Width="{TemplateBinding OpenPaneLength}"
                             Controls:ScrollViewerHelper.VerticalScrollBarOnLeftSide="{TemplateBinding VerticalScrollBarOnLeftSide}"
@@ -249,8 +249,8 @@
                             SelectedItem="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem, Mode=TwoWay}"
                             SelectionMode="Single"
                             Style="{StaticResource ModernWpf.MahApps.Styles.ListBox.HamburgerMenu}" />
-                        <ListBox
-                            Name="OptionsListView"
+                        <local:LauncherSideMenuListBox
+                            x:Name="OptionsListView"
                             Grid.Row="2"
                             Width="{TemplateBinding OpenPaneLength}"
                             Margin="0,20,0,0"

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
@@ -25,12 +24,9 @@ namespace ZenovaLauncher
             Navigate(NavView.SelectedItem);
         }
 
-        private void AccountChanged(object sender, SelectionChangedEventArgs e)
+        private async void AccountChanged(object sender, SelectionChangedEventArgs e)
         {
-            Task.Run(async () =>
-            {
-                await VersionDownloader.user.EnableUserAuthorization();
-            });
+            await VersionDownloader.user.EnableUserAuthorization();
         }
 
         private void NavView_ItemInvoked(object sender, HamburgerMenuItemInvokedEventArgs e)

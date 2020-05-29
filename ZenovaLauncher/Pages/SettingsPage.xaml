@@ -28,7 +28,7 @@
             Grid.RowSpan="2"
             Style="{StaticResource LauncherTabControl}"
             MinHeight="400">
-            <TabItem Header="General">
+            <control:MyTabItem Header="General">
                 <Grid Margin="86,63,0,0">
                     <ui:SimpleStackPanel Spacing="7">
                         <TextBlock Margin="0,-8,0,4" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Launcher Settings" />
@@ -38,13 +38,13 @@
                         <CheckBox x:Name="UpdateBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Automatically update Zenova Launcher" IsChecked="{Binding Path=AutoUpdate}" />
                     </ui:SimpleStackPanel>
                 </Grid>
-            </TabItem>
-            <TabItem Header="Accounts">
+            </control:MyTabItem>
+            <control:MyTabItem Header="Accounts">
                 <TextBlock Text="Accounts Settings" />
-            </TabItem>
-            <TabItem Header="About">
+            </control:MyTabItem>
+            <control:MyTabItem Header="About">
                 <TextBlock Text="About Launcher" />
-            </TabItem>
+            </control:MyTabItem>
         </control:LauncherTabControl>
     </Grid>
 </Page>

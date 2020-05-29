@@ -28,15 +28,15 @@
             Grid.RowSpan="2"
             Style="{StaticResource LauncherTabControl}"
             MinHeight="400">
-            <TabItem Header="Play">
+            <control:MyTabItem Header="Play">
                 <ui:ThemeAwareFrame Source="PlayPage.xaml" NavigationUIVisibility="Hidden" />
-            </TabItem>
-            <TabItem Header="Profiles">
+            </control:MyTabItem>
+            <control:MyTabItem Header="Profiles">
                 <ui:ThemeAwareFrame Source="ProfilesPage.xaml" NavigationUIVisibility="Hidden" />
-            </TabItem>
-            <TabItem Header="Mods">
+            </control:MyTabItem>
+            <control:MyTabItem Header="Mods">
                 <ui:ThemeAwareFrame Source="ModsPage.xaml" NavigationUIVisibility="Hidden" />
-            </TabItem>
+            </control:MyTabItem>
         </control:LauncherTabControl>
     </Grid>
 </Page>
