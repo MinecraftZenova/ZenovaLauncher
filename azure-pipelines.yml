@@ -21,6 +21,14 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: DownloadGitHubRelease@0
+  inputs:
+    connection: 'GitHub - TrinityDevelopers'
+    userRepository: 'MinecraftZenova/ZenovaAPI'
+    defaultVersionType: 'latest'
+    itemPattern: 'ZenovaAPI.dll'
+    downloadPath: 'ZenovaLauncher/'
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
