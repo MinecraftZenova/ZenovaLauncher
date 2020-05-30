@@ -26,7 +26,7 @@
                 Maximum="{Binding DownloadSize, Mode=OneWay}"
                 local:ProgressBarSmoother.SmoothValue="{Binding DownloadedBytes, Mode=OneWay}"
                 IsIndeterminate="{Binding IsNotDownloading}" />
-            <TextBlock Text="Downloading Installer..." />
+            <TextBlock Text="{Binding DisplayText, StringFormat='Downloading {0}...'}" />
         </ui:SimpleStackPanel>
         <Button Content="Cancel" Style="{DynamicResource LauncherDefaultButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="CancelClick"/>
     </Grid>

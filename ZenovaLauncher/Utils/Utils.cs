@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
@@ -90,6 +91,11 @@ namespace ZenovaLauncher
                 PropagationFlags.None,
                 AccessControlType.Allow));
             dirInfo.SetAccessControl(dirSecurity);
+        }
+
+        public static Version GetVersion(FileVersionInfo version)
+        {
+            return new Version(version.FileMajorPart, version.FileMinorPart, version.FileBuildPart, version.FilePrivatePart);
         }
     }
 }

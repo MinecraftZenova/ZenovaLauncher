@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Threading;
 
 namespace ZenovaLauncher
@@ -10,8 +12,11 @@ namespace ZenovaLauncher
     /// </summary>
     public partial class UpdateWindow : Window
     {
-        public UpdateWindow()
+        public List<ZenovaUpdater.AssemblyType> UpdateTypes { get; set; }
+
+        public UpdateWindow(List<ZenovaUpdater.AssemblyType> updateTypes)
         {
+            UpdateTypes = updateTypes;
             DataContext = ZenovaUpdater.instance;
 
             InitializeComponent();
@@ -22,15 +27,10 @@ namespace ZenovaLauncher
             ZenovaUpdater.instance.CancelCommand = new RelayCommand((o) => ZenovaUpdater.instance.cancelSource.Cancel());
             await Task.Run(async () =>
             {
-                bool success = await ZenovaUpdater.instance.DoUpdate();
-                await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)delegate ()
-                {
-                    if (success)
-                        Application.Current.Shutdown();
-                    else
-                        ((App)Application.Current).StartMainWindow();
-                });
+                foreach (var update in UpdateTypes)
+                    await ZenovaUpdater.instance.DoUpdate(update);
             }, ZenovaUpdater.instance.cancelSource.Token);
+            ((App)Application.Current).StartMainWindow();
         }
 
         private void CloseWindow(object sender, EventArgs e)

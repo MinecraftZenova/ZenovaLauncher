@@ -63,7 +63,7 @@ namespace ZenovaLauncher
 
         public void AppStart(object sender, StartupEventArgs e)
         {
-            bool updateAvailable = false;
+            List<ZenovaUpdater.AssemblyType> availableUpdates = new List<ZenovaUpdater.AssemblyType>();
             Task startTask = Task.Run(async () =>
             {
                 sw = Stopwatch.StartNew();
@@ -71,7 +71,7 @@ namespace ZenovaLauncher
                 SetupEnvironment();
                 Trace.Listeners.Add(new TextWriterTraceListener(new FileStream(Path.Combine(DataDirectory, "log.txt"), FileMode.Create)));
                 Trace.AutoFlush = true;
-                ZenovaUpdater.instance = new ZenovaUpdater();
+                ZenovaUpdater.instance = new ZenovaUpdater(DataDirectory);
                 Trace.WriteLine("ZenovaUpdater.instance " + sw.ElapsedMilliseconds + " ms");
                 VersionDownloader.standard = new VersionDownloader();
                 Trace.WriteLine("VersionDownloader.standard " + sw.ElapsedMilliseconds + " ms");
@@ -99,14 +99,14 @@ namespace ZenovaLauncher
                 Trace.WriteLine("Preferences.LoadPreferences " + sw.ElapsedMilliseconds + " ms");
                 VersionManager.instance.RemoveUnusedVersions();
                 Trace.WriteLine("VersionManager.RemoveUnusedVersions " + sw.ElapsedMilliseconds + " ms");
-                updateAvailable = await ZenovaUpdater.instance.CheckUpdate();
+                availableUpdates = await ZenovaUpdater.instance.CheckUpdates();
                 Trace.WriteLine("ZenovaUpdater.CheckUpdate " + sw.ElapsedMilliseconds + " ms");
             });
             startTask.Wait();
             splash.Close(TimeSpan.FromSeconds(1));
-            if (updateAvailable && Preferences.instance.AutoUpdate)
+            if (availableUpdates.Count > 0 && Preferences.instance.AutoUpdate)
             {
-                UpdateWindow updateWindow = new UpdateWindow();
+                UpdateWindow updateWindow = new UpdateWindow(availableUpdates);
                 Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
                 Current.MainWindow = updateWindow;
                 updateWindow.Show();
