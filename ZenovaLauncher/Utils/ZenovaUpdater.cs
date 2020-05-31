@@ -86,8 +86,8 @@ namespace ZenovaLauncher
                     Process.Start(psi);
                     await App.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)delegate () { App.Current.Shutdown(); });
                 });
-                ApiAssembly = new AssemblyType("ZenovaAPI", Utils.GetVersion(FileVersionInfo.GetVersionInfo(Path.Combine(DataDirectory, "ZenovaAPI.dll"))), (type) => Path.Combine(DataDirectory, "ZenovaAPI.dll"), async (dlPath) => { });
-                LoaderAssembly = new AssemblyType("ZenovaLoader", Utils.GetVersion(FileVersionInfo.GetVersionInfo(@"ZenovaLoader")), (type) => "ZenovaLoader", async (dlPath) => { });
+                ApiAssembly = new AssemblyType("ZenovaAPI", new Version(FileVersionInfo.GetVersionInfo(Path.Combine(DataDirectory, "ZenovaAPI.dll")).FileVersion), (type) => Path.Combine(DataDirectory, "ZenovaAPI.dll"), async (dlPath) => { });
+                LoaderAssembly = new AssemblyType("ZenovaLoader", new Version(FileVersionInfo.GetVersionInfo(@"ZenovaLoader.").FileVersion), (type) => @"ZenovaLoader.", async (dlPath) => { });
             }
             catch (Exception e)
             {

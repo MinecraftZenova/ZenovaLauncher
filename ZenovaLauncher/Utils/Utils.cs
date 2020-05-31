@@ -92,10 +92,5 @@ namespace ZenovaLauncher
                 AccessControlType.Allow));
             dirInfo.SetAccessControl(dirSecurity);
         }
-
-        public static Version GetVersion(FileVersionInfo version)
-        {
-            return new Version(version.FileMajorPart, version.FileMinorPart, version.FileBuildPart, version.FilePrivatePart);
-        }
     }
 }

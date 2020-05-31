@@ -29,6 +29,14 @@ steps:
     itemPattern: 'ZenovaAPI.dll'
     downloadPath: 'ZenovaLauncher/'
 
+- task: DownloadGitHubRelease@0
+  inputs:
+    connection: 'GitHub - TrinityDevelopers'
+    userRepository: 'MinecraftZenova/ZenovaLoader'
+    defaultVersionType: 'latest'
+    itemPattern: 'ZenovaLoader'
+    downloadPath: 'ZenovaLauncher/'
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
