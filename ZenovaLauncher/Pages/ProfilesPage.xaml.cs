@@ -62,6 +62,7 @@ namespace ZenovaLauncher
             while (ProfileManager.instance.SingleOrDefault(p => p.Name == (newProfile.Name + " (" + index + ")")) != null)
                 index++;
             newProfile.Name += " (" + index + ")";
+            newProfile.Type = Profile.ProfileType.Custom;
             ProfileManager.instance.Add(newProfile);
             SortProfileList(Preferences.instance.ProfileSorting);
         }
