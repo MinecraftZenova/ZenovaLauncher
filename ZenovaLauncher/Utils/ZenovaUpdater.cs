@@ -72,7 +72,7 @@ namespace ZenovaLauncher
         {
             try
             {
-                InstallerAssembly = new AssemblyType("ZenovaLauncher", Assembly.GetEntryAssembly().GetName().Version, (type) =>
+                InstallerAssembly = new AssemblyType("ZenovaLauncher", (type) =>
                 {
                     string path = Path.GetTempFileName();
                     string dlPath = path.Replace(".tmp", "_" + type.LatestRelease.Assets[0].Name);
@@ -85,9 +85,9 @@ namespace ZenovaLauncher
                     psi.WindowStyle = ProcessWindowStyle.Hidden;
                     Process.Start(psi);
                     await App.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)delegate () { App.Current.Shutdown(); });
-                });
-                ApiAssembly = new AssemblyType("ZenovaAPI", new Version(FileVersionInfo.GetVersionInfo(Path.Combine(DataDirectory, "ZenovaAPI.dll")).FileVersion), (type) => Path.Combine(DataDirectory, "ZenovaAPI.dll"), async (dlPath) => { });
-                LoaderAssembly = new AssemblyType("ZenovaLoader", new Version(FileVersionInfo.GetVersionInfo(@"ZenovaLoader.").FileVersion), (type) => @"ZenovaLoader.", async (dlPath) => { });
+                }, Assembly.GetEntryAssembly().GetName().Version);
+                ApiAssembly = new AssemblyType("ZenovaAPI", (type) => Path.Combine(DataDirectory, "ZenovaAPI.dll"), async (dlPath) => { });
+                LoaderAssembly = new AssemblyType("ZenovaLoader", (type) => @"ZenovaLoader.", async (dlPath) => { });
             }
             catch (Exception e)
             {
@@ -121,10 +121,13 @@ namespace ZenovaLauncher
                 var releases = await Client.Repository.Release.GetAll("MinecraftZenova", type.RepositoryName);
                 type.LatestRelease = releases[0];
 
+                if (type.InstalledVersion == null)
+                    return true;
+
                 Version latestVersion = new Version(type.LatestRelease.TagName.Trim());
                 Trace.WriteLine(type.RepositoryName + " Installed Version: " + type.InstalledVersion);
                 Trace.WriteLine(type.RepositoryName + " Latest Version: " + latestVersion);
-                if (latestVersion > type.InstalledVersion && type.InstalledVersion > new Version(0,0,0,0))
+                if (latestVersion > type.InstalledVersion && type.InstalledVersion > new Version(0, 0, 0, 0))
                     return true;
             }
             catch (Exception e)
@@ -133,7 +136,7 @@ namespace ZenovaLauncher
             }
             return false;
         }
-        
+
         public async Task<bool> DoUpdate(AssemblyType type)
         {
             string dlPath = type.DownloadPath(type);
@@ -151,6 +154,7 @@ namespace ZenovaLauncher
                     }
                     DownloadedBytes += current;
                 }, cancelSource.Token);
+                Trace.WriteLine(type.RepositoryName + " download finished");
                 IsDownloading = false;
             }
             catch (Exception e)
@@ -198,18 +202,37 @@ namespace ZenovaLauncher
         {
             public delegate string GetDLPath(AssemblyType type);
             public delegate Task PostDownload(string dlPath);
+
+            private Version _installedVersion;
             public string RepositoryName { get; set; }
-            public Version InstalledVersion { get; set; }
             public Release LatestRelease { get; set; }
             public GetDLPath DownloadPath { get; set; }
             public PostDownload PostDownloadTask { get; set; }
+            public Version InstalledVersion
+            {
+                get { return _installedVersion != null ? _installedVersion : GetVersionFromPath(DownloadPath(this)); }
+            }
 
-            public AssemblyType(string repositoryName, Version installedVersion, GetDLPath downloadPath, PostDownload postDownloadTask = default)
+            public AssemblyType(string repositoryName, GetDLPath downloadPath, PostDownload postDownloadTask = default, Version installedVersion = null)
             {
                 RepositoryName = repositoryName;
-                InstalledVersion = installedVersion;
                 DownloadPath = downloadPath;
                 PostDownloadTask = postDownloadTask;
+                _installedVersion = installedVersion;
+            }
+
+            private static Version GetVersionFromPath(string path)
+            {
+                try
+                {
+                    if (File.Exists(path))
+                        return new Version(FileVersionInfo.GetVersionInfo(path).FileVersion);
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine("Failed to find version at: " + path + "\n" + e.ToString());
+                }
+                return null;
             }
         }
     }

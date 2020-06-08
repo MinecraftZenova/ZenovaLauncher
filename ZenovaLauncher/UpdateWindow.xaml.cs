@@ -30,6 +30,7 @@ namespace ZenovaLauncher
                 foreach (var update in UpdateTypes)
                     await ZenovaUpdater.instance.DoUpdate(update);
             }, ZenovaUpdater.instance.cancelSource.Token);
+            Close();
             ((App)Application.Current).StartMainWindow();
         }
 

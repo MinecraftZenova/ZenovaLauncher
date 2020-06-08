@@ -36,6 +36,8 @@ namespace ZenovaLauncher
 
         public void AddMod(Mod mod)
         {
+            if (mod == null)
+                return;
             Mod oldMod = GetModFromDirectory(mod.ModDirectory);
             if (oldMod != null)
                 Remove(oldMod);
