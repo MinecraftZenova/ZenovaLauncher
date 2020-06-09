@@ -88,7 +88,7 @@
                                         <ui:SimpleStackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
                                             <ui:SimpleStackPanel>
                                                 <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Name}" />
-                                                <TextBlock FontSize="12" Text="{Binding Description}" />
+                                                <TextBlock FontSize="12" Text="{Binding Description}" Foreground="{DynamicResource SystemControlPageTextBaseMediumBrush}" />
                                             </ui:SimpleStackPanel>
                                         </ui:SimpleStackPanel>
                                         <ui:SimpleStackPanel x:Name="InteractButtons" Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="8" Visibility="Hidden">

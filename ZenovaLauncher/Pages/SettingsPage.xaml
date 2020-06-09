@@ -43,7 +43,28 @@
                 <TextBlock Text="Accounts Settings" />
             </control:MyTabItem>
             <control:MyTabItem Header="About">
-                <TextBlock Text="About Launcher" />
+                <Grid Margin="63,21,63,0">
+                    <ItemsControl x:Name="AboutPanel" HorizontalAlignment="Stretch">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="118">
+                                    <Separator x:Name="Separator" VerticalAlignment="Top" Background="{DynamicResource AppBarSeparatorLowForeground}" />
+                                    <ui:SimpleStackPanel Spacing="4" VerticalAlignment="Center">
+                                        <TextBlock FontSize="17" FontWeight="Bold" Text="{Binding Path=RepositoryName}" />
+                                        <TextBlock FontSize="12" Text="{Binding Path=InstalledVersionString}" Foreground="{DynamicResource SystemControlPageTextBaseMediumBrush}" />
+                                        <TextBlock FontSize="12" Text="{Binding Path=PublishDateString}" Foreground="{DynamicResource SystemControlPageTextBaseMediumBrush}" />
+                                        <TextBlock FontSize="12" Text="{Binding Path=CommitHashString}" Foreground="{DynamicResource SystemControlPageTextBaseMediumBrush}" />
+                                    </ui:SimpleStackPanel>
+                                </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                        <Setter Property="Visibility" TargetName="Separator" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
             </control:MyTabItem>
         </control:LauncherTabControl>
     </Grid>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading;
@@ -118,8 +119,8 @@ namespace ZenovaLauncher
         {
             try
             {
-                var releases = await Client.Repository.Release.GetAll("MinecraftZenova", type.RepositoryName);
-                type.LatestRelease = releases[0];
+                type.LatestRelease = await Client.Repository.Release.GetLatest("MinecraftZenova", type.RepositoryName);
+                type.TagInfo = (await Client.Repository.GetAllTags("MinecraftZenova", type.RepositoryName)).FirstOrDefault(x => x.Name == type.LatestRelease.TagName);
 
                 if (type.InstalledVersion == null)
                     return true;
@@ -206,6 +207,7 @@ namespace ZenovaLauncher
             private Version _installedVersion;
             public string RepositoryName { get; set; }
             public Release LatestRelease { get; set; }
+            public RepositoryTag TagInfo { get; set; }
             public GetDLPath DownloadPath { get; set; }
             public PostDownload PostDownloadTask { get; set; }
             public Version InstalledVersion
@@ -234,6 +236,10 @@ namespace ZenovaLauncher
                 }
                 return null;
             }
+
+            public string InstalledVersionString => InstalledVersion.ToString();
+            public string PublishDateString => LatestRelease?.PublishedAt.Value.DateTime.ToString("dddd, MMMM dd, yyyy, HH:mm:ss");
+            public string CommitHashString => TagInfo.Commit.Sha;
         }
     }
 }

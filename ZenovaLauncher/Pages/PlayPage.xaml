@@ -160,7 +160,7 @@
                     <DataTemplate>
                         <ui:SimpleStackPanel Spacing="4">
                             <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Path=Name}" />
-                            <TextBlock FontSize="10" Text="{Binding Path=VersionName}" />
+                            <TextBlock FontSize="10" Text="{Binding Path=VersionName}" Foreground="{DynamicResource SystemControlPageTextBaseMediumBrush}" />
                         </ui:SimpleStackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
