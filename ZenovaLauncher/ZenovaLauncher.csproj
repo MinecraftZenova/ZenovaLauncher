@@ -300,12 +300,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ZenovaAPI.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ZenovaLoader">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Resource Include="Assets\zenova_background.png" />
     <Resource Include="Assets\zenova_banner.png" />
     <Resource Include="Assets\zenova_splash.png" />

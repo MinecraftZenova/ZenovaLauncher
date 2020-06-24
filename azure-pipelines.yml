@@ -26,7 +26,7 @@ steps:
     connection: 'GitHub - TrinityDevelopers'
     userRepository: 'MinecraftZenova/ZenovaAPI'
     defaultVersionType: 'latest'
-    itemPattern: 'ZenovaAPI.dll'
+    itemPattern: 'ZenovaAPI.*'
     downloadPath: 'ZenovaLauncher/'
 
 - task: DownloadGitHubRelease@0
