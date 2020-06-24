@@ -73,7 +73,7 @@ namespace ZenovaLauncher
         {
             try
             {
-                InstallerAssembly = new AssemblyType("ZenovaLauncher", (type) =>
+                InstallerAssembly = new AssemblyType("ZenovaLauncher", (type, assetNumber) =>
                 {
                     string path = Path.GetTempFileName();
                     string dlPath = path.Replace(".tmp", "_" + type.LatestRelease.Assets[0].Name);
@@ -87,8 +87,8 @@ namespace ZenovaLauncher
                     Process.Start(psi);
                     await App.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)delegate () { App.Current.Shutdown(); });
                 }, Assembly.GetEntryAssembly().GetName().Version);
-                ApiAssembly = new AssemblyType("ZenovaAPI", (type) => Path.Combine(DataDirectory, "ZenovaAPI.dll"), async (dlPath) => { });
-                LoaderAssembly = new AssemblyType("ZenovaLoader", (type) => @"ZenovaLoader.", async (dlPath) => { });
+                ApiAssembly = new AssemblyType("ZenovaAPI", (type, assetNumber) => Path.Combine(DataDirectory, type.LatestRelease.Assets[assetNumber].Name), async (dlPath) => { }, null, 2);
+                LoaderAssembly = new AssemblyType("ZenovaLoader", (type, assetNumber) => @"ZenovaLoader.", async (dlPath) => { });
             }
             catch (Exception e)
             {
@@ -140,30 +140,33 @@ namespace ZenovaLauncher
 
         public async Task<bool> DoUpdate(AssemblyType type)
         {
-            string dlPath = type.DownloadPath(type);
-            try
+            for (int asset = 0; asset < type.AssetsCount; asset++)
             {
-                DisplayText = type.RepositoryName;
-                await DownloadFile(type.LatestRelease.Assets[0].BrowserDownloadUrl, dlPath, (current, total) =>
+                string dlPath = type.DownloadPath(type, asset);
+                try
                 {
-                    if (!IsDownloading)
+                    DisplayText = type.RepositoryName;
+                    await DownloadFile(type.LatestRelease.Assets[asset].BrowserDownloadUrl, dlPath, (current, total) =>
                     {
-                        Trace.WriteLine(type.RepositoryName + " download started");
-                        IsDownloading = true;
-                        if (total.HasValue)
-                            DownloadSize = total.Value;
-                    }
-                    DownloadedBytes += current;
-                }, cancelSource.Token);
-                Trace.WriteLine(type.RepositoryName + " download finished");
-                IsDownloading = false;
+                        if (!IsDownloading)
+                        {
+                            Trace.WriteLine(type.RepositoryName + " download started");
+                            IsDownloading = true;
+                            if (total.HasValue)
+                                DownloadSize = total.Value;
+                        }
+                        DownloadedBytes += current;
+                    }, cancelSource.Token);
+                    Trace.WriteLine(type.RepositoryName + " download finished");
+                    IsDownloading = false;
+                }
+                catch (Exception e)
+                {
+                    Trace.WriteLine(type.RepositoryName + " download failed:\n" + e.ToString());
+                    return false;
+                }
+                await type.PostDownloadTask(dlPath);
             }
-            catch (Exception e)
-            {
-                Trace.WriteLine(type.RepositoryName + " download failed:\n" + e.ToString());
-                return false;
-            }
-            await type.PostDownloadTask(dlPath);
             return true;
         }
 
@@ -201,10 +204,11 @@ namespace ZenovaLauncher
 
         public class AssemblyType
         {
-            public delegate string GetDLPath(AssemblyType type);
+            public delegate string GetDLPath(AssemblyType type, int assetNumber);
             public delegate Task PostDownload(string dlPath);
 
             private Version _installedVersion;
+            public int AssetsCount { get; set; }
             public string RepositoryName { get; set; }
             public Release LatestRelease { get; set; }
             public RepositoryTag TagInfo { get; set; }
@@ -212,15 +216,16 @@ namespace ZenovaLauncher
             public PostDownload PostDownloadTask { get; set; }
             public Version InstalledVersion
             {
-                get { return _installedVersion != null ? _installedVersion : GetVersionFromPath(DownloadPath(this)); }
+                get { return _installedVersion != null ? _installedVersion : GetVersionFromPath(DownloadPath(this, 0)); }
             }
 
-            public AssemblyType(string repositoryName, GetDLPath downloadPath, PostDownload postDownloadTask = default, Version installedVersion = null)
+            public AssemblyType(string repositoryName, GetDLPath downloadPath, PostDownload postDownloadTask = default, Version installedVersion = null, int numberOfAssets = 1)
             {
                 RepositoryName = repositoryName;
                 DownloadPath = downloadPath;
                 PostDownloadTask = postDownloadTask;
                 _installedVersion = installedVersion;
+                AssetsCount = numberOfAssets;
             }
 
             private static Version GetVersionFromPath(string path)
@@ -236,6 +241,7 @@ namespace ZenovaLauncher
                 }
                 return null;
             }
+
 
             public string InstalledVersionString => InstalledVersion.ToString();
             public string PublishDateString => LatestRelease?.PublishedAt.Value.DateTime.ToString("dddd, MMMM dd, yyyy, HH:mm:ss");
