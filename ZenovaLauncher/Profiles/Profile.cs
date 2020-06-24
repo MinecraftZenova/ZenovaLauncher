@@ -44,7 +44,14 @@ namespace ZenovaLauncher
         [JsonProperty]
         public string VersionId
         {
-            get { return Version.InternalName; }
+            get 
+            { 
+                if (Type == ProfileType.LatestRelease)
+                    return "latest-release";
+                if (Type == ProfileType.LatestBeta)
+                    return "latest-beta";
+                return Version.Name;
+            }
             set { Version = VersionManager.instance.GetVersionFromString(value); }
         }
         [JsonProperty]

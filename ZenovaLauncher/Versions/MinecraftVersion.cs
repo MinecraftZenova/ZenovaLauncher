@@ -46,17 +46,6 @@ namespace ZenovaLauncher
                 return (Release ? "release " : (Beta ? "beta " : "old_beta ")) + Name;
             }
         }
-        public string InternalName
-        {
-            get
-            {
-                if (LatestRelease)
-                    return "latest-release";
-                if (LatestBeta)
-                    return "latest-beta";
-                return Name;
-            }
-        }
         public Version Version { get; set; }
         public string UUID { get; set; }
         public bool Beta { get; set; }

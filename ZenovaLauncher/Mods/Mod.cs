@@ -18,12 +18,12 @@ namespace ZenovaLauncher
         public Version Version { get; set; }
         public string MinVersion
         {
-            get { return MinMCVersion.InternalName; }
+            get { return MinMCVersion.Name; }
             set { MinMCVersion = VersionManager.instance.GetVersionFromString(value); }
         }
         public string MaxVersion
         {
-            get { return MaxMCVersion.InternalName; }
+            get { return MaxMCVersion.Name; }
             set { MaxMCVersion = VersionManager.instance.GetVersionFromString(value); }
         }
         [JsonIgnore]
