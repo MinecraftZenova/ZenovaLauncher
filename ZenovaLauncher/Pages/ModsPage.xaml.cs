@@ -74,7 +74,7 @@ namespace ZenovaLauncher
 
         protected void SortModList(Mod.ModSortType sortType)
         {
-            string sortTypeString = sortType == Mod.ModSortType.ByLatestSupported ? "LatestSupported" : "Name";
+            string sortTypeString = sortType == Mod.ModSortType.ByLatestSupported ? "LatestSupportedVersion" : "Name";
             ListSortDirection sortDirection = sortType == Mod.ModSortType.ByLatestSupported ? ListSortDirection.Descending : ListSortDirection.Ascending;
             if (ModsListBox != null)
             {

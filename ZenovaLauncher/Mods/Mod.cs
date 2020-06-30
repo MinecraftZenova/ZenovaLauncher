@@ -22,7 +22,9 @@ namespace ZenovaLauncher
         [JsonIgnore]
         public string ModDirectory { get; set; }
         [JsonIgnore]
-        public Version LatestSupported => MCVersionList.OrderBy(x => x.Version).ElementAt(0).Version;
+        public MinecraftVersion LatestSupported => MCVersionList.OrderBy(x => x.Version).Reverse().ElementAt(0);
+        [JsonIgnore]
+        public Version LatestSupportedVersion => LatestSupported.Version;
         [JsonIgnore]
         public string ModVersion => Version.ToString();
         [JsonIgnore]

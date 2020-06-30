@@ -29,6 +29,7 @@
                 <ComboBox
                     x:Name="VersionBox"
                     Style="{DynamicResource DialogComboBoxStyle}"
+                    SelectionChanged="VersionChanged"
                     HorizontalAlignment="Stretch">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
