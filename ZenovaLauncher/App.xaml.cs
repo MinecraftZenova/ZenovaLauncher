@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -165,7 +166,11 @@ namespace ZenovaLauncher
             get
             {
                 if (_dataDirectory == null)
+                {
                     _dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Zenova");
+                    foreach (string path in Directory.EnumerateFiles(_dataDirectory))
+                        Utils.AddSecurityToFile(path);
+                }
                 return _dataDirectory;
             }
         }

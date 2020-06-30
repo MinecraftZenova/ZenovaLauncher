@@ -75,22 +75,35 @@ namespace ZenovaLauncher
         public static void AddSecurityToFile(string filePath)
         {
             FileInfo fileInfo = new FileInfo(filePath);
-            FileSecurity fileSecurity = fileInfo.GetAccessControl();
-            fileSecurity.AddAccessRule(new FileSystemAccessRule("ALL APPLICATION PACKAGES", FileSystemRights.FullControl, AccessControlType.Allow));
-            fileInfo.SetAccessControl(fileSecurity);
+            if (fileInfo.Exists)
+            {
+                FileSecurity fileSecurity = fileInfo.GetAccessControl();
+                fileSecurity.AddAccessRule(new FileSystemAccessRule("ALL APPLICATION PACKAGES", FileSystemRights.FullControl, AccessControlType.Allow));
+                fileInfo.SetAccessControl(fileSecurity);
+            }
         }
 
         public static void AddSecurityToDirectory(string dirPath)
         {
             DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
-            DirectorySecurity dirSecurity = dirInfo.GetAccessControl();
-            dirSecurity.AddAccessRule(new FileSystemAccessRule(
-                "ALL APPLICATION PACKAGES",
-                FileSystemRights.FullControl,
-                InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
-                PropagationFlags.None,
-                AccessControlType.Allow));
-            dirInfo.SetAccessControl(dirSecurity);
+            if (dirInfo.Exists)
+            {
+                DirectorySecurity dirSecurity = dirInfo.GetAccessControl();
+                dirSecurity.AddAccessRule(new FileSystemAccessRule(
+                    "ALL APPLICATION PACKAGES",
+                    FileSystemRights.FullControl,
+                    InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
+                    PropagationFlags.None,
+                    AccessControlType.Allow));
+                dirInfo.SetAccessControl(dirSecurity);
+            }
+        }
+
+        public static void Empty(string directoryString)
+        {
+            DirectoryInfo directory = new DirectoryInfo(directoryString);
+            foreach (var file in directory.GetFiles()) file.Delete();
+            foreach (var dir in directory.GetDirectories()) dir.Delete(true);
         }
     }
 }

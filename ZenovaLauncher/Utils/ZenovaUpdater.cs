@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
@@ -87,7 +88,20 @@ namespace ZenovaLauncher
                     Process.Start(psi);
                     await App.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)delegate () { App.Current.Shutdown(); });
                 }, Assembly.GetEntryAssembly().GetName().Version);
-                ApiAssembly = new AssemblyType("ZenovaAPI", (type, assetNumber) => Path.Combine(DataDirectory, type.LatestRelease.Assets[assetNumber].Name), async (dlPath) => { }, null, 2);
+                ApiAssembly = new AssemblyType("ZenovaAPI", (type, assetNumber) => Path.Combine(DataDirectory, type.LatestRelease.Assets[assetNumber].Name),
+                async (dlPath) =>
+                {
+                    if (dlPath.EndsWith(".zip"))
+                    {
+                        string devPath = Path.Combine(DataDirectory, "dev");
+                        if (Directory.Exists(devPath))
+                            Utils.Empty(devPath);
+                        else
+                            Directory.CreateDirectory(devPath);
+                        await Task.Run(() => { ZipFile.ExtractToDirectory(dlPath, devPath); });
+                        File.Delete(dlPath);
+                    }
+                }, AssemblyType.GetVersionFromPath(Path.Combine(DataDirectory, "ZenovaAPI.dll")), 2);
                 LoaderAssembly = new AssemblyType("ZenovaLoader", (type, assetNumber) => @"ZenovaLoader.", async (dlPath) => { });
             }
             catch (Exception e)
@@ -228,7 +242,7 @@ namespace ZenovaLauncher
                 AssetsCount = numberOfAssets;
             }
 
-            private static Version GetVersionFromPath(string path)
+            public static Version GetVersionFromPath(string path)
             {
                 try
                 {

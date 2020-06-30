@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Markup;
@@ -16,24 +17,12 @@ namespace ZenovaLauncher
         public string Description { get; set; }
         public string DescriptionFile { get; set; } = null;
         public Version Version { get; set; }
-        public string MinVersion
-        {
-            get { return MinMCVersion.Name; }
-            set { MinMCVersion = VersionManager.instance.GetVersionFromString(value); }
-        }
-        public string MaxVersion
-        {
-            get { return MaxMCVersion.Name; }
-            set { MaxMCVersion = VersionManager.instance.GetVersionFromString(value); }
-        }
+        [JsonProperty("mcversion")]
+        public List<MinecraftVersion> MCVersionList { get; set; }
         [JsonIgnore]
         public string ModDirectory { get; set; }
         [JsonIgnore]
-        public MinecraftVersion MinMCVersion { get; set; }
-        [JsonIgnore]
-        public MinecraftVersion MaxMCVersion { get; set; }
-        [JsonIgnore]
-        public Version LatestSupported => MaxMCVersion.Version;
+        public Version LatestSupported => MCVersionList.OrderBy(x => x.Version).ElementAt(0).Version;
         [JsonIgnore]
         public string ModVersion => Version.ToString();
         [JsonIgnore]
@@ -41,7 +30,7 @@ namespace ZenovaLauncher
 
         public bool SupportsVersion(MinecraftVersion version)
         {
-            return version.Version >= MinMCVersion.Version && version.Version <= MaxMCVersion.Version;
+            return MCVersionList.Contains(version);
         }
 
         public void SetDescriptionTextBlock(TextBlock textBlock)
@@ -65,6 +54,34 @@ namespace ZenovaLauncher
         {
             ByLatestSupported,
             ByName
+        }
+
+        public class MinecraftVersionConverter : JsonConverter<List<MinecraftVersion>>
+        {
+            public override void WriteJson(JsonWriter writer, List<MinecraftVersion> value, JsonSerializer serializer)
+            {
+                //writer.WriteValue(value.ToString());
+            }
+
+            public override List<MinecraftVersion> ReadJson(JsonReader reader, Type objectType, List<MinecraftVersion> existingValue, bool hasExistingValue, JsonSerializer serializer)
+            {
+                if (reader.TokenType == JsonToken.StartArray)
+                {
+                    var l = new List<MinecraftVersion>();
+                    reader.Read();
+                    while (reader.TokenType != JsonToken.EndArray)
+                    {
+                        l.Add(VersionManager.instance.GetVersionFromString(reader.Value as string));
+
+                        reader.Read();
+                    }
+                    return l;
+                }
+                else
+                {
+                    return new List<MinecraftVersion> { VersionManager.instance.GetVersionFromString(reader.Value as string) };
+                }
+            }
         }
     }
 }

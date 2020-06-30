@@ -27,6 +27,7 @@ namespace ZenovaLauncher
         {
             ModsDirectory = modsDir;
             jsonSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            jsonSettings.Converters.Add(new Mod.MinecraftVersionConverter());
         }
 
         public Mod GetModFromDirectory(string dir)
