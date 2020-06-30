@@ -43,7 +43,6 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "ZenovaLoader"; DestDir: "{app}"; Flags: ignoreversion
 Source: "ZenovaAPI.dll"; DestDir: "{code:GetDataDir}"; Flags: ignoreversion
-Source: "ZenovaAPI.lib"; DestDir: "{code:GetDataDir}"; Flags: ignoreversion
 Source: "bin\Release\ZenovaLauncher.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\ZenovaBackend.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\ControlzEx.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -58,7 +57,7 @@ Source: "bin\Release\Octokit.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\Windows.Internal.Security.Authentication.Web.winmd"; DestDir: "{app}"; Flags: ignoreversion
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+Source: "dev\*"; DestDir: "{code:GetDataDir}\dev"; Flags: ignoreversion recursesubdirs
 
 [Dirs]
 Name: "{code:GetDataDir}\versions"

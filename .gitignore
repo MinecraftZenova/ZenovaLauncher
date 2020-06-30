@@ -10,8 +10,8 @@
 *.userosscache
 *.sln.docstates
 ZenovaAPI.dll
-ZenovaAPI.lib
 ZenovaLoader
+dev/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
