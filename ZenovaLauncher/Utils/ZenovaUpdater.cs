@@ -230,7 +230,7 @@ namespace ZenovaLauncher
             public PostDownload PostDownloadTask { get; set; }
             public Version InstalledVersion
             {
-                get { return _installedVersion != null ? _installedVersion : GetVersionFromPath(DownloadPath(this, 0)); }
+                get { return _installedVersion != null ? _installedVersion : GetVersionFromPath(DownloadPath(this, AssetsCount - 1)); }
             }
 
             public AssemblyType(string repositoryName, GetDLPath downloadPath, PostDownload postDownloadTask = default, Version installedVersion = null, int numberOfAssets = 1)
