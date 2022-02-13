@@ -11,7 +11,7 @@ pool:
 
 variables:
   solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
+  buildPlatform: 'x64'
   buildConfiguration: 'Release'
   
 steps:
@@ -34,14 +34,6 @@ steps:
     archiveFilePatterns: 'ZenovaLauncher/ZenovaAPI-dev.zip'
     destinationFolder: 'ZenovaLauncher/dev'
     cleanDestinationFolder: true
-
-- task: DownloadGitHubRelease@0
-  inputs:
-    connection: 'GitHub - TrinityDevelopers'
-    userRepository: 'MinecraftZenova/ZenovaLoader'
-    defaultVersionType: 'latest'
-    itemPattern: 'ZenovaLoader'
-    downloadPath: 'ZenovaLauncher/'
 
 - task: VSBuild@1
   inputs:

@@ -22,7 +22,6 @@ namespace ZenovaLauncher
 
             Assemblies.Add(ZenovaUpdater.InstallerAssembly);
             Assemblies.Add(ZenovaUpdater.ApiAssembly);
-            Assemblies.Add(ZenovaUpdater.LoaderAssembly);
 
             AboutPanel.ItemsSource = Assemblies;
         }
