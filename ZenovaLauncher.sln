@@ -5,6 +5,7 @@ VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenovaLauncher", "ZenovaLauncher\ZenovaLauncher.csproj", "{32C4B338-788C-48D1-A8F0-FE480D3AE5E5}"
 	ProjectSection(ProjectDependencies) = postProject
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1} = {167B4E2C-FEC6-4789-9558-E0B7C79D55C1}
 		{B7336BA7-1E83-43D8-BD0E-3D44C6E3D4E7} = {B7336BA7-1E83-43D8-BD0E-3D44C6E3D4E7}
 	EndProjectSection
 EndProject
