@@ -11,6 +11,7 @@
 *.sln.docstates
 ZenovaAPI.dll
 ZenovaLoader
+!ZenovaLoader/
 dev/
 
 # User-specific files (MonoDevelop/Xamarin Studio)

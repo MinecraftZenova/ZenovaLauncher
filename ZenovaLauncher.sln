@@ -5,10 +5,13 @@ VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZenovaLauncher", "ZenovaLauncher\ZenovaLauncher.csproj", "{32C4B338-788C-48D1-A8F0-FE480D3AE5E5}"
 	ProjectSection(ProjectDependencies) = postProject
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1} = {167B4E2C-FEC6-4789-9558-E0B7C79D55C1}
 		{B7336BA7-1E83-43D8-BD0E-3D44C6E3D4E7} = {B7336BA7-1E83-43D8-BD0E-3D44C6E3D4E7}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZenovaBackend", "ZenovaBackend\ZenovaBackend.vcxproj", "{B7336BA7-1E83-43D8-BD0E-3D44C6E3D4E7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZenovaLoader", "ZenovaLoader\ZenovaLoader.vcxproj", "{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +63,20 @@ Global
 		{B7336BA7-1E83-43D8-BD0E-3D44C6E3D4E7}.Release|x64.Build.0 = Release|x64
 		{B7336BA7-1E83-43D8-BD0E-3D44C6E3D4E7}.Release|x86.ActiveCfg = Release|Win32
 		{B7336BA7-1E83-43D8-BD0E-3D44C6E3D4E7}.Release|x86.Build.0 = Release|Win32
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Debug|ARM.ActiveCfg = Debug|Win32
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Debug|ARM64.ActiveCfg = Debug|Win32
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Debug|x64.ActiveCfg = Debug|x64
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Debug|x64.Build.0 = Debug|x64
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Debug|x86.ActiveCfg = Debug|Win32
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Debug|x86.Build.0 = Debug|Win32
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Release|Any CPU.ActiveCfg = Release|Win32
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Release|ARM.ActiveCfg = Release|Win32
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Release|ARM64.ActiveCfg = Release|Win32
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Release|x64.ActiveCfg = Release|x64
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Release|x64.Build.0 = Release|x64
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Release|x86.ActiveCfg = Release|Win32
+		{167B4E2C-FEC6-4789-9558-E0B7C79D55C1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

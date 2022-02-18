@@ -60,7 +60,12 @@
     <OutDir>$(SolutionDir)\ZenovaLauncher\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\ZenovaLauncher\bin\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)ZenovaLauncher\bin\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)ZenovaLauncher\bin\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>

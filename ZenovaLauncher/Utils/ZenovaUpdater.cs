@@ -19,7 +19,6 @@ namespace ZenovaLauncher
     {
         public static ZenovaUpdater instance;
         public static AssemblyType InstallerAssembly;
-        public static AssemblyType LoaderAssembly;
         public static AssemblyType ApiAssembly;
 
         private string DataDirectory { get; set; }
@@ -102,7 +101,6 @@ namespace ZenovaLauncher
                         File.Delete(dlPath);
                     }
                 }, AssemblyType.GetVersionFromPath(Path.Combine(DataDirectory, "ZenovaAPI.dll")), 2);
-                LoaderAssembly = new AssemblyType("ZenovaLoader", (type, assetNumber) => @"ZenovaLoader.", async (dlPath) => { });
             }
             catch (Exception e)
             {
@@ -119,8 +117,6 @@ namespace ZenovaLauncher
                     return new List<AssemblyType> { InstallerAssembly };
                 if (ApiAssembly != null && await CheckUpdate(ApiAssembly))
                     updateTypes.Add(ApiAssembly);
-                if (LoaderAssembly != null && await CheckUpdate(LoaderAssembly))
-                    updateTypes.Add(LoaderAssembly);
             }
             catch (Exception e)
             {

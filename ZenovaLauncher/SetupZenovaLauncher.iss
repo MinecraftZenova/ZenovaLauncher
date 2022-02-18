@@ -41,10 +41,10 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "ZenovaLoader"; DestDir: "{app}"; Flags: ignoreversion
 Source: "ZenovaAPI.dll"; DestDir: "{code:GetDataDir}"; Flags: ignoreversion
 Source: "bin\Release\ZenovaLauncher.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\ZenovaBackend.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "bin\Release\ZenovaLoader"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\ControlzEx.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\MahApps.Metro.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\Microsoft.Expression.Interactions.dll"; DestDir: "{app}"; Flags: ignoreversion
