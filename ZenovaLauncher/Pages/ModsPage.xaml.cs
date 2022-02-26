@@ -11,7 +11,7 @@ namespace ZenovaLauncher
     /// <summary>
     /// Interaction logic for ModsPage.xaml
     /// </summary>
-    public partial class ModsPage : Page
+    public partial class ModsPage : System.Windows.Controls.Page
     {
         public ModsPage()
         {

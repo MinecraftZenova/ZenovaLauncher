@@ -424,7 +424,7 @@
                         </Trigger>
 
                         <!-- Focused -->
-                        <Trigger Property="ui:FocusVisualHelper.IsSystemFocusVisualVisible" Value="True">
+                        <Trigger Property="ui:FocusVisualHelper.ShowFocusVisual" Value="True">
                             <Setter TargetName="HighlightBackground" Property="Opacity" Value="1" />
                             <Setter TargetName="HighlightBackground" Property="BorderBrush" Value="{DynamicResource ComboBoxBackgroundBorderBrushFocused}" />
                             <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource ComboBoxForegroundFocused}" />
@@ -434,7 +434,7 @@
                         <!-- FocusedPressed -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="ui:FocusVisualHelper.IsSystemFocusVisualVisible" Value="True" />
+                                <Condition Property="ui:FocusVisualHelper.ShowFocusVisual" Value="True" />
                                 <Condition SourceName="ToggleButton" Property="IsPressed" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="HighlightBackground" Property="Opacity" Value="1" />
@@ -445,7 +445,7 @@
                         <!-- FocusedDropDown -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="ui:FocusVisualHelper.IsSystemFocusVisualVisible" Value="True" />
+                                <Condition Property="ui:FocusVisualHelper.ShowFocusVisual" Value="True" />
                                 <Condition Property="IsDropDownOpen" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PopupBorder" Property="Visibility" Value="Visible" />
@@ -769,7 +769,7 @@
                         </Trigger>
 
                         <!-- Focused -->
-                        <Trigger Property="ui:FocusVisualHelper.IsSystemFocusVisualVisible" Value="True">
+                        <Trigger Property="ui:FocusVisualHelper.ShowFocusVisual" Value="True">
                             <Setter TargetName="HighlightBackground" Property="Opacity" Value="1" />
                             <Setter TargetName="HighlightBackground" Property="BorderBrush" Value="{DynamicResource ComboBoxBackgroundBorderBrushFocused}" />
                             <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource ComboBoxForegroundFocused}" />
@@ -779,7 +779,7 @@
                         <!-- FocusedPressed -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="ui:FocusVisualHelper.IsSystemFocusVisualVisible" Value="True" />
+                                <Condition Property="ui:FocusVisualHelper.ShowFocusVisual" Value="True" />
                                 <Condition SourceName="ToggleButton" Property="IsPressed" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="HighlightBackground" Property="Opacity" Value="1" />
@@ -790,7 +790,7 @@
                         <!-- FocusedDropDown -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="ui:FocusVisualHelper.IsSystemFocusVisualVisible" Value="True" />
+                                <Condition Property="ui:FocusVisualHelper.ShowFocusVisual" Value="True" />
                                 <Condition Property="IsDropDownOpen" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PopupBorder" Property="Visibility" Value="Visible" />
@@ -1114,7 +1114,7 @@
                         </Trigger>
 
                         <!-- Focused -->
-                        <Trigger Property="ui:FocusVisualHelper.IsSystemFocusVisualVisible" Value="True">
+                        <Trigger Property="ui:FocusVisualHelper.ShowFocusVisual" Value="True">
                             <Setter TargetName="HighlightBackground" Property="Opacity" Value="1" />
                             <Setter TargetName="HighlightBackground" Property="BorderBrush" Value="{DynamicResource ComboBoxBackgroundBorderBrushFocused}" />
                             <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource ComboBoxForegroundFocused}" />
@@ -1124,7 +1124,7 @@
                         <!-- FocusedPressed -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="ui:FocusVisualHelper.IsSystemFocusVisualVisible" Value="True" />
+                                <Condition Property="ui:FocusVisualHelper.ShowFocusVisual" Value="True" />
                                 <Condition SourceName="ToggleButton" Property="IsPressed" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="HighlightBackground" Property="Opacity" Value="1" />
@@ -1135,7 +1135,7 @@
                         <!-- FocusedDropDown -->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
-                                <Condition Property="ui:FocusVisualHelper.IsSystemFocusVisualVisible" Value="True" />
+                                <Condition Property="ui:FocusVisualHelper.ShowFocusVisual" Value="True" />
                                 <Condition Property="IsDropDownOpen" Value="True" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PopupBorder" Property="Visibility" Value="Visible" />
