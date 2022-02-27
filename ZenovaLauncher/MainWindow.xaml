@@ -106,22 +106,7 @@
         </controls:LauncherSideMenu>
 
         <Grid Grid.Column="1" Grid.RowSpan="2">
-            <ui:TransitionFrame x:Name="ContentFrame" Navigated="ContentFrame_Navigated">
-                <ui:TransitionFrame.DefaultNavigationInTransition>
-                    <ui:NavigationInTransition>
-                        <ui:NavigationInTransition.Forward>
-                            <ui:SuppressTransition />
-                        </ui:NavigationInTransition.Forward>
-                    </ui:NavigationInTransition>
-                </ui:TransitionFrame.DefaultNavigationInTransition>
-                <ui:TransitionFrame.DefaultNavigationOutTransition>
-                    <ui:NavigationOutTransition>
-                        <ui:NavigationOutTransition.Backward>
-                            <ui:SuppressTransition />
-                        </ui:NavigationOutTransition.Backward>
-                    </ui:NavigationOutTransition>
-                </ui:TransitionFrame.DefaultNavigationOutTransition>
-            </ui:TransitionFrame>
+            <ui:Frame x:Name="ContentFrame" />
         </Grid>
     </Grid>
 </Window>

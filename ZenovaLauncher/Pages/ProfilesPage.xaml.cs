@@ -12,7 +12,7 @@ namespace ZenovaLauncher
     /// <summary>
     /// Interaction logic for ProfilesPage.xaml
     /// </summary>
-    public partial class ProfilesPage : Page
+    public partial class ProfilesPage : System.Windows.Controls.Page
     {
         public ProfilesPage()
         {

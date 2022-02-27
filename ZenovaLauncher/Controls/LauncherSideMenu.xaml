@@ -339,7 +339,6 @@
         <Setter Property="KeyboardNavigation.TabNavigation" Value="Local" />
         <Setter Property="OptionsItemContainerStyle" Value="{StaticResource LauncherSideMenuItem}" />
         <Setter Property="OptionsItemTemplate" Value="{StaticResource HamburgerMenuItem}" />
-        <Setter Property="PaneBackground" Value="{DynamicResource NavigationViewDefaultPaneBackground}" />
         <Setter Property="PaneForeground" Value="{DynamicResource NavigationViewItemForeground}" />
         <Setter Property="PaneHeaderMargin" Value="0 0 0 8" />
         <Setter Property="PaneMargin" Value="0 0 0 8" />

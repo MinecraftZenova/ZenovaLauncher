@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using ModernWpf.Media.Animation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace ZenovaLauncher
                 Uri navigateUri = GetNavigateUri(menuItem);
                 if (ContentFrame.CurrentSource != navigateUri)
                 {
-                    ContentFrame.Navigate(navigateUri);
+                    ContentFrame.Navigate(navigateUri, null, new SuppressNavigationTransitionInfo());
                 }
             }
         }

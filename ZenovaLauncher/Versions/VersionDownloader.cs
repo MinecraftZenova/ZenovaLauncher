@@ -65,7 +65,31 @@ namespace ZenovaLauncher
             }
         }
 
-        private async Task DownloadFile(string url, string to, DownloadProgress progress, CancellationToken cancellationToken, int parallelDownloads = 0)
+        private async Task DownloadFile(string url, string to, DownloadProgress progress, CancellationToken cancellationToken)
+        {
+            using (var resp = await _client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+            {
+                using (var inStream = await resp.Content.ReadAsStreamAsync())
+                using (var outStream = new FileStream(to, FileMode.Create))
+                {
+                    long? totalSize = resp.Content.Headers.ContentLength;
+                    progress(0, totalSize);
+                    byte[] buf = new byte[1024 * 1024];
+                    while (true)
+                    {
+                        int n = await inStream.ReadAsync(buf, 0, buf.Length, cancellationToken);
+                        if (n == 0)
+                            break;
+                        await outStream.WriteAsync(buf, 0, n, cancellationToken);
+                        progress(n, totalSize);
+                    }
+                }
+            }
+        }
+
+        // Attempted Parallel download method, while it used to work, it is kind of broken currently with more than 2 parallel downloads.
+        // Also doesn't provide much benefit with current internet speeds.
+        private async Task DownloadFileParallel(string url, string to, DownloadProgress progress, CancellationToken cancellationToken, int parallelDownloads = 0)
         {
             if (parallelDownloads <= 0)
                 parallelDownloads = Environment.ProcessorCount;

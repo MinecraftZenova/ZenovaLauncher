@@ -412,7 +412,7 @@ namespace ZenovaLauncher.Controls
                 focusVisualStyle.Setters.Add(new Setter(Control.HorizontalAlignmentProperty, HorizontalAlignment.Left));
                 focusVisualStyle.Seal();
 
-                SetValue(ItemFocusVisualStylePropertyKey, focusVisualStyle);
+                ItemFocusVisualStyle = focusVisualStyle;
             }
         }
 
