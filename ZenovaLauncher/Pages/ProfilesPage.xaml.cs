@@ -6,14 +6,13 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Page = Controls.Page;
 
 namespace ZenovaLauncher
 {
     /// <summary>
     /// Interaction logic for ProfilesPage.xaml
     /// </summary>
-    public partial class ProfilesPage : Page
+    public partial class ProfilesPage : System.Windows.Controls.Page
     {
         public ProfilesPage()
         {
