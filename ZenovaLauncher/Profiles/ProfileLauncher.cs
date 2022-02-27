@@ -20,8 +20,6 @@ namespace ZenovaLauncher
     {
         public static ProfileLauncher instance;
 
-        private static readonly string MINECRAFT_PACKAGE_FAMILY = "Microsoft.MinecraftUWP_8wekyb3d8bbwe";
-
         public bool IsLaunching => LaunchInfo != null;
         public bool IsNotLaunching => !IsLaunching;
 
@@ -86,7 +84,7 @@ namespace ZenovaLauncher
         {
             try
             {
-                await ReRegisterPackage(Path.GetFullPath(p.Version.GameDirectory));
+                await ReRegisterPackage(p.Version);
             }
             catch (Exception e)
             {
@@ -99,7 +97,7 @@ namespace ZenovaLauncher
             {
                 LaunchInfo.Status = LaunchStatus.Launching;
                 App.WriteFiles();
-                var pkgs = await AppDiagnosticInfo.RequestInfoForPackageAsync(MINECRAFT_PACKAGE_FAMILY);
+                var pkgs = await AppDiagnosticInfo.RequestInfoForPackageAsync(p.Version.PackageFamily);
                 var pkg = pkgs.Count > 0 ? pkgs[0] : null;
                 if (pkg == null)
                 {
@@ -108,7 +106,7 @@ namespace ZenovaLauncher
                 }
                 if (p.Modded)
                 {
-                    AppDebugger app = new AppDebugger(Utils.FindPackages(MINECRAFT_PACKAGE_FAMILY).ToList()[0].Id.FullName);
+                    AppDebugger app = new AppDebugger(Utils.FindPackages(p.Version.PackageFamily).ToList()[0].Id.FullName);
                     if (app.GetPackageExecutionState() != PACKAGE_EXECUTION_STATE.PES_UNKNOWN)
                     {
                         app.TerminateAllProcesses();
@@ -166,9 +164,9 @@ namespace ZenovaLauncher
             return tmpDir;
         }
 
-        private void BackupMinecraftDataForRemoval()
+        private void BackupMinecraftDataForRemoval(MinecraftVersion version)
         {
-            var data = ApplicationDataManager.CreateForPackageFamily(MINECRAFT_PACKAGE_FAMILY);
+            var data = ApplicationDataManager.CreateForPackageFamily(version.PackageFamily);
             string tmpDir = GetBackupMinecraftDataDir();
             if (Directory.Exists(tmpDir))
             {
@@ -207,21 +205,22 @@ namespace ZenovaLauncher
             }
         }
 
-        private void RestoreMinecraftDataFromReinstall()
+        private void RestoreMinecraftDataFromReinstall(MinecraftVersion version)
         {
             string tmpDir = GetBackupMinecraftDataDir();
             if (!Directory.Exists(tmpDir))
                 return;
-            var data = ApplicationDataManager.CreateForPackageFamily(MINECRAFT_PACKAGE_FAMILY);
+            var data = ApplicationDataManager.CreateForPackageFamily(version.PackageFamily);
             Trace.WriteLine("Moving backup Minecraft data to: " + data.LocalFolder.Path);
             RestoreMove(tmpDir, data.LocalFolder.Path);
             Directory.Delete(tmpDir, true);
         }
 
-        private async Task ReRegisterPackage(string gameDir)
+        private async Task ReRegisterPackage(MinecraftVersion version)
         {
+            string gameDir = Path.GetFullPath(version.GameDirectory);
             DeploymentResult results;
-            foreach (var pkg in Utils.FindPackages(MINECRAFT_PACKAGE_FAMILY))
+            foreach (var pkg in Utils.FindPackages(version.PackageFamily))
             {
                 try
                 {
@@ -235,7 +234,7 @@ namespace ZenovaLauncher
                 catch (FileNotFoundException) { } // This will throw if the InstalledLocation no longer exists. In this case, continue as normal, and remove previous package
                 if (!pkg.IsDevelopmentMode)
                 {
-                    BackupMinecraftDataForRemoval();
+                    BackupMinecraftDataForRemoval(version);
                     results = await DeploymentProgressWrapper(new PackageManager().RemovePackageAsync(pkg.Id.FullName, 0), LaunchStatus.LaunchRemovePackage);
                     if (!string.IsNullOrEmpty(results.ErrorText))
                         throw new Exception("Unable to remove original package:\n" + results.ErrorText + "\n");
@@ -256,7 +255,7 @@ namespace ZenovaLauncher
             if (!string.IsNullOrEmpty(results.ErrorText))
                 throw new Exception("Unable to re-register package:\n" + results.ErrorText + "\n");
             Trace.WriteLine("App re-register done!");
-            RestoreMinecraftDataFromReinstall();
+            RestoreMinecraftDataFromReinstall(version);
         }
 
         private async Task<bool> Download(Profile p)
@@ -266,7 +265,7 @@ namespace ZenovaLauncher
             LaunchInfo.CancelCommand = new RelayCommand((o) => cancelSource.Cancel());
 
             Trace.WriteLine("Download start");
-            string dlPath = Path.Combine(VersionManager.instance.VersionsDirectory, "Minecraft-" + v.Name + ".Appx");
+            string dlPath = v.GameDirectory + ".Appx";
             VersionDownloader downloader = v.Beta ? VersionDownloader.user : VersionDownloader.standard;
             try
             {

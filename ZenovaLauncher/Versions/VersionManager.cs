@@ -57,7 +57,7 @@ namespace ZenovaLauncher
             // ([name, uuid, isBeta])[]
             foreach (JArray o in data.AsEnumerable().Reverse())
             {
-                Add(new MinecraftVersion(new Version(o[0].Value<string>()), o[1].Value<string>(), o[2].Value<int>() == 1));
+                Add(new MinecraftVersion(new Version(o[0].Value<string>()), o[1].Value<string>(), (MinecraftVersion.VersionType) o[2].Value<int>()));
             }
         }
 
