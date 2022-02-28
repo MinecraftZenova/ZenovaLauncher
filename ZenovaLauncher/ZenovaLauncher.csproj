@@ -307,7 +307,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(AzureBuild)'!='true'">
     <PostBuildEvent>$(InnoSetupCompiler) $(ProjectDir)SetupZenovaLauncher.iss</PostBuildEvent>
   </PropertyGroup>
   <Target Name="SpicNSpan" AfterTargets="Clean">
