@@ -38,6 +38,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
+    msbuildArgs: '/p:AzureBuild=true'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
