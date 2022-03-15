@@ -106,6 +106,9 @@ namespace ZenovaLauncher
                 }
                 if (p.Modded)
                 {
+                    // Ensure ZenovaAPI.dll has ALL APPLICATION PACKAGES security
+                    Utils.AddSecurityToFile(Path.Combine(App.DataDirectory, "ZenovaAPI.dll"));
+
                     AppDebugger app = new AppDebugger(Utils.FindPackages(p.Version.PackageFamily).ToList()[0].Id.FullName);
                     if (app.GetPackageExecutionState() != PACKAGE_EXECUTION_STATE.PES_UNKNOWN)
                     {

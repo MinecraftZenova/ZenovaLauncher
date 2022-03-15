@@ -17,7 +17,8 @@ namespace ZenovaLauncher
         private readonly string _environmentKey = "ZENOVA_DATA";
         private readonly string _directoryMods = "mods";
         private readonly string _directoryVersions = "versions";
-        private string _dataDirectory;
+
+        public static string DataDirectory { get; private set; }
 
         private const string AppID = "ZenovaApplicationID";
 
@@ -144,34 +145,25 @@ namespace ZenovaLauncher
             string value = Environment.GetEnvironmentVariable(_environmentKey, EnvironmentVariableTarget.User);
             if (value != null)
             {
-                _dataDirectory = value;
+                DataDirectory = value;
             }
             else
             {
                 value = Environment.GetEnvironmentVariable(_environmentKey, EnvironmentVariableTarget.Machine);
                 if (value != null)
                 {
-                    _dataDirectory = value;
+                    DataDirectory = value;
                 }
                 else
                 {
+                    // setup default location
+                    DataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Zenova");
+                    foreach (string path in Directory.EnumerateFiles(DataDirectory))
+                        Utils.AddSecurityToFile(path);
+
                     // if not, create user environment variable at default location
                     Environment.SetEnvironmentVariable(_environmentKey, DataDirectory, EnvironmentVariableTarget.User);
                 }
-            }
-        }
-
-        public string DataDirectory
-        {
-            get
-            {
-                if (_dataDirectory == null)
-                {
-                    _dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Zenova");
-                    foreach (string path in Directory.EnumerateFiles(_dataDirectory))
-                        Utils.AddSecurityToFile(path);
-                }
-                return _dataDirectory;
             }
         }
 
