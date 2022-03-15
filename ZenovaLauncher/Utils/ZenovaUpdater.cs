@@ -21,7 +21,6 @@ namespace ZenovaLauncher
         public static AssemblyType InstallerAssembly;
         public static AssemblyType ApiAssembly;
 
-        private string DataDirectory { get; set; }
         private GitHubClient Client { get; set; }
         private HttpClient DownloadClient { get; set; }
 
@@ -60,9 +59,8 @@ namespace ZenovaLauncher
 
         public ICommand CancelCommand { get; set; }
 
-        public ZenovaUpdater(string dataDirectory)
+        public ZenovaUpdater()
         {
-            DataDirectory = dataDirectory;
             Client = new GitHubClient(new ProductHeaderValue("ZenovaLauncher"));
             DownloadClient = new HttpClient();
             if (InstallerAssembly == null)
@@ -87,12 +85,12 @@ namespace ZenovaLauncher
                     Process.Start(psi);
                     await App.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)delegate () { App.Current.Shutdown(); });
                 }, Assembly.GetEntryAssembly().GetName().Version);
-                ApiAssembly = new AssemblyType("ZenovaAPI", (type, assetNumber) => Path.Combine(DataDirectory, type.LatestRelease.Assets[assetNumber].Name),
+                ApiAssembly = new AssemblyType("ZenovaAPI", (type, assetNumber) => Path.Combine(App.DataDirectory, type.LatestRelease.Assets[assetNumber].Name),
                 async (dlPath) =>
                 {
                     if (dlPath.EndsWith(".zip"))
                     {
-                        string devPath = Path.Combine(DataDirectory, "dev");
+                        string devPath = Path.Combine(App.DataDirectory, "dev");
                         if (Directory.Exists(devPath))
                             Utils.Empty(devPath);
                         else
@@ -100,7 +98,7 @@ namespace ZenovaLauncher
                         await Task.Run(() => { ZipFile.ExtractToDirectory(dlPath, devPath); });
                         File.Delete(dlPath);
                     }
-                }, AssemblyType.GetVersionFromPath(Path.Combine(DataDirectory, "ZenovaAPI.dll")), 2);
+                }, AssemblyType.GetVersionFromPath(Path.Combine(App.DataDirectory, "ZenovaAPI.dll")), 2);
             }
             catch (Exception e)
             {

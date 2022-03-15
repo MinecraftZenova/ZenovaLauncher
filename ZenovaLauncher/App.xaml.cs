@@ -73,7 +73,7 @@ namespace ZenovaLauncher
                 SetupEnvironment();
                 Trace.Listeners.Add(new TextWriterTraceListener(new FileStream(Path.Combine(DataDirectory, "log.txt"), FileMode.Create)));
                 Trace.AutoFlush = true;
-                ZenovaUpdater.instance = new ZenovaUpdater(DataDirectory);
+                ZenovaUpdater.instance = new ZenovaUpdater();
                 Trace.WriteLine("ZenovaUpdater.instance " + sw.ElapsedMilliseconds + " ms");
                 VersionDownloader.standard = new VersionDownloader();
                 Trace.WriteLine("VersionDownloader.standard " + sw.ElapsedMilliseconds + " ms");
@@ -97,7 +97,7 @@ namespace ZenovaLauncher
                 Trace.WriteLine("ModManager.LoadMods " + sw.ElapsedMilliseconds + " ms");
                 ProfileManager.instance.ImportProfiles();
                 Trace.WriteLine("ProfileManager.ImportProfiles " + sw.ElapsedMilliseconds + " ms");
-                Preferences.LoadPreferences(DataDirectory);
+                Preferences.LoadPreferences();
                 Trace.WriteLine("Preferences.LoadPreferences " + sw.ElapsedMilliseconds + " ms");
                 VersionManager.instance.RemoveUnusedVersions();
                 Trace.WriteLine("VersionManager.RemoveUnusedVersions " + sw.ElapsedMilliseconds + " ms");
