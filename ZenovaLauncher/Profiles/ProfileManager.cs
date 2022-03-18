@@ -14,7 +14,8 @@ namespace ZenovaLauncher
         public static ProfileManager instance;
         private static JsonSerializerSettings jsonSettings;
 
-        private readonly string _profilesFile = "profiles.json";
+        private readonly string _profilesFileName = "profiles.json";
+        private string ProfilesFile;
 
         public Action Refresh { get; set; }
         public string ProfilesDir { get; }
@@ -24,6 +25,7 @@ namespace ZenovaLauncher
         public ProfileManager(string profileDir)
         {
             ProfilesDir = profileDir;
+            ProfilesFile = Path.Combine(profileDir, _profilesFileName);
             SelectedProfile = new ProfileSelected();
             jsonSettings = new JsonSerializerSettings
             {
@@ -93,8 +95,8 @@ namespace ZenovaLauncher
 
         public void ImportProfiles()
         {
-            if (File.Exists(Path.Combine(ProfilesDir, _profilesFile)))
-                AddProfiles(LoadProfiles(File.ReadAllText(Path.Combine(ProfilesDir, _profilesFile))));
+            if (File.Exists(ProfilesFile))
+                AddProfiles(LoadProfiles(File.ReadAllText(ProfilesFile)));
             AddDefaultProfiles();
         }
 
@@ -125,8 +127,8 @@ namespace ZenovaLauncher
             //DirectoryInfo di = new DirectoryInfo(_profilesDir);
             //foreach (FileInfo file in di.EnumerateFiles()) file.Delete();
             //foreach (DirectoryInfo dir in di.EnumerateDirectories()) dir.Delete(true);
-            File.WriteAllText(Path.Combine(ProfilesDir, _profilesFile), JsonConvert.SerializeObject(InternalDictionary, Formatting.Indented, jsonSettings));
-            Utils.AddSecurityToFile(Path.Combine(ProfilesDir, _profilesFile));
+            File.WriteAllText(ProfilesFile, JsonConvert.SerializeObject(InternalDictionary, Formatting.Indented, jsonSettings));
+            Utils.AddSecurityToFile(ProfilesFile);
         }
 
         public class ProfileSelected : NotifyPropertyChangedBase
