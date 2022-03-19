@@ -63,6 +63,22 @@ namespace ZenovaLauncher
         public string GameDirectory => Path.Combine(VersionManager.instance.VersionsDirectory, VersionName);
         public string PackageFamily => Preview ? MINECRAFT_PREVIEW_PACKAGE_FAMILY : MINECRAFT_PACKAGE_FAMILY;
         public bool IsInstalled => Directory.Exists(GameDirectory);
+        public bool ModSupported
+        {
+            get
+            {
+                // probably should be changed to a list but not gonna bother till we support more versions
+                var SupportedVersions = new System.Version(1, 14, 60, 5);
+
+                if (Beta || Version != SupportedVersions)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
         public void UpdateInstallStatus()
         {
             OnPropertyChanged("IsInstalled");

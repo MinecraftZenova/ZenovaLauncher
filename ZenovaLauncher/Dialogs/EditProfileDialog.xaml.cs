@@ -42,8 +42,16 @@ namespace ZenovaLauncher
             AvailableModsBox.ItemsSource = ModManager.instance.ToList();
             LoadedMods = profile.ModsList != null ? new ObservableCollection<Mod>(profile.ModsList) : new ObservableCollection<Mod>();
             LoadedModsBox.ItemsSource = LoadedMods;
-            FilterModsList();
-            ModOptionsExpander.IsEnabled = profile.Editable;
+
+            ModOptionsExpander.Visibility = Visibility.Collapsed;
+
+            if ((VersionBox.SelectedItem as MinecraftVersion).ModSupported)
+            {
+                FilterModsList();
+
+                if (profile.Editable)
+                    ModOptionsExpander.Visibility = Visibility.Visible;
+            }
         }
 
         public void RefreshMods()
@@ -54,6 +62,14 @@ namespace ZenovaLauncher
 
         private void VersionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (!(VersionBox.SelectedItem as MinecraftVersion).ModSupported)
+            {
+                ModOptionsExpander.Visibility = Visibility.Collapsed;
+                return;
+            }
+
+            ModOptionsExpander.Visibility = Visibility.Visible;
+
             RemoveUnsupportedMods();
             FilterModsList();
             RefreshMods();
