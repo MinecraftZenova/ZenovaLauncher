@@ -50,10 +50,10 @@ namespace ZenovaLauncher
         }
 
 
-        public static void LoadPreferences(string dataDir)
+        public static void LoadPreferences()
         {
             Trace.WriteLine("Loading Preferences");
-            _preferencesFile = Path.Combine(dataDir, _preferencesFile);
+            _preferencesFile = Path.Combine(App.DataDirectory, _preferencesFile);
             jsonSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
             if (File.Exists(_preferencesFile))
             {
