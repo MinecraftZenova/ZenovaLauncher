@@ -74,7 +74,7 @@ namespace ZenovaLauncher
         public bool Release => Version.Release;
         public bool Editable => Type == ProfileType.Custom;
         public bool Launching => ProfileLauncher.instance.LaunchedProfile == this;
-        public bool Modded => ModsList != null ? ModsList.Count > 0 : false;
+        public bool Modded => Version.ModSupported && ModsList != null && ModsList.Count > 0;
 
         public void UpdateLaunchStatus()
         {
