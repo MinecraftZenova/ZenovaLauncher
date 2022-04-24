@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -153,7 +154,12 @@ namespace ZenovaLauncher
 
         public async Task EnableUserAuthorization()
         {
-            _protocol.MSAUserToken = await WUTokenHelper.GetWUToken(AccountManager.instance.SelectedAccount.AccountId);
+            RegistryKey accountIdsReg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\IdentityCRL\\UserTileData");
+            if (accountIdsReg != null)
+            {
+                string[] accountsIds = Array.FindAll(accountIdsReg.GetValueNames(), s => !s.EndsWith("_ETAG"));
+                _protocol.MSAUserToken = await WUTokenHelper.GetWUToken(accountsIds);
+            }
         }
 
         public async Task Download(string updateIdentity, string revisionNumber, string destination, DownloadProgress progress, CancellationToken cancellationToken)

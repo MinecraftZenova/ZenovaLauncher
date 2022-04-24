@@ -43,7 +43,6 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "ZenovaAPI.dll"; DestDir: "{code:GetDataDir}"; Flags: ignoreversion
 Source: "bin\Release\ZenovaLauncher.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\Release\ZenovaBackend.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\ZenovaLoader"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\ControlzEx.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\MahApps.Metro.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -56,7 +55,6 @@ Source: "bin\Release\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversio
 Source: "bin\Release\Octokit.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\Release\Windows.Internal.Security.Authentication.Web.winmd"; DestDir: "{app}"; Flags: ignoreversion
 Source: "dev\*"; DestDir: "{code:GetDataDir}\dev"; Flags: ignoreversion recursesubdirs
 
 [Dirs]

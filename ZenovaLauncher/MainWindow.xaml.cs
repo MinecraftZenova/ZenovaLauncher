@@ -27,7 +27,7 @@ namespace ZenovaLauncher
 
         private async void AccountChanged(object sender, SelectionChangedEventArgs e)
         {
-            await VersionDownloader.user.EnableUserAuthorization();
+            // Kept here to not break anything
         }
 
         private void NavView_ItemInvoked(object sender, HamburgerMenuItemInvokedEventArgs e)

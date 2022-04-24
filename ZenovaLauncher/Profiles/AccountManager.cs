@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
+using Windows.Security.Authentication.Web.Core;
+using Windows.Security.Credentials;
 
 namespace ZenovaLauncher
 {
@@ -14,10 +17,18 @@ namespace ZenovaLauncher
 
         public async Task AddAccounts()
         {
-            Trace.WriteLine("AddAccounts");
-            var accounts = await ZenovaBackend.GetMSAccounts();
-            foreach (Tuple<string, string> account in accounts)
-                Add(new MSAccount(account.Item1, account.Item2));
+            Trace.WriteLine("AddAccounts"); 
+            WebAccountProvider provider = await WebAuthenticationCoreManager.FindAccountProviderAsync("https://login.microsoft.com", "consumers");
+            RegistryKey accountIdsReg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\IdentityCRL\\UserTileData");
+            if (accountIdsReg != null)
+            {
+                string[] accountsIds = Array.FindAll(accountIdsReg.GetValueNames(), s => !s.EndsWith("_ETAG"));
+                foreach (var accountsId in accountsIds)
+                {
+                    var account = await WebAuthenticationCoreManager.FindAccountAsync(provider, accountsId);
+                    Add(new MSAccount(account.UserName, account.Id));
+                }
+            }
             SelectedAccount = this.First();
             Trace.WriteLine("AddAccounts finished");
         }
