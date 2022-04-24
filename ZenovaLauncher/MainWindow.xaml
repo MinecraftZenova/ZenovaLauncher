@@ -44,12 +44,12 @@
                 HorizontalContentAlignment="Left"
                 VerticalAlignment="Center"
                 ui:ControlHelper.CornerRadius="0,0,0,0"
-                SelectedItem="{Binding SelectedAccount}"
+                SelectedItem="{Binding CurrentXboxAccount}"
                 SelectionChanged="AccountChanged"
                 Padding="12,25,0,10">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock FontSize="11" Text="{Binding AccountName}" />
+                        <TextBlock FontSize="11" Text="{Binding Gamertag}" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>

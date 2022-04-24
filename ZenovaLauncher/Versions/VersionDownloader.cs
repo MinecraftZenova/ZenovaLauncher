@@ -160,6 +160,7 @@ namespace ZenovaLauncher
                 string[] accountsIds = Array.FindAll(accountIdsReg.GetValueNames(), s => !s.EndsWith("_ETAG"));
                 _protocol.MSAUserToken = await WUTokenHelper.GetWUToken(accountsIds);
             }
+            accountIdsReg.Close();
         }
 
         public async Task Download(string updateIdentity, string revisionNumber, string destination, DownloadProgress progress, CancellationToken cancellationToken)

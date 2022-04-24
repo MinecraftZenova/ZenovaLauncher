@@ -39,9 +39,16 @@ namespace ZenovaLauncher
             set { ModSorting = (Mod.ModSortType)value; }
         }
         public string SelectedAccount
-        { 
-            get { return AccountManager.instance.SelectedAccount.AccountName; }
-            set { AccountManager.instance.SelectedAccount = AccountManager.instance.FirstOrDefault(a => a.AccountName == value); }
+        {
+            get { return AccountManager.instance.CurrentXboxAccount.Gamertag; }
+            set
+            {
+                var current = AccountManager.instance.FirstOrDefault(a => a.Gamertag == value);
+                if (current != null)
+                {
+                    AccountManager.instance.CurrentXboxAccount = current;
+                }
+            }
         }
         public string SelectedProfile
         {

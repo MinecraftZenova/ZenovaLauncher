@@ -25,7 +25,7 @@ namespace ZenovaLauncher
                         new XAttribute(secutil + "id", "ClientMSA"),
                         new XAttribute(XNamespace.Xmlns + "wsu", secutil),
                         new XAttribute(XNamespace.Xmlns + "wuws", wuws));
-            foreach (string token in MSAUserToken)
+            foreach (string token in MSAUserToken ?? Enumerable.Empty<string>())
             {
                 tickets.Add(new XElement("TicketType",
                     new XAttribute("Name", "MSA"),

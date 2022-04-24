@@ -1,48 +1,42 @@
 ﻿using Microsoft.Win32;
-using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Security.Authentication.Web.Core;
-using Windows.Security.Credentials;
 
 namespace ZenovaLauncher
 {
-    public class AccountManager : ObservableCollection<MSAccount>
+    public class AccountManager : ObservableCollection<XboxAccount>
     {
         public static AccountManager instance;
 
-        public MSAccount SelectedAccount { get; set; }
+        public XboxAccount CurrentXboxAccount { get; set; }
 
         public async Task AddAccounts()
         {
-            Trace.WriteLine("AddAccounts"); 
-            WebAccountProvider provider = await WebAuthenticationCoreManager.FindAccountProviderAsync("https://login.microsoft.com", "consumers");
-            RegistryKey accountIdsReg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\IdentityCRL\\UserTileData");
-            if (accountIdsReg != null)
+            Trace.WriteLine("AddAccounts");
+            RegistryKey currentXboxReg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\XboxLive");
+            if (currentXboxReg != null)
             {
-                string[] accountsIds = Array.FindAll(accountIdsReg.GetValueNames(), s => !s.EndsWith("_ETAG"));
-                foreach (var accountsId in accountsIds)
-                {
-                    var account = await WebAuthenticationCoreManager.FindAccountAsync(provider, accountsId);
-                    Add(new MSAccount(account.UserName, account.Id));
-                }
+                var gamertag = currentXboxReg.GetValue("Gamertag");
+                var xuid = currentXboxReg.GetValue("Xuid");
+                if (gamertag != null && xuid != null)
+                    Add(new XboxAccount(gamertag.ToString(), xuid.ToString()));
             }
-            SelectedAccount = this.First();
+            CurrentXboxAccount = this.First();
             Trace.WriteLine("AddAccounts finished");
         }
     }
 
-    public class MSAccount : NotifyPropertyChangedBase
+    public class XboxAccount : NotifyPropertyChangedBase
     {
-        public MSAccount(string accountName, string accountId)
+        public XboxAccount(string gamertag, string xuid)
         {
-            AccountName = accountName;
-            AccountId = accountId;
+            Gamertag = gamertag;
+            Xuid = xuid;
         }
 
-        public string AccountName { get; set; }
-        public string AccountId { get; set; }
+        public string Gamertag { get; set; }
+        public string Xuid { get; set; }
     }
 }
