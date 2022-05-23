@@ -114,7 +114,6 @@
     <Compile Include="Utils\Preferences.cs" />
     <Compile Include="Utils\SingleInstance.cs" />
     <Compile Include="Utils\WUTokenHelper.cs" />
-    <Compile Include="Utils\ZenovaBackend.cs" />
     <Compile Include="Utils\ZenovaUpdater.cs" />
     <Compile Include="Versions\MinecraftVersion.cs" />
     <Compile Include="Profiles\Profile.cs" />
