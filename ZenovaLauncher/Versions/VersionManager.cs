@@ -65,12 +65,14 @@ namespace ZenovaLauncher
 
         public async Task LoadMinecraftVersions()
         {
+            bool loadedFromCache = true;
             try
             {
                 await LoadFromCache();
             }
             catch (Exception e)
             {
+                loadedFromCache = false;
                 if (!(e is FileNotFoundException))
                     Trace.WriteLine("List cache load failed:\n" + e.ToString());
             }
@@ -81,6 +83,8 @@ namespace ZenovaLauncher
             catch (Exception e2)
             {
                 Trace.WriteLine("List download failed:\n" + e2.ToString());
+                if (!loadedFromCache)
+                    Utils.ShowErrorDialog("Download Version List Failed", "Failed to download Minecraft version list and no cached version list was found. Please check your internet connection and relaunch.");
             }
         }
 
