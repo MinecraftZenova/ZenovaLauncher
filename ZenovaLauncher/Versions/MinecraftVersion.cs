@@ -86,6 +86,7 @@ namespace ZenovaLauncher
 
         public enum VersionType
         {
+            Null = -1,
             Release = 0,
             Beta = 1,
             Preview = 2,

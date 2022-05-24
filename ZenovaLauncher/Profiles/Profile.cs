@@ -26,7 +26,7 @@ namespace ZenovaLauncher
         public Profile(string name, MinecraftVersion version, DateTime lastUsed = default, DateTime created = default, ProfileType type = ProfileType.Custom, List<Mod> modsList = default)
         {
             Name = string.IsNullOrEmpty(name) ? "<unnamed profile>" : name;
-            Version = version;
+            Version = version ?? VersionManager.instance.DefaultVersion;
             LastUsed = lastUsed;
             Created = created;
             Type = type;
@@ -50,9 +50,15 @@ namespace ZenovaLauncher
                     return "latest-release";
                 if (Type == ProfileType.LatestBeta)
                     return "latest-beta";
-                return Version.Name;
+                if (Version == VersionManager.instance.DefaultVersion)
+                    return SavedVersionId;
+                return Version?.Name ?? "null";
             }
-            set { Version = VersionManager.instance.GetVersionFromString(value); }
+            set 
+            { 
+                Version = VersionManager.instance.GetVersionFromString(value);
+                SavedVersionId = value;
+            }
         }
         [JsonProperty]
         public string Name { get; set; }
@@ -67,6 +73,7 @@ namespace ZenovaLauncher
         }
         public ObservableCollection<Mod> ModsList { get; set; } = new ObservableCollection<Mod>();
         public MinecraftVersion Version { get; set; }
+        public string SavedVersionId { get; set; }
         public string Hash => Utils.ComputeHash(this);
         public string VersionName => Version.Name;
         public bool Beta => Version.Beta;

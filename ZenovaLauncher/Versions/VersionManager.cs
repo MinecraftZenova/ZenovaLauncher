@@ -20,6 +20,7 @@ namespace ZenovaLauncher
         {
             _cacheFile = Path.Combine(versionsDir, _cacheFile);
             VersionsDirectory = versionsDir;
+            DefaultVersion = new MinecraftVersion(new Version("0.0.0.0"), "00000000-0000-0000-0000-000000000000", MinecraftVersion.VersionType.Null);
         }
 
         public void RemoveUnusedVersions()
@@ -44,12 +45,13 @@ namespace ZenovaLauncher
                 return LatestRelease;
             if (versionName == "latest-beta")
                 return LatestBeta;
-            return this.SingleOrDefault(v => v.Name == versionName);
+            return this.SingleOrDefault(v => v.Name == versionName) ?? DefaultVersion;
         }
 
         public string VersionsDirectory { get; }
-        public MinecraftVersion LatestRelease => this.FirstOrDefault(v => v.Release);
-        public MinecraftVersion LatestBeta => this.FirstOrDefault(v => v.Beta);
+        public MinecraftVersion LatestRelease => this.FirstOrDefault(v => v.Release) ?? DefaultVersion;
+        public MinecraftVersion LatestBeta => this.FirstOrDefault(v => v.Beta) ?? DefaultVersion;
+        public MinecraftVersion DefaultVersion { get; }
 
         private void ParseList(JArray data)
         {

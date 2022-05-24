@@ -45,7 +45,7 @@ namespace ZenovaLauncher
 
             ModOptionsExpander.Visibility = Visibility.Collapsed;
 
-            if ((VersionBox.SelectedItem as MinecraftVersion).ModSupported)
+            if (VersionBox.SelectedItem != null && (VersionBox.SelectedItem as MinecraftVersion).ModSupported)
             {
                 FilterModsList();
 
