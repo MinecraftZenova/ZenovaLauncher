@@ -98,6 +98,11 @@ namespace ZenovaLauncher
                         await Task.Run(() => { ZipFile.ExtractToDirectory(dlPath, devPath); });
                         File.Delete(dlPath);
                     }
+                    else if (dlPath.EndsWith(".dll"))
+                    {
+                        // Ensure ZenovaAPI.dll has ALL_APPLICATION_PACKAGES security
+                        Utils.AddSecurityToFile(Path.Combine(App.DataDirectory, "ZenovaAPI.dll"));
+                    }
                 }, AssemblyType.GetVersionFromPath(Path.Combine(App.DataDirectory, "ZenovaAPI.dll")), 2);
             }
             catch (Exception e)
