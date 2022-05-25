@@ -101,7 +101,7 @@ namespace ZenovaLauncher
                     else if (dlPath.EndsWith(".dll"))
                     {
                         // Ensure ZenovaAPI.dll has ALL_APPLICATION_PACKAGES security
-                        Utils.AddSecurityToFile(Path.Combine(App.DataDirectory, "ZenovaAPI.dll"));
+                        Utils.AddSecurityToFile(dlPath);
                     }
                 }, numberOfAssets: 2);
             }
