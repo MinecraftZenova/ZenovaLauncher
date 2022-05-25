@@ -95,7 +95,11 @@ namespace ZenovaLauncher
                             Utils.Empty(devPath);
                         else
                             Directory.CreateDirectory(devPath);
-                        await Task.Run(() => { ZipFile.ExtractToDirectory(dlPath, devPath); });
+                        await Task.Run(() => 
+                        { 
+                            ZipFile.ExtractToDirectory(dlPath, devPath);
+                            Utils.SetModifiedTimeUtcRecursive(devPath, DateTime.UtcNow);
+                        });
                         File.Delete(dlPath);
                     }
                     else if (dlPath.EndsWith(".dll"))

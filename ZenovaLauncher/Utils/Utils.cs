@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Principal;
@@ -104,6 +105,21 @@ namespace ZenovaLauncher
             DirectoryInfo directory = new DirectoryInfo(directoryString);
             foreach (var file in directory.GetFiles()) file.Delete();
             foreach (var dir in directory.GetDirectories()) dir.Delete(true);
+        }
+
+        public static void SetModifiedTimeUtcFile(string filePath, DateTime time)
+        {
+            File.SetCreationTimeUtc(filePath, time);
+            File.SetLastWriteTimeUtc(filePath, time);
+            File.SetLastWriteTimeUtc(filePath, time);
+        }
+
+        public static void SetModifiedTimeUtcRecursive(string dirPath, DateTime time)
+        {
+            foreach (var file in Directory.GetFiles(dirPath, "*.*", SearchOption.AllDirectories))
+            {
+                SetModifiedTimeUtcFile(file, time);
+            }
         }
     }
 }
