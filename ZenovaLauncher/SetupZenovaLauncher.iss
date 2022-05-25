@@ -93,7 +93,7 @@ end;
 
 procedure DeleteDevFolder();
 begin
-  DelTree(GetDataDir() + '/dev', True, True, True);
+  DelTree(GetDataDir('') + '/dev', True, True, True);
 end;
 
 function GetSubKey(Value: string): string;
