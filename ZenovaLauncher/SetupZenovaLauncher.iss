@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Zenova Launcher"
-#define MyAppVersion GetFileVersion("bin\release\ZenovaLauncher.exe")
+#define MyAppVersion GetVersionNumbersString("bin\release\ZenovaLauncher.exe")
 #define MyAppPublisher "MinecraftZenova"
 #define MyAppURL "https://www.github.com/MinecraftZenova"
 #define MyAppExeName "ZenovaLauncher.exe"
