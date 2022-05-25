@@ -33,6 +33,7 @@ WizardStyle=modern
 Compression=lzma
 SolidCompression=yes   
 ChangesEnvironment=yes
+TimeStampsInUTC=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -54,8 +55,8 @@ Source: "bin\Release\ModernWpf.MahApps.dll"; DestDir: "{app}"; Flags: ignorevers
 Source: "bin\Release\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\Octokit.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "bin\Release\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "dev\*"; DestDir: "{code:GetDataDir}\dev"; Flags: ignoreversion recursesubdirs
+Source: "bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Flags: ignoreversion; AfterInstall: DeleteDevFolder
+Source: "dev\*"; DestDir: "{code:GetDataDir}\dev"; Flags: ignoreversion recursesubdirs touch
 
 [Dirs]
 Name: "{code:GetDataDir}\versions"
@@ -88,6 +89,11 @@ var
 function GetDataDir(Value: string): string;
 begin
   Result := DataDirPage.Values[0];
+end;
+
+procedure DeleteDevFolder();
+begin
+  DelTree(GetDataDir('') + '/dev', True, True, True);
 end;
 
 function GetSubKey(Value: string): string;

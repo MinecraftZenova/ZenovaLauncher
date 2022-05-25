@@ -98,7 +98,12 @@ namespace ZenovaLauncher
                         await Task.Run(() => { ZipFile.ExtractToDirectory(dlPath, devPath); });
                         File.Delete(dlPath);
                     }
-                }, AssemblyType.GetVersionFromPath(Path.Combine(App.DataDirectory, "ZenovaAPI.dll")), 2);
+                    else if (dlPath.EndsWith(".dll"))
+                    {
+                        // Ensure ZenovaAPI.dll has ALL_APPLICATION_PACKAGES security
+                        Utils.AddSecurityToFile(dlPath);
+                    }
+                }, numberOfAssets: 2);
             }
             catch (Exception e)
             {
@@ -112,8 +117,8 @@ namespace ZenovaLauncher
             try
             {
                 if (InstallerAssembly != null && await CheckUpdate(InstallerAssembly))
-                    return new List<AssemblyType> { InstallerAssembly };
-                if (ApiAssembly != null && await CheckUpdate(ApiAssembly))
+                    updateTypes.Add(InstallerAssembly);
+                else if (ApiAssembly != null && await CheckUpdate(ApiAssembly))
                     updateTypes.Add(ApiAssembly);
             }
             catch (Exception e)
@@ -222,10 +227,7 @@ namespace ZenovaLauncher
             public RepositoryTag TagInfo { get; set; }
             public GetDLPath DownloadPath { get; set; }
             public PostDownload PostDownloadTask { get; set; }
-            public Version InstalledVersion
-            {
-                get { return _installedVersion != null ? _installedVersion : GetVersionFromPath(DownloadPath(this, AssetsCount - 1)); }
-            }
+            public Version InstalledVersion => _installedVersion ?? GetVersionFromPath(DownloadPath(this, AssetsCount - 1));
 
             public AssemblyType(string repositoryName, GetDLPath downloadPath, PostDownload postDownloadTask = default, Version installedVersion = null, int numberOfAssets = 1)
             {

@@ -106,8 +106,20 @@ namespace ZenovaLauncher
                 }
                 if (p.Modded)
                 {
-                    // Ensure ZenovaAPI.dll has ALL APPLICATION PACKAGES security
-                    Utils.AddSecurityToFile(Path.Combine(App.DataDirectory, "ZenovaAPI.dll"));
+                    // Last attempt to get ZenovaAPI.dll the ALL_APPLICATION_PACKAGES security
+                    try
+                    {
+                        Utils.AddSecurityToFile(Path.Combine(App.DataDirectory, "ZenovaAPI.dll"));
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        Utils.ShowErrorDialog("Launch failed", "An error occured which prevented Zenova from launching Minecraft. Unable to add necessary permissions to ZenovaAPI.");
+                        return false;
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
 
                     AppDebugger app = new AppDebugger(Utils.FindPackages(p.Version.PackageFamily).ToList()[0].Id.FullName);
                     if (app.GetPackageExecutionState() != PACKAGE_EXECUTION_STATE.PES_UNKNOWN)
