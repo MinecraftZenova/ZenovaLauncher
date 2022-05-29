@@ -39,9 +39,6 @@
                     </ui:SimpleStackPanel>
                 </Grid>
             </control:MyTabItem>
-            <control:MyTabItem Header="Accounts">
-                <TextBlock Text="Accounts Settings" />
-            </control:MyTabItem>
             <control:MyTabItem Header="About">
                 <Grid Margin="63,21,63,0">
                     <ItemsControl x:Name="AboutPanel" HorizontalAlignment="Stretch">
