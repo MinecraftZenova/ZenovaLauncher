@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -84,6 +84,9 @@
     <Compile Include="Dialogs\ModDetailsDialog.xaml.cs">
       <DependentUpon>ModDetailsDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\ProfileDialog.xaml.cs">
+      <DependentUpon>ProfileDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Mods\Mod.cs" />
     <Compile Include="Mods\ModManager.cs" />
     <Compile Include="Profiles\AccountManager.cs" />
@@ -93,12 +96,6 @@
     <Compile Include="Utils\ApplicationActivationManager.cs" />
     <Compile Include="Utils\AppUtils.cs" />
     <Compile Include="Utils\BooleanValueConverter.cs" />
-    <Compile Include="Dialogs\EditProfileDialog.xaml.cs">
-      <DependentUpon>EditProfileDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\AddProfileDialog.xaml.cs">
-      <DependentUpon>AddProfileDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Profiles\ProfileLauncher.cs" />
     <Compile Include="Utils\NotifyPropertyChangedBase.cs" />
     <Compile Include="Pages\ModsPage.xaml.cs">
@@ -134,19 +131,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\EditProfileDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Dialogs\AddProfileDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Dialogs\ImportModDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\ModDetailsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ProfileDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
