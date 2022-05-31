@@ -144,6 +144,7 @@ namespace ZenovaLauncher
             PrimaryButtonText = "Save";
             PrimaryButtonClick += SaveProfile;
 
+            EditedProfile = profile;
             ProfileNameBox.Text = profile.Name;
             ProfileNameBox.IsEnabled = profile.Editable;
             VersionBox.SelectedItem = profile.Version;
