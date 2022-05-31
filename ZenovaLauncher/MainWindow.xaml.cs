@@ -21,6 +21,10 @@ namespace ZenovaLauncher
             DataContext = AccountManager.instance;
 
             AccountBox.ItemsSource = AccountManager.instance;
+
+            // hide the unimplemented tab-pages (remove once implemented)
+            NavViewItems.Remove(news);
+            NavViewItems.Remove(help);
             NavView.SelectedItem = NavViewItems.OfType<HamburgerMenuItem>().First();
             Navigate(NavView.SelectedItem);
         }

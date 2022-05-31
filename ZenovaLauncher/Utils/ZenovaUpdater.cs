@@ -157,6 +157,8 @@ namespace ZenovaLauncher
 
         public async Task<bool> DoUpdate(AssemblyType type)
         {
+            Trace.WriteLine(type.RepositoryName + " download started");
+
             for (int asset = 0; asset < type.AssetsCount; asset++)
             {
                 string dlPath = type.DownloadPath(type, asset);
@@ -167,14 +169,12 @@ namespace ZenovaLauncher
                     {
                         if (!IsDownloading)
                         {
-                            Trace.WriteLine(type.RepositoryName + " download started");
                             IsDownloading = true;
                             if (total.HasValue)
                                 DownloadSize = total.Value;
                         }
                         DownloadedBytes += current;
                     }, cancelSource.Token);
-                    Trace.WriteLine(type.RepositoryName + " download finished");
                     IsDownloading = false;
                 }
                 catch (Exception e)
@@ -184,6 +184,8 @@ namespace ZenovaLauncher
                 }
                 await type.PostDownloadTask(dlPath);
             }
+
+            Trace.WriteLine(type.RepositoryName + " download finished");
             return true;
         }
 

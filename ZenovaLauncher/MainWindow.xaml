@@ -75,7 +75,7 @@
                     </mah:HamburgerMenuIconItem>
 
                     <mah:HamburgerMenuIconItem
-                        Label="News"
+                        Label="News" x:Name="news"
                         Tag="Pages/NewsPage.xaml">
                         <mah:HamburgerMenuIconItem.Icon>
                             <ui:SymbolIcon Symbol="PreviewLink" />
@@ -83,7 +83,7 @@
                     </mah:HamburgerMenuIconItem>
 
                     <mah:HamburgerMenuIconItem
-                        Label="Help"
+                        Label="Help" x:Name="help"
                         Tag="Pages/HelpPage.xaml">
                         <mah:HamburgerMenuIconItem.Icon>
                             <ui:SymbolIcon Symbol="Help" />
