@@ -39,7 +39,7 @@ TimeStampsInUTC=yes
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked checkedonce
 
 [Files]
 Source: "ZenovaAPI.dll"; DestDir: "{code:GetDataDir}"; Flags: ignoreversion
@@ -59,6 +59,7 @@ Source: "bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Flags:
 Source: "dev\*"; DestDir: "{code:GetDataDir}\dev"; Flags: ignoreversion recursesubdirs touch
 
 [Dirs]
+Name: "{code:GetDataDir}\" Permissions: users-modify
 Name: "{code:GetDataDir}\versions"
 Name: "{code:GetDataDir}\mods"
 
