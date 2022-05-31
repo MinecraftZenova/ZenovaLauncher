@@ -19,6 +19,7 @@ namespace ZenovaLauncher
         protected ProfileDialog()
         {
             InitializeComponent();
+            ProfileNameBox.MaxLength = 90;
             VersionBox.ItemsSource = VersionManager.instance;
             VersionBox.Items.SortDescriptions.Clear();
             VersionBox.Items.SortDescriptions.Add(new SortDescription("SortOrder", ListSortDirection.Ascending));
