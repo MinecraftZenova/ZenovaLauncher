@@ -59,7 +59,7 @@ Source: "bin\Release\System.Windows.Interactivity.dll"; DestDir: "{app}"; Flags:
 Source: "dev\*"; DestDir: "{code:GetDataDir}\dev"; Flags: ignoreversion recursesubdirs touch
 
 [Dirs]
-Name: "{code:GetDataDir}\" Permissions: users-modify
+Name: "{code:GetDataDir}\"; Permissions: users-modify
 Name: "{code:GetDataDir}\versions"
 Name: "{code:GetDataDir}\mods"
 
