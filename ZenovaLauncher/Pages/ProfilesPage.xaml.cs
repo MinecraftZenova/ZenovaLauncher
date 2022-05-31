@@ -44,7 +44,7 @@ namespace ZenovaLauncher
 
         private async void AddProfileClick(object sender, RoutedEventArgs e)
         {
-            AddProfileDialog newProfile = new AddProfileDialog();
+            CreateProfileDialog newProfile = new CreateProfileDialog();
             var result = await newProfile.ShowAsync();
             if (result == ContentDialogResult.Primary)
                 RefreshProfiles();
