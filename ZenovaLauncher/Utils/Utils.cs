@@ -100,6 +100,14 @@ namespace ZenovaLauncher
             }
         }
 
+        public static void SetupDirectoryWithSecurity(string dirPath)
+        {
+            if (!Directory.Exists(dirPath))
+                Directory.CreateDirectory(dirPath);
+
+            AddSecurityToDirectory(dirPath);
+        }
+
         public static void Empty(string directoryString)
         {
             DirectoryInfo directory = new DirectoryInfo(directoryString);

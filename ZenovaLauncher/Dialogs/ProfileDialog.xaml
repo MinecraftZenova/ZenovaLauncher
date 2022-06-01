@@ -36,6 +36,22 @@
 					</ComboBox.ItemTemplate>
 				</ComboBox>
 			</ui:SimpleStackPanel>
+			<ui:SimpleStackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Spacing="2">
+				<TextBlock Margin="2,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Directory" />
+
+				<TextBox
+                    x:Name="DirectoryBox"
+                    Style="{DynamicResource LauncherTextBoxStyle}"
+                    HorizontalAlignment="Stretch"
+                    ui:ControlHelper.PlaceholderText="&lt;Use default directory>"/>
+				<Button HorizontalAlignment="Right"
+						Click="BrowseClick"
+						MinWidth="30">
+					<Button.Content>
+						<TextBlock FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" Text="Browse" />
+					</Button.Content>
+				</Button>
+			</ui:SimpleStackPanel>
 			<Expander
                 x:Name="ModOptionsExpander"
                 ExpandDirection="Down"

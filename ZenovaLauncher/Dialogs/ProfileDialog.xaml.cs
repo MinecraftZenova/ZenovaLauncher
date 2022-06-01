@@ -1,4 +1,5 @@
-﻿using ModernWpf.Controls;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using ModernWpf.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -87,6 +88,19 @@ namespace ZenovaLauncher
             RefreshMods();
         }
 
+        private void BrowseClick(object sender, RoutedEventArgs e)
+        {
+            using (var fbd = new CommonOpenFileDialog())
+            {
+                fbd.IsFolderPicker = true;
+                fbd.Multiselect = false;
+                if (fbd.ShowDialog() == CommonFileDialogResult.Ok && !string.IsNullOrEmpty(fbd.FileName))
+                {
+                    DirectoryBox.Text = fbd.FileName;
+                }
+            }
+        }
+        
         protected virtual void AddMod(Mod m)
         {
             LoadedMods.Add(m);
@@ -113,9 +127,9 @@ namespace ZenovaLauncher
     }
 
     public partial class CreateProfileDialog : ProfileDialog
-	{
+    {
         public CreateProfileDialog()
-		{
+        {
             Title = "Create profile";
             PrimaryButtonText = "Create";
             PrimaryButtonClick += CreateProfile;
@@ -128,7 +142,7 @@ namespace ZenovaLauncher
 
         private void CreateProfile(object sender, ContentDialogButtonClickEventArgs e)
         {
-            ProfileManager.instance.Add(new Profile(ProfileNameBox.Text, VersionBox.SelectedItem as MinecraftVersion, created: DateTime.Now, modsList: LoadedMods.ToList()));
+            ProfileManager.instance.Add(new Profile(ProfileNameBox.Text, VersionBox.SelectedItem as MinecraftVersion, DirectoryBox.Text, created: DateTime.Now, modsList: LoadedMods.ToList()));
         }
     }
 
@@ -149,6 +163,7 @@ namespace ZenovaLauncher
             ProfileNameBox.IsEnabled = profile.Editable;
             VersionBox.SelectedItem = profile.Version;
             VersionBox.IsEnabled = profile.Editable;
+            DirectoryBox.Text = profile.RawDirectory;
             if (profile.ModsList != null)
                 LoadedMods = new ObservableCollection<Mod>(profile.ModsList);
             // todo: can we update the existing binding?
@@ -185,6 +200,8 @@ namespace ZenovaLauncher
             EditedProfile.Version = VersionBox.SelectedItem as MinecraftVersion;
             ModsToRemove.ForEach(m => EditedProfile.RemoveMod(m));
             ModsToAdd.ForEach(m => EditedProfile.AddMod(m));
+
+            EditedProfile.Directory = DirectoryBox.Text;
         }
     }
 }

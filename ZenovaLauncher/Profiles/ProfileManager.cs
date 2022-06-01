@@ -19,13 +19,15 @@ namespace ZenovaLauncher
 
         public Action Refresh { get; set; }
         public string ProfilesDir { get; }
+        public string DefaultProfileDir { get; }
         public ProfileSelected SelectedProfile { get; set; }
         public Dictionary<string, Profile> InternalDictionary => this.ToDictionary(x => x.Hash, x => x);
 
         public ProfileManager(string profileDir)
         {
             ProfilesDir = profileDir;
-            ProfilesFile = Path.Combine(profileDir, _profilesFileName);
+            DefaultProfileDir = Path.Combine(ProfilesDir, "Default\\com.mojang\\");
+            ProfilesFile = Path.Combine(App.DataDirectory, _profilesFileName);
             SelectedProfile = new ProfileSelected();
             jsonSettings = new JsonSerializerSettings
             {
@@ -102,8 +104,8 @@ namespace ZenovaLauncher
 
         public void AddDefaultProfiles()
         {
-            LatestRelease = new Profile("Latest release", VersionManager.instance.LatestRelease, type: Profile.ProfileType.LatestRelease);
-            LatestBeta = new Profile("Latest beta", VersionManager.instance.LatestBeta, type: Profile.ProfileType.LatestBeta);
+            LatestRelease = new Profile("Latest release", VersionManager.instance.LatestRelease, "", type: Profile.ProfileType.LatestRelease);
+            LatestBeta = new Profile("Latest beta", VersionManager.instance.LatestBeta, "", type: Profile.ProfileType.LatestBeta);
             SelectedProfile.SelectedProfile = this.First();
         }
 

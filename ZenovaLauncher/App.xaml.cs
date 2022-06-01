@@ -1,4 +1,5 @@
 ﻿using Microsoft.Shell;
+using ModernWpf.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,6 +18,7 @@ namespace ZenovaLauncher
         private readonly string _environmentKey = "ZENOVA_DATA";
         private readonly string _directoryMods = "mods";
         private readonly string _directoryVersions = "versions";
+        private readonly string _directoryProfiles = "profiles";
 
         public static string DataDirectory { get; private set; }
 
@@ -82,7 +84,7 @@ namespace ZenovaLauncher
                 Trace.WriteLine("VersionDownloader.user " + sw.ElapsedMilliseconds + " ms");
                 VersionManager.instance = new VersionManager(VersionsDirectory);
                 Trace.WriteLine("VersionManager.instance " + sw.ElapsedMilliseconds + " ms");
-                ProfileManager.instance = new ProfileManager(DataDirectory);
+                ProfileManager.instance = new ProfileManager(ProfileDirectory);
                 Trace.WriteLine("ProfileManager.instance " + sw.ElapsedMilliseconds + " ms");
                 ProfileLauncher.instance = new ProfileLauncher();
                 Trace.WriteLine("ProfileLauncher.instance " + sw.ElapsedMilliseconds + " ms");
@@ -173,9 +175,17 @@ namespace ZenovaLauncher
             get
             {
                 string path = Path.Combine(DataDirectory, _directoryMods);
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
-                Utils.AddSecurityToDirectory(path);
+                Utils.SetupDirectoryWithSecurity(path);
+                return path;
+            }
+        }
+
+        public string ProfileDirectory
+        {
+            get
+            {
+                string path = Path.Combine(DataDirectory, _directoryProfiles);
+                Utils.SetupDirectoryWithSecurity(path);
                 return path;
             }
         }

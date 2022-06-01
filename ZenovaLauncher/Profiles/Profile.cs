@@ -3,6 +3,8 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ZenovaLauncher
@@ -23,17 +25,18 @@ namespace ZenovaLauncher
             return (item as Profile).Historical == true;
         };
 
-        public Profile(string name, MinecraftVersion version, DateTime lastUsed = default, DateTime created = default, ProfileType type = ProfileType.Custom, List<Mod> modsList = default)
+        public Profile(string name, MinecraftVersion version, string dir, DateTime lastUsed = default, DateTime created = default, ProfileType type = ProfileType.Custom, List<Mod> modsList = default)
         {
             Name = string.IsNullOrEmpty(name) ? "<unnamed profile>" : name;
             Version = version ?? VersionManager.instance.DefaultVersion;
+            Directory = dir;
             LastUsed = lastUsed;
             Created = created;
             Type = type;
             modsList?.ForEach(m => AddMod(m));
         }
 
-        public Profile(Profile profile) : this(profile.Name, profile.Version, profile.LastUsed, profile.Created, profile.Type, profile.ModsList.ToList()) { }
+        public Profile(Profile profile) : this(profile.Name, profile.Version, profile.RawDirectory, profile.LastUsed, profile.Created, profile.Type, profile.ModsList.ToList()) { }
 
         public Profile() { }
 
@@ -65,6 +68,34 @@ namespace ZenovaLauncher
         [JsonProperty]
         [JsonConverter(typeof(StringEnumConverter))]
         public ProfileType Type { get; set; }
+
+        [JsonProperty("directory", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate), DefaultValue("")]
+        public string RawDirectory;
+        public string Directory { 
+            get
+            {
+                return !string.IsNullOrEmpty(RawDirectory) ? RawDirectory : ProfileManager.instance.DefaultProfileDir;
+            } 
+            set
+            {
+                string raw = "";
+                if (!string.IsNullOrEmpty(value))
+                {
+                    try
+                    {
+                        Utils.SetupDirectoryWithSecurity(value);
+
+                        raw = value; // this should only run if everything goes to plan
+                    }
+                    catch (Exception e)
+                    {
+                        Trace.WriteLine("Directory setup failed: " + e.ToString());
+                        Utils.ShowErrorDialog("Failed to setup directory", string.Format("Error occured while modifying directory:\n{0}\nMake sure the directory can be accessed.", value));
+                    }
+                }
+                RawDirectory = raw;
+            }
+        }
         [JsonProperty]
         public List<string> Mods
         {

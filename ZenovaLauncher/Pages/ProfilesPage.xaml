@@ -133,7 +133,13 @@
                                                 Width="66"
                                                 Content="{Binding Path=Launching, Converter={StaticResource PlayButtonContent}}"
                                                 IsEnabled="{Binding Path=DataContext.IsNotLaunching, RelativeSource={RelativeSource AncestorType={x:Type Page}}}"/>
-                                            <Button Padding="5,5,6,6"  Style="{DynamicResource LauncherDefaultButtonStyle}">
+											<Button Click="FolderButtonClick" Padding="5,5,6,6" Style="{DynamicResource LauncherDefaultButtonStyle}">
+												<Button.Content>
+													<!--FolderHorizontal-->
+													<ui:FontIcon Glyph="&#xF12B;" />
+												</Button.Content>
+											</Button>
+											<Button Padding="5,5,6,6"  Style="{DynamicResource LauncherDefaultButtonStyle}">
                                                 <Button.Content>
                                                     <ui:SymbolIcon Symbol="More" />
                                                 </Button.Content>

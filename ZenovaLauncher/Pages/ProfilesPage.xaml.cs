@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -53,6 +55,14 @@ namespace ZenovaLauncher
         private void EditProfileClick(object sender, RoutedEventArgs e)
         {
             EditProfile((sender as FrameworkElement).DataContext as Profile);
+        }
+        private void FolderButtonClick(object sender, RoutedEventArgs e)
+        {
+            string dir = ((sender as FrameworkElement).DataContext as Profile).Directory;
+            if (Directory.Exists(dir))
+            {
+                Process.Start("explorer.exe", dir);
+            }
         }
 
         private void DuplicateProfileClick(object sender, RoutedEventArgs e)

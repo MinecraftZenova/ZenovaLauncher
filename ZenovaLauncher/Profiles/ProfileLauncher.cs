@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -80,6 +82,45 @@ namespace ZenovaLauncher
             }
         }
 
+        enum SymbolicLink
+        {
+            File = 0,
+            Directory = 1,
+            Unprivleged = 2
+        }
+
+        [DllImport("kernel32.dll", EntryPoint = "CreateSymbolicLinkW", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern bool CreateSymbolicLink(string lpSymlinkFileName, string lpTargetFileName, SymbolicLink dwFlags);
+        
+        static void CopyDirectory(string src, string dest)
+        {
+            // Get information about the source directory
+            var dir = new DirectoryInfo(src);
+
+            // Check if the source directory exists
+            if (!dir.Exists)
+                throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
+
+            // Cache directories before we start copying
+            DirectoryInfo[] dirs = dir.GetDirectories();
+
+            // Create the destination directory
+            Directory.CreateDirectory(dest);
+
+            // Get the files in the source directory and copy to the destination directory
+            foreach (FileInfo file in dir.GetFiles())
+            {
+                string targetFilePath = Path.Combine(dest, file.Name);
+                file.CopyTo(targetFilePath);
+            }
+
+            foreach (DirectoryInfo subDir in dirs)
+            {
+                string newDestinationDir = Path.Combine(dest, subDir.Name);
+                CopyDirectory(subDir.FullName, newDestinationDir);
+            }
+        }
+
         private async Task<bool> Launch(Profile p)
         {
             try
@@ -90,6 +131,67 @@ namespace ZenovaLauncher
             {
                 Trace.WriteLine("App re-register failed:\n" + e.ToString());
                 Utils.ShowErrorDialog("Launch failed", "An error occured which prevented Zenova from re-registering Minecraft. Ensure that Developer Mode is enabled in Windows Settings.");
+                return false;
+            }
+
+            try
+            {
+                string appdataDir = Environment.ExpandEnvironmentVariables("%localappdata%\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\LocalState\\games\\");
+                string gamesDir = Path.Combine(appdataDir, "com.mojang\\");
+                string destDir = p.Directory;
+
+                Utils.SetupDirectoryWithSecurity(destDir);
+
+                var dirInfo = new DirectoryInfo(gamesDir);
+                if (dirInfo.Exists)
+                {
+                    if (dirInfo.Attributes.HasFlag(FileAttributes.ReparsePoint))
+                    {
+                        Directory.Delete(gamesDir); // should be safe to delete the reparse point
+                    }
+                    else
+                    { 
+                        // should this be somewhere else?
+                        string renameDir = Path.Combine(appdataDir, "com.mojang.default");
+                        string validRenameDir = renameDir;
+
+                        int i = 0;
+                        while (true)
+                        {
+                            // "rename" directory to create the symlink
+                            if (!Directory.Exists(validRenameDir))
+                            {
+                                Directory.Move(gamesDir, validRenameDir);
+                                break;
+                            }
+
+                            ++i;
+                            validRenameDir = renameDir + i;
+                        }
+
+                        try
+                        {
+                            string defaultDir = ProfileManager.instance.DefaultProfileDir;
+                            if (!Directory.Exists(defaultDir) || !Directory.EnumerateFileSystemEntries(defaultDir).Any())
+                            {
+                                CopyDirectory(validRenameDir, defaultDir);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Trace.WriteLine("Directory copy failed:\n" + e.ToString());
+                            Utils.ShowErrorDialog("Create default failed", string.Format("An error occured which prevented Zenova from setting up the defualt directory.\nBackup: {0}", validRenameDir));
+                        }
+                    }
+                    // unprivleged is needed but requires Developer mode to be enabled
+                    if (!CreateSymbolicLink(gamesDir, destDir, SymbolicLink.Directory | SymbolicLink.Unprivleged))
+                        throw new Win32Exception(Marshal.GetLastWin32Error());
+                }
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine("Directory redirect failed:\n" + e.ToString());
+                Utils.ShowErrorDialog("Launch failed", "An error occured which prevented Zenova from configuring the necessary symlinks.");
                 return false;
             }
 
