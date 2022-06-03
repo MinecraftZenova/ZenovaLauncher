@@ -27,6 +27,8 @@ namespace ZenovaLauncher
         {
             ProfilesDir = profileDir;
             DefaultProfileDir = Path.Combine(ProfilesDir, "Default\\com.mojang\\");
+            if (!Directory.Exists(DefaultProfileDir))
+                Directory.CreateDirectory(DefaultProfileDir);
             ProfilesFile = Path.Combine(App.DataDirectory, _profilesFileName);
             SelectedProfile = new ProfileSelected();
             jsonSettings = new JsonSerializerSettings
