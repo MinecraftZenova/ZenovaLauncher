@@ -12,41 +12,31 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ui:ScrollViewerEx
-            Grid.Row="0"
-            HorizontalScrollBarVisibility="Hidden"
-            VerticalScrollBarVisibility="Auto"
-            IsDeferredScrollingEnabled="False">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <ui:SimpleStackPanel Grid.Column="0" Orientation="Horizontal" Spacing="15">
-                        <Button x:Name="AddProfileButton" Click="AddProfileClick">
-                            <Button.Content>
-                                <ui:SimpleStackPanel Orientation="Horizontal" Spacing="8" Margin="3">
-                                    <ui:SymbolIcon VerticalAlignment="Center" Symbol="Add" />
-                                    <TextBlock VerticalAlignment="Center" Text="New..." />
-                                </ui:SimpleStackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Grid Width="1" HorizontalAlignment="Right" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
-                    </ui:SimpleStackPanel>
-                    <ui:SimpleStackPanel Grid.Column="2" Orientation="Horizontal">
-                        <Grid Width="1" HorizontalAlignment="Left" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
-                        <ui:SimpleStackPanel Margin="17,0,10,0">
-                            <TextBlock Margin="0,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Sort By" />
-                            <ComboBox
+        <Grid Grid.Row="0" MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ui:SimpleStackPanel Grid.Column="0" Orientation="Horizontal" Spacing="15">
+                <Button x:Name="AddProfileButton" Click="AddProfileClick">
+                    <Button.Content>
+                        <ui:SimpleStackPanel Orientation="Horizontal" Spacing="8" Margin="3">
+                            <ui:SymbolIcon VerticalAlignment="Center" Symbol="Add" />
+                            <TextBlock VerticalAlignment="Center" Text="New..." />
+                        </ui:SimpleStackPanel>
+                    </Button.Content>
+                </Button>
+                <Grid Width="1" HorizontalAlignment="Right" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+            </ui:SimpleStackPanel>
+            <ui:SimpleStackPanel Grid.Column="2" Orientation="Horizontal">
+                <Grid Width="1" HorizontalAlignment="Left" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+                <ui:SimpleStackPanel Margin="17,0,10,0">
+                    <TextBlock Margin="0,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Sort By" />
+                    <ComboBox
                                 x:Name="SortProfileBox"
                                 Style="{DynamicResource StandardComboBoxStyle}"
                                 SelectedIndex="{Binding Path=ProfileSortingId}"
@@ -57,112 +47,115 @@
                                 Padding="6,4,0,4"
                                 Margin="-6,0,0,0"
                                 SelectionChanged="SortChanged">
-                                <ComboBoxItem Content="Latest played" />
-                                <ComboBoxItem Content="Name" />
-                            </ComboBox>
-                        </ui:SimpleStackPanel>
-                        <Grid Width="1" HorizontalAlignment="Right" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
-                        <ui:SimpleStackPanel Margin="15,0,0,0">
-                            <TextBlock Margin="0,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Versions" />
-                            <ui:SimpleStackPanel Orientation="Horizontal" Spacing="13">
-                                <CheckBox x:Name="ReleasesBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Releases" Click="CheckBoxClick" IsChecked="{Binding Path=EnableReleases}" />
-                                <CheckBox x:Name="BetasBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Beta Builds" Click="CheckBoxClick" IsChecked="{Binding Path=EnableBetas}" />
-                                <CheckBox x:Name="HistoricalBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Historical" Click="CheckBoxClick" IsChecked="{Binding Path=EnableHistorical}" />
-                            </ui:SimpleStackPanel>
-                        </ui:SimpleStackPanel>
+                        <ComboBoxItem Content="Latest played" />
+                        <ComboBoxItem Content="Name" />
+                    </ComboBox>
+                </ui:SimpleStackPanel>
+                <Grid Width="1" HorizontalAlignment="Right" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+                <ui:SimpleStackPanel Margin="15,0,0,0">
+                    <TextBlock Margin="0,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Versions" />
+                    <ui:SimpleStackPanel Orientation="Horizontal" Spacing="13">
+                        <CheckBox x:Name="ReleasesBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Releases" Click="CheckBoxClick" IsChecked="{Binding Path=EnableReleases}" />
+                        <CheckBox x:Name="BetasBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Beta Builds" Click="CheckBoxClick" IsChecked="{Binding Path=EnableBetas}" />
+                        <CheckBox x:Name="HistoricalBox" Style="{DynamicResource SmallCheckBoxStyle}" Content="Historical" Click="CheckBoxClick" IsChecked="{Binding Path=EnableHistorical}" />
                     </ui:SimpleStackPanel>
-                </Grid>
-                <Separator Grid.Row="0" VerticalAlignment="Bottom" Background="{DynamicResource AppBarSeparatorLowForeground}" />
-                <Grid Grid.Row="1" HorizontalAlignment="Stretch">
-                    <ListBox
+                </ui:SimpleStackPanel>
+            </ui:SimpleStackPanel>
+        </Grid>
+        <Separator Grid.Row="0" VerticalAlignment="Bottom" Background="{DynamicResource AppBarSeparatorLowForeground}" />
+        <ui:ScrollViewerEx Grid.Row="1" 
+            HorizontalScrollBarVisibility="Hidden"
+            VerticalScrollBarVisibility="Auto"
+            IsDeferredScrollingEnabled="False">
+            <Grid HorizontalAlignment="Stretch">
+                <ListBox
                         x:Name="ProfileListBox"
                         Style="{DynamicResource ProfileListBoxStyle}"
                         Background="Transparent">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource ProfileListBoxItemStyle}">
-                                <EventSetter Event="PreviewGotKeyboardFocus" Handler="SelectCurrentItem" />
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid MouseLeftButtonUp="ProfileSelected">
-                                    <Rectangle MaxWidth="900" Fill="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                                    <Separator x:Name="Separator" MaxWidth="900" VerticalAlignment="Top" Margin="15,0,15,0" Background="{DynamicResource AppBarSeparatorLowForeground}" />
-                                    <Grid MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <ui:SimpleStackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                                            <ui:SimpleStackPanel>
-                                                <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Path=Name}" />
-                                                <TextBlock FontSize="12" Text="{Binding Path=VersionName}" Foreground="{DynamicResource SystemControlPageTextBaseMediumBrush}" />
-                                            </ui:SimpleStackPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource ProfileListBoxItemStyle}">
+                            <EventSetter Event="PreviewGotKeyboardFocus" Handler="SelectCurrentItem" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid MouseLeftButtonUp="ProfileSelected">
+                                <Rectangle MaxWidth="900" Fill="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                                <Separator x:Name="Separator" MaxWidth="900" VerticalAlignment="Top" Margin="15,0,15,0" Background="{DynamicResource AppBarSeparatorLowForeground}" />
+                                <Grid MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <ui:SimpleStackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                        <ui:SimpleStackPanel>
+                                            <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Path=Name}" />
+                                            <TextBlock FontSize="12" Text="{Binding Path=VersionName}" Foreground="{DynamicResource SystemControlPageTextBaseMediumBrush}" />
                                         </ui:SimpleStackPanel>
-                                        <ui:SimpleStackPanel x:Name="InteractButtons" Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="8" Visibility="Hidden">
-                                            <ui:SimpleStackPanel.Resources>
-                                                <Grid x:Key="LaunchText">
-                                                    <TextBlock Text="Play"/>
-                                                </Grid>
-                                                <Grid x:Key="LoadingDots">
-                                                    <Grid.Triggers>
-                                                        <EventTrigger RoutedEvent="Grid.Loaded">
-                                                            <BeginStoryboard>
-                                                                <Storyboard RepeatBehavior="Forever">
-                                                                    <DoubleAnimation Storyboard.Target="{Binding Source={x:Reference point1}}" BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From=".1" To=".5" AutoReverse="True" Duration="0:0:0.5"/>
-                                                                    <DoubleAnimation Storyboard.Target="{Binding Source={x:Reference point2}}" BeginTime="0:0:0.25" Storyboard.TargetProperty="Opacity" From=".1" To=".5" AutoReverse="True" Duration="0:0:0.5"/>
-                                                                    <DoubleAnimation Storyboard.Target="{Binding Source={x:Reference point3}}" BeginTime="0:0:0.5" Storyboard.TargetProperty="Opacity" From=".1" To=".5" AutoReverse="True" Duration="0:0:0.5"/>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </EventTrigger>
-                                                    </Grid.Triggers>
-                                                    <ui:SimpleStackPanel Margin="0,8,0,0" Orientation="Horizontal" Spacing="2">
-                                                        <Rectangle x:Name="point1" Fill="White" Width="4" Height="4" Opacity="0.1" SnapsToDevicePixels="True"/>
-                                                        <Rectangle x:Name="point2" Fill="White" Width="4" Height="4" Opacity="0.1" SnapsToDevicePixels="True"/>
-                                                        <Rectangle x:Name="point3" Fill="White" Width="4" Height="4" Opacity="0.1" SnapsToDevicePixels="True"/>
-                                                    </ui:SimpleStackPanel>
-                                                </Grid>
-                                                <local:BooleanValueConverter x:Key="PlayButtonContent"
+                                    </ui:SimpleStackPanel>
+                                    <ui:SimpleStackPanel x:Name="InteractButtons" Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="8" Visibility="Hidden">
+                                        <ui:SimpleStackPanel.Resources>
+                                            <Grid x:Key="LaunchText">
+                                                <TextBlock Text="Play"/>
+                                            </Grid>
+                                            <Grid x:Key="LoadingDots">
+                                                <Grid.Triggers>
+                                                    <EventTrigger RoutedEvent="Grid.Loaded">
+                                                        <BeginStoryboard>
+                                                            <Storyboard RepeatBehavior="Forever">
+                                                                <DoubleAnimation Storyboard.Target="{Binding Source={x:Reference point1}}" BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From=".1" To=".5" AutoReverse="True" Duration="0:0:0.5"/>
+                                                                <DoubleAnimation Storyboard.Target="{Binding Source={x:Reference point2}}" BeginTime="0:0:0.25" Storyboard.TargetProperty="Opacity" From=".1" To=".5" AutoReverse="True" Duration="0:0:0.5"/>
+                                                                <DoubleAnimation Storyboard.Target="{Binding Source={x:Reference point3}}" BeginTime="0:0:0.5" Storyboard.TargetProperty="Opacity" From=".1" To=".5" AutoReverse="True" Duration="0:0:0.5"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger>
+                                                </Grid.Triggers>
+                                                <ui:SimpleStackPanel Margin="0,8,0,0" Orientation="Horizontal" Spacing="2">
+                                                    <Rectangle x:Name="point1" Fill="White" Width="4" Height="4" Opacity="0.1" SnapsToDevicePixels="True"/>
+                                                    <Rectangle x:Name="point2" Fill="White" Width="4" Height="4" Opacity="0.1" SnapsToDevicePixels="True"/>
+                                                    <Rectangle x:Name="point3" Fill="White" Width="4" Height="4" Opacity="0.1" SnapsToDevicePixels="True"/>
+                                                </ui:SimpleStackPanel>
+                                            </Grid>
+                                            <local:BooleanValueConverter x:Key="PlayButtonContent"
                                                     TrueValue="{StaticResource LoadingDots}"
                                                     FalseValue="{StaticResource LaunchText}" />
-                                            </ui:SimpleStackPanel.Resources>
-                                            <Button 
+                                        </ui:SimpleStackPanel.Resources>
+                                        <Button 
                                                 Style="{DynamicResource LauncherAccentButtonStyle}"
                                                 Click="PlayButtonClick"
                                                 Width="66"
                                                 Content="{Binding Path=Launching, Converter={StaticResource PlayButtonContent}}"
                                                 IsEnabled="{Binding Path=DataContext.IsNotLaunching, RelativeSource={RelativeSource AncestorType={x:Type Page}}}"/>
-                                            <Button Padding="5,5,6,6"  Style="{DynamicResource LauncherDefaultButtonStyle}">
-                                                <Button.Content>
-                                                    <ui:SymbolIcon Symbol="More" />
-                                                </Button.Content>
-                                                <ui:FlyoutService.Flyout>
-                                                    <ui:MenuFlyout Placement="BottomEdgeAlignedRight" >
-                                                        <MenuItem Click="EditProfileClick" Header="Edit" />
-                                                        <MenuItem Click="DuplicateProfileClick" Header="Duplicate" />
-                                                        <MenuItem Click="DeleteProfileClick" Header="Delete" Visibility="{Binding Path=Editable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                                    </ui:MenuFlyout>
-                                                </ui:FlyoutService.Flyout>
-                                            </Button>
-                                        </ui:SimpleStackPanel>
-                                    </Grid>
+                                        <Button Padding="5,5,6,6"  Style="{DynamicResource LauncherDefaultButtonStyle}">
+                                            <Button.Content>
+                                                <ui:SymbolIcon Symbol="More" />
+                                            </Button.Content>
+                                            <ui:FlyoutService.Flyout>
+                                                <ui:MenuFlyout Placement="BottomEdgeAlignedRight" >
+                                                    <MenuItem Click="EditProfileClick" Header="Edit" />
+                                                    <MenuItem Click="DuplicateProfileClick" Header="Duplicate" />
+                                                    <MenuItem Click="DeleteProfileClick" Header="Delete" Visibility="{Binding Path=Editable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                </ui:MenuFlyout>
+                                            </ui:FlyoutService.Flyout>
+                                        </Button>
+                                    </ui:SimpleStackPanel>
                                 </Grid>
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver}" Value="True">
-                                        <Setter TargetName="InteractButtons" Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
-                                        <Setter TargetName="InteractButtons" Property="Visibility" Value="Visible" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
-                                        <Setter Property="Visibility" TargetName="Separator" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </DataTemplate.Triggers>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver}" Value="True">
+                                    <Setter TargetName="InteractButtons" Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                    <Setter TargetName="InteractButtons" Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                    <Setter Property="Visibility" TargetName="Separator" Value="Collapsed"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
         </ui:ScrollViewerEx>
     </Grid>
