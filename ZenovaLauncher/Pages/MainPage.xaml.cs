@@ -10,6 +10,8 @@ namespace ZenovaLauncher
         public MainPage()
         {
             InitializeComponent();
+
+            DataContext = ProfileLauncher.instance;
         }
     }
 }

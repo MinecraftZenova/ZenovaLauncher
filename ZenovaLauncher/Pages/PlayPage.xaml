@@ -40,7 +40,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -50,7 +49,7 @@
         <Grid Grid.Row="0" Grid.ColumnSpan="3" Background="{DynamicResource ImageBackground}" />
         <Image
             Grid.ColumnSpan="3"
-            Grid.RowSpan="2"
+            Grid.RowSpan="1"
             Source="/Assets/zenova_banner.png"
             Width="250"
             HorizontalAlignment="Center"
@@ -73,7 +72,7 @@
         <Button 
             x:Name="PlayButton"
             Grid.Column="1"
-            Grid.RowSpan="3"
+            Grid.RowSpan="2"
             Panel.ZIndex="2"
             HorizontalAlignment="Center" 
             VerticalAlignment="Bottom" 
@@ -88,64 +87,8 @@
             Content="{Binding Path=IsNotLaunching, Converter={StaticResource PlayButtonContent}}"
             IsEnabled="{Binding Path=IsNotLaunching}">
         </Button>
-        <Grid 
-            x:Name="ProgressGrid"
-            Grid.Row="1"
-            Grid.ColumnSpan="3"
-            HorizontalAlignment="Stretch"
-            Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}"
-            Visibility="{Binding Path=IsLaunching, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Grid.RenderTransform>
-                <TranslateTransform />
-            </Grid.RenderTransform>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="Loaded">
-                    <i:Interaction.Behaviors>
-                        <ei:ConditionBehavior>
-                            <ei:ConditionalExpression>
-                                <ei:ComparisonCondition LeftOperand="{Binding Path=IsLaunching}" RightOperand="True"/>
-                            </ei:ConditionalExpression>
-                        </ei:ConditionBehavior>
-                    </i:Interaction.Behaviors>
-                    <ei:ControlStoryboardAction ControlStoryboardOption="Play">
-                        <ei:ControlStoryboardAction.Storyboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="RenderTransform.Y" From="20" To="0" Duration="0:0:0.2" />
-                                <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2" />
-                            </Storyboard>
-                        </ei:ControlStoryboardAction.Storyboard>
-                    </ei:ControlStoryboardAction>
-                </i:EventTrigger>
-                <ei:DataTrigger Binding="{Binding Path=IsLaunching}" Value="True">
-                    <ei:ControlStoryboardAction ControlStoryboardOption="Play">
-                        <ei:ControlStoryboardAction.Storyboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="RenderTransform.Y" From="20" To="0" Duration="0:0:0.2" />
-                                <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2" />
-                            </Storyboard>
-                        </ei:ControlStoryboardAction.Storyboard>
-                    </ei:ControlStoryboardAction>
-                </ei:DataTrigger>
-            </i:Interaction.Triggers>
-            <ProgressBar
-                Margin="10,9,10,29"
-                MinHeight="32"
-                HorizontalAlignment="Stretch"
-                ui:ControlHelper.CornerRadius="0"
-                Background="{DynamicResource LauncherControlTransientLowBackgroundBrush}"
-                Minimum="0"
-                Maximum="{Binding LaunchInfo.ProgressMax, Mode=OneWay}"
-                local:ProgressBarSmoother.AnimateTime="{Binding LaunchInfo.AnimateTime, Mode=OneWay}"
-                local:ProgressBarSmoother.SmoothValue="{Binding LaunchInfo.ProgressCurrent, Mode=OneWay}"
-                IsIndeterminate="{Binding LaunchInfo.IsProgressIndeterminate}" />
-            <TextBlock
-                Margin="25,0,0,20"
-                VerticalAlignment="Center"
-                Text="{Binding LaunchInfo.DisplayStatus}"
-                FontSize="12" />
-        </Grid>
-        <Grid Grid.Row="2" Grid.ColumnSpan="3" Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}" />
-        <Grid Grid.Row="2" Grid.Column="0">
+        <Grid Grid.Row="1" Grid.ColumnSpan="3" Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}" />
+        <Grid Grid.Row="1" Grid.Column="0">
             <ComboBox
                 x:Name="ProfileBox"
                 Style="{StaticResource ProfileBoxStyle}"

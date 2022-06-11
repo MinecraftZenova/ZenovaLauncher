@@ -12,41 +12,31 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ui:ScrollViewerEx
-            Grid.Row="0"
-            HorizontalScrollBarVisibility="Hidden"
-            VerticalScrollBarVisibility="Auto"
-            IsDeferredScrollingEnabled="False">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <ui:SimpleStackPanel Grid.Column="0" Orientation="Horizontal" Spacing="15">
-                        <Button x:Name="ImportModButton" Click="ImportModClick">
-                            <Button.Content>
-                                <ui:SimpleStackPanel Orientation="Horizontal" Spacing="8" Margin="3">
-                                    <ui:SymbolIcon VerticalAlignment="Center" Symbol="Add" />
-                                    <TextBlock VerticalAlignment="Center" Text="Import..." />
-                                </ui:SimpleStackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Grid Width="1" HorizontalAlignment="Right" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
-                    </ui:SimpleStackPanel>
-                    <ui:SimpleStackPanel Grid.Column="2" Orientation="Horizontal">
-                        <Grid Width="1" HorizontalAlignment="Left" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
-                        <ui:SimpleStackPanel Margin="17,0,10,0">
-                            <TextBlock Margin="0,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Sort By" />
-                            <ComboBox
+        <Grid Grid.Row="0" MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ui:SimpleStackPanel Grid.Column="0" Orientation="Horizontal" Spacing="15">
+                <Button x:Name="ImportModButton" Click="ImportModClick">
+                    <Button.Content>
+                        <ui:SimpleStackPanel Orientation="Horizontal" Spacing="8" Margin="3">
+                            <ui:SymbolIcon VerticalAlignment="Center" Symbol="Add" />
+                            <TextBlock VerticalAlignment="Center" Text="Import..." />
+                        </ui:SimpleStackPanel>
+                    </Button.Content>
+                </Button>
+                <Grid Width="1" HorizontalAlignment="Right" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+            </ui:SimpleStackPanel>
+            <ui:SimpleStackPanel Grid.Column="2" Orientation="Horizontal">
+                <Grid Width="1" HorizontalAlignment="Left" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+                <ui:SimpleStackPanel Margin="17,0,10,0">
+                    <TextBlock Margin="0,-8,0,0" FontSize="15" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Text="Sort By" />
+                    <ComboBox
                                 x:Name="SortModsBox"
                                 Style="{DynamicResource StandardComboBoxStyle}"
                                 SelectedIndex="{Binding Path=ModSortingId}"
@@ -57,124 +47,73 @@
                                 Padding="6,4,0,4"
                                 Margin="-6,0,0,0"
                                 SelectionChanged="SortChanged">
-                                <ComboBoxItem Content="Supported version" />
-                                <ComboBoxItem Content="Name" />
-                            </ComboBox>
-                        </ui:SimpleStackPanel>
-                    </ui:SimpleStackPanel>
-                </Grid>
-                <Separator Grid.Row="0" VerticalAlignment="Bottom" Background="{DynamicResource AppBarSeparatorLowForeground}" />
-                <Grid Grid.Row="1" HorizontalAlignment="Stretch">
-                    <ListBox
+                        <ComboBoxItem Content="Supported version" />
+                        <ComboBoxItem Content="Name" />
+                    </ComboBox>
+                </ui:SimpleStackPanel>
+            </ui:SimpleStackPanel>
+        </Grid>
+        <Separator Grid.Row="0" VerticalAlignment="Bottom" Background="{DynamicResource AppBarSeparatorLowForeground}" />
+        <ui:ScrollViewerEx
+            Grid.Row="1"
+            HorizontalScrollBarVisibility="Hidden"
+            VerticalScrollBarVisibility="Auto"
+            IsDeferredScrollingEnabled="False">
+            <Grid Grid.Row="1" HorizontalAlignment="Stretch">
+                <ListBox
                         x:Name="ModsListBox"
                         Style="{DynamicResource ProfileListBoxStyle}"
                         Background="Transparent">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem" BasedOn="{StaticResource ProfileListBoxItemStyle}">
-                                <EventSetter Event="PreviewGotKeyboardFocus" Handler="SelectCurrentItem" />
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid MouseLeftButtonUp="ModSelected">
-                                    <Rectangle MaxWidth="900" Fill="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                                    <Separator x:Name="Separator" MaxWidth="900" VerticalAlignment="Top" Margin="15,0,15,0" Background="{DynamicResource AppBarSeparatorLowForeground}" />
-                                    <Grid MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <ui:SimpleStackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
-                                            <ui:SimpleStackPanel>
-                                                <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Name}" />
-                                                <TextBlock FontSize="12" Text="{Binding Description}" Foreground="{DynamicResource SystemControlPageTextBaseMediumBrush}" />
-                                            </ui:SimpleStackPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource ProfileListBoxItemStyle}">
+                            <EventSetter Event="PreviewGotKeyboardFocus" Handler="SelectCurrentItem" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid MouseLeftButtonUp="ModSelected">
+                                <Rectangle MaxWidth="900" Fill="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                                <Separator x:Name="Separator" MaxWidth="900" VerticalAlignment="Top" Margin="15,0,15,0" Background="{DynamicResource AppBarSeparatorLowForeground}" />
+                                <Grid MaxWidth="900" Margin="15,10,15,12" HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <ui:SimpleStackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                        <ui:SimpleStackPanel>
+                                            <TextBlock FontWeight="Bold" FontSize="16" Text="{Binding Name}" />
+                                            <TextBlock FontSize="12" Text="{Binding Description}" Foreground="{DynamicResource SystemControlPageTextBaseMediumBrush}" />
                                         </ui:SimpleStackPanel>
-                                        <ui:SimpleStackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="15">
-                                            <TextBlock VerticalAlignment="Center" FontSize="12">
+                                    </ui:SimpleStackPanel>
+                                    <ui:SimpleStackPanel Grid.Column="2" HorizontalAlignment="Right" Orientation="Horizontal" Spacing="15">
+                                        <TextBlock VerticalAlignment="Center" FontSize="12">
                                                 Game Version: <Run FontWeight="SemiBold" Text="{Binding LatestSupported.Name, Mode=OneWay}" />
-                                            </TextBlock>
-                                            <Grid Width="1" HorizontalAlignment="Right" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
-                                            <Button Padding="5,5,6,6" Style="{DynamicResource LauncherDefaultButtonStyle}">
-                                                <Button.Content>
-                                                    <ui:SymbolIcon Symbol="More" />
-                                                </Button.Content>
-                                                <ui:FlyoutService.Flyout>
-                                                    <ui:MenuFlyout Placement="BottomEdgeAlignedRight" >
-                                                        <MenuItem Click="ModDetailsClick" Header="Details" />
-                                                        <MenuItem Click="DeleteModClick" Header="Delete"/>
-                                                    </ui:MenuFlyout>
-                                                </ui:FlyoutService.Flyout>
-                                            </Button>
-                                        </ui:SimpleStackPanel>
-                                    </Grid>
+                                        </TextBlock>
+                                        <Grid Width="1" HorizontalAlignment="Right" Margin="0,8,0,8" SnapsToDevicePixels="True" Background="{DynamicResource AppBarSeparatorForeground}" />
+                                        <Button Padding="5,5,6,6" Style="{DynamicResource LauncherDefaultButtonStyle}">
+                                            <Button.Content>
+                                                <ui:SymbolIcon Symbol="More" />
+                                            </Button.Content>
+                                            <ui:FlyoutService.Flyout>
+                                                <ui:MenuFlyout Placement="BottomEdgeAlignedRight" >
+                                                    <MenuItem Click="ModDetailsClick" Header="Details" />
+                                                    <MenuItem Click="DeleteModClick" Header="Delete"/>
+                                                </ui:MenuFlyout>
+                                            </ui:FlyoutService.Flyout>
+                                        </Button>
+                                    </ui:SimpleStackPanel>
                                 </Grid>
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
-                                        <Setter Property="Visibility" TargetName="Separator" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </DataTemplate.Triggers>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource PreviousData}}" Value="{x:Null}">
+                                    <Setter Property="Visibility" TargetName="Separator" Value="Collapsed"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
         </ui:ScrollViewerEx>
-        <Grid 
-            x:Name="ProgressGrid"
-            Grid.Row="1"
-            HorizontalAlignment="Stretch"
-            Background="{DynamicResource LauncherControlPageBackgroundChromeMediumBrush}"
-            Visibility="{Binding Path=IsLaunching, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Grid.RenderTransform>
-                <TranslateTransform />
-            </Grid.RenderTransform>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="Loaded">
-                    <i:Interaction.Behaviors>
-                        <ei:ConditionBehavior>
-                            <ei:ConditionalExpression>
-                                <ei:ComparisonCondition LeftOperand="{Binding Path=IsLaunching}" RightOperand="True"/>
-                            </ei:ConditionalExpression>
-                        </ei:ConditionBehavior>
-                    </i:Interaction.Behaviors>
-                    <ei:ControlStoryboardAction ControlStoryboardOption="Play">
-                        <ei:ControlStoryboardAction.Storyboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="RenderTransform.Y" From="20" To="0" Duration="0:0:0.2" />
-                                <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2" />
-                            </Storyboard>
-                        </ei:ControlStoryboardAction.Storyboard>
-                    </ei:ControlStoryboardAction>
-                </i:EventTrigger>
-                <ei:DataTrigger Binding="{Binding Path=IsLaunching}" Value="True">
-                    <ei:ControlStoryboardAction ControlStoryboardOption="Play">
-                        <ei:ControlStoryboardAction.Storyboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="RenderTransform.Y" From="20" To="0" Duration="0:0:0.2" />
-                                <DoubleAnimation Storyboard.TargetName="ProgressGrid" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.2" />
-                            </Storyboard>
-                        </ei:ControlStoryboardAction.Storyboard>
-                    </ei:ControlStoryboardAction>
-                </ei:DataTrigger>
-            </i:Interaction.Triggers>
-            <ProgressBar
-                Margin="10,9,10,9"
-                MinHeight="32"
-                HorizontalAlignment="Stretch"
-                ui:ControlHelper.CornerRadius="0"
-                Background="{DynamicResource LauncherControlTransientLowBackgroundBrush}"
-                Minimum="0"
-                Maximum="{Binding LaunchInfo.ProgressMax, Mode=OneWay}"
-                local:ProgressBarSmoother.AnimateTime="{Binding LaunchInfo.AnimateTime, Mode=OneWay}"
-                local:ProgressBarSmoother.SmoothValue="{Binding LaunchInfo.ProgressCurrent, Mode=OneWay}"
-                IsIndeterminate="{Binding LaunchInfo.IsProgressIndeterminate}" />
-            <TextBlock
-                Margin="25,0,0,0"
-                VerticalAlignment="Center"
-                Text="{Binding LaunchInfo.DisplayStatus}"
-                FontSize="12" />
-        </Grid>
     </Grid>
 </Page>
