@@ -43,10 +43,19 @@ namespace ZenovaLauncher
             get { return AccountManager.instance.CurrentXboxAccount.Gamertag; }
             set
             {
-                var current = AccountManager.instance.FirstOrDefault(a => a.Gamertag == value);
+                var manager = AccountManager.instance;
+                var current = manager.FirstOrDefault(a => a.Gamertag == value);
                 if (current != null)
                 {
-                    AccountManager.instance.CurrentXboxAccount = current;
+                    manager.CurrentXboxAccount = current;
+                }
+                else if (manager.First() != XboxAccount._null)
+                {
+                    manager.CurrentXboxAccount = manager.First();
+                }
+                else
+                {
+                    manager.CurrentXboxAccount = XboxAccount._null;
                 }
             }
         }
