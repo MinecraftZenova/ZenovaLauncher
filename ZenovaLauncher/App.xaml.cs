@@ -75,11 +75,8 @@ namespace ZenovaLauncher
                 Trace.AutoFlush = true;
                 ZenovaUpdater.instance = new ZenovaUpdater();
                 Trace.WriteLine("ZenovaUpdater.instance " + sw.ElapsedMilliseconds + " ms");
-                VersionDownloader.standard = new VersionDownloader();
-                Trace.WriteLine("VersionDownloader.standard " + sw.ElapsedMilliseconds + " ms");
-                VersionDownloader.user = new VersionDownloader();
-                await VersionDownloader.user.EnableUserAuthorization();
-                Trace.WriteLine("VersionDownloader.user " + sw.ElapsedMilliseconds + " ms");
+                VersionDownloader.instance = new VersionDownloader();
+                Trace.WriteLine("VersionDownloader.instance " + sw.ElapsedMilliseconds + " ms");
                 VersionManager.instance = new VersionManager(VersionsDirectory);
                 Trace.WriteLine("VersionManager.instance " + sw.ElapsedMilliseconds + " ms");
                 ProfileManager.instance = new ProfileManager(DataDirectory);

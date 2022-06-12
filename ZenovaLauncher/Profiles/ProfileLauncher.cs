@@ -281,11 +281,10 @@ namespace ZenovaLauncher
 
             Trace.WriteLine("Download start");
             string dlPath = v.GameDirectory + ".Appx";
-            VersionDownloader downloader = v.Beta ? VersionDownloader.user : VersionDownloader.standard;
             try
             {
                 Trace.WriteLine("Initializing Download");
-                await downloader.Download(v.UUID, "1", dlPath, (current, total) =>
+                await VersionDownloader.instance.Download(v.UUID, "1", dlPath, (current, total) =>
                 {
                     if (LaunchInfo.Status == LaunchStatus.InitializingDownload)
                     {
@@ -302,7 +301,7 @@ namespace ZenovaLauncher
             {
                 Trace.WriteLine("Download failed:\n" + e.ToString());
                 if (!(e is TaskCanceledException))
-                    Utils.ShowErrorDialog("Download failed", string.Format("An error occured while downloading Minecraft {0}.{1}", v.Name, v.Beta ? " Ensure the selected account is the one registered for beta versions in the Xbox Insider app." : ""));
+                    Utils.ShowErrorDialog("Download failed", string.Format("An error occured while downloading Minecraft {0}.{1}", v.Name, v.Beta ? " The Minecraft Xbox Insider beta program has ended." : ""));
                 return false;
             }
             try
