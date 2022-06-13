@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Principal;
@@ -73,13 +71,16 @@ namespace ZenovaLauncher
             return IsElevated ? new PackageManager().FindPackages(familyName) : new PackageManager().FindPackagesForUser(string.Empty, familyName);
         }
 
+        private static readonly SecurityIdentifier ALL_APP_PACKAGES_SID = new SecurityIdentifier("S-1-15-2-1");
+        private static readonly FileSystemRights DefaultRights = FileSystemRights.FullControl;
+
         public static void AddSecurityToFile(string filePath)
         {
             FileInfo fileInfo = new FileInfo(filePath);
             if (fileInfo.Exists)
             {
                 FileSecurity fileSecurity = fileInfo.GetAccessControl();
-                fileSecurity.AddAccessRule(new FileSystemAccessRule("ALL APPLICATION PACKAGES", FileSystemRights.FullControl, AccessControlType.Allow));
+                fileSecurity.AddAccessRule(new FileSystemAccessRule(ALL_APP_PACKAGES_SID, DefaultRights, AccessControlType.Allow));
                 fileInfo.SetAccessControl(fileSecurity);
             }
         }
@@ -91,8 +92,8 @@ namespace ZenovaLauncher
             {
                 DirectorySecurity dirSecurity = dirInfo.GetAccessControl();
                 dirSecurity.AddAccessRule(new FileSystemAccessRule(
-                    "ALL APPLICATION PACKAGES",
-                    FileSystemRights.FullControl,
+                    ALL_APP_PACKAGES_SID,
+                    DefaultRights,
                     InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
                     PropagationFlags.None,
                     AccessControlType.Allow));
