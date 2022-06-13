@@ -15,10 +15,7 @@ namespace ZenovaLauncher
         {
             InitializeComponent();
 
-            KeepOpenBox.DataContext = Preferences.instance;
-            FreeSpaceBox.DataContext = Preferences.instance;
-            DebugBox.DataContext = Preferences.instance;
-            UpdateBox.DataContext = Preferences.instance;
+            Options.DataContext = Preferences.instance;
 
             Assemblies.Add(ZenovaUpdater.InstallerAssembly);
             Assemblies.Add(ZenovaUpdater.ApiAssembly);

@@ -67,10 +67,20 @@ namespace ZenovaLauncher
         {
             get
             {
-                // probably should be changed to a list but not gonna bother till we support more versions
-                var SupportedVersions = new System.Version(1, 14, 60, 5);
+                if (Preferences.instance.AnyVerMods)
+                {
+                    return true;
+                }
 
-                if (Beta || Version != SupportedVersions)
+                if (Beta)
+                {
+                    return false;
+                }
+
+                // probably should be changed to a list but not gonna bother till we support more versions
+                var SupportedVersions = new Version(1, 14, 60, 5);
+
+                if (Version != SupportedVersions)
                 {
                     return false;
                 }
