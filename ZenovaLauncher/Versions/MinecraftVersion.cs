@@ -18,8 +18,11 @@ namespace ZenovaLauncher
             return (item as MinecraftVersion).Historical == true;
         };
 
-        private static readonly string MINECRAFT_PACKAGE_FAMILY = "Microsoft.MinecraftUWP_8wekyb3d8bbwe";
-        private static readonly string MINECRAFT_PREVIEW_PACKAGE_FAMILY = "Microsoft.MinecraftWindowsBeta_8wekyb3d8bbwe";
+        // todo: generate these from the AppxManifest and use this for the PublisherId
+        // https://gchq.github.io/CyberChef/#recipe=Encode_text('UTF-16LE%20(1200)')SHA2('256',64,160)Drop_bytes(16,48,false)From_Hex('Auto')To_Base32('0-9a-hjkmnp-tv-z')
+        private static readonly string MICROSOFT_PUBLISHER_ID = "8wekyb3d8bbwe";
+        private static readonly string MINECRAFT_PACKAGE_FAMILY = "Microsoft.MinecraftUWP_" + MICROSOFT_PUBLISHER_ID;
+        private static readonly string MINECRAFT_PREVIEW_PACKAGE_FAMILY = "Microsoft.MinecraftWindowsBeta_" + MICROSOFT_PUBLISHER_ID;
 
         public MinecraftVersion(Version version, string uuid, VersionType versionType)
         {

@@ -35,13 +35,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Utils\AppUtils.cpp" />
-    <ClCompile Include="src\Utils\ProcessUtils.cpp" />
     <ClCompile Include="src\ModLoader.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Utils\AppUtils.h" />
-    <ClInclude Include="src\Utils\ProcessUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\ZenovaLoader.rc" />
