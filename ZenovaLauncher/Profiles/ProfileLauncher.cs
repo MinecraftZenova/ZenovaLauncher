@@ -121,14 +121,19 @@ namespace ZenovaLauncher
                         throw;
                     }
 
-                    AppDebugger app = new AppDebugger(Utils.FindPackages(p.Version.PackageFamily).ToList()[0].Id.FullName);
+                    string packageFullName = Utils.FindPackages(p.Version.PackageFamily).ToList()[0].Id.FullName;
+                    AppDebugger app = new AppDebugger(packageFullName);
                     if (app.GetPackageExecutionState() != PACKAGE_EXECUTION_STATE.PES_UNKNOWN)
                     {
                         app.TerminateAllProcesses();
                         if (app.StatusCode != 0)
                             return false;
                     }
-                    app.EnableDebugging(AppDomain.CurrentDomain.BaseDirectory + "ZenovaLoader -d " + (Preferences.instance.DebugMode ? "1" : "0"));
+
+                    string args = "-d " + (Preferences.instance.DebugMode ? "1" : "0");
+                    args += " -i " + packageFullName;
+                    args += " -f " + App.DataDirectory;
+                    app.EnableDebugging(AppDomain.CurrentDomain.BaseDirectory + "ZenovaLoader " + args);
                     if (app.StatusCode != 0)
                         return false;
                     app.LaunchApp(pkg.AppInfo.AppUserModelId);
