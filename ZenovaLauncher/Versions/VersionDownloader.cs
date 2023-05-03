@@ -17,8 +17,7 @@ namespace ZenovaLauncher
 {
     public class VersionDownloader
     {
-        public static VersionDownloader standard;
-        public static VersionDownloader user;
+        public static VersionDownloader instance;
 
         private readonly HttpClient _client = new HttpClient();
         private readonly WUProtocol _protocol = new WUProtocol();
@@ -150,17 +149,6 @@ namespace ZenovaLauncher
                     return s;
             }
             return null;
-        }
-
-        public async Task EnableUserAuthorization()
-        {
-            RegistryKey accountIdsReg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\IdentityCRL\\UserTileData");
-            if (accountIdsReg != null)
-            {
-                string[] accountsIds = Array.FindAll(accountIdsReg.GetValueNames(), s => !s.EndsWith("_ETAG"));
-                _protocol.MSAUserToken = await WUTokenHelper.GetWUToken(accountsIds);
-            }
-            accountIdsReg.Close();
         }
 
         public async Task Download(string updateIdentity, string revisionNumber, string destination, DownloadProgress progress, CancellationToken cancellationToken)
